@@ -27,7 +27,6 @@ class DirectFile{
   status(){
     //print("File content:" + this._file.toString());
     print("********************* FILE **********************");
-    print("Directory Size:" + this._table.len.toString());
     print("Bucket Size:" +this._bucketSize.toString());
      print("<<<<< Directory:" + _table.toString() + ">>>>>>>>>>>>>>>>>>");
     print("File content:\n");
@@ -38,41 +37,41 @@ class DirectFile{
   }
 
   bool exist(BaseRegister reg){
-    print("*> Checking value: " + reg.toString());
+    print("<Direct File> *Checking value: " + reg.toString());
     bool exist = false;
     if (_file.isEmpty){
-        print("File is empty");
+        print("<Direct File> File is empty");
         return exist;
     }
     int index = reg.value % _table.len;
     int? bucketNum = _table.getBucketNumber(index);
-    print("Directory Bucket number:"+ bucketNum.toString());
+    print("<Direct File> Directory Bucket number:"+ bucketNum.toString());
     Bucket mybucket = _file[bucketNum];
     mybucket.getRegList().forEach((register) {
       if(register.value == reg.value){
           exist = true;
       } 
     });
-    print("*> Checking value ");
+    print("<Direct File> * Checking value ");
     return exist;
   }
 
   bool insert(BaseRegister newValue){
 
-    print("*> Inserting value: " + newValue.toString());
+    print("<Direct File> * Inserting value: " + newValue.toString());
     bool exist = false;
     //Calculating mod
     int index = newValue.value % _table.len;
     
-    print("Directory index:"+ index.toString());
+    print("<Direct File> Directory index:"+ index.toString());
     int? bucketNum = _table.getBucketNumber(index);
-    print("Directory Bucket number:"+ bucketNum.toString());
+    print("<Direct File> Directory Bucket number:"+ bucketNum.toString());
     //si file esta vacio crea el bucket agrega el registro con ese value.
     //sino agrega el value al bucket apuntado por bucketNum
     Bucket bucket;
     
       if (_file.isEmpty){
-        print("File is empty");
+        print("<Direct File> File is empty");
         bucket = Bucket(_bucketSize,0);
         bucket.setValue(newValue);
         _file.add(bucket);      
@@ -95,14 +94,14 @@ class DirectFile{
           try{
             bucket.setValue(newValue);
           } on BucketOverflowedException {
-            print("Bucket " + bucketNum.toString() + "overflowed");
+            print("<Direct File> Bucket " + bucketNum.toString() + "overflowed");
             // If log(T) is equal to hashing bits of the bucket then T+=1
             if (log2(_table.len) == bucket.bits){
-                print("hashing bits are equal to log2(T)");
+                print("<Direct File> Hashing bits are equal to log2(T)");
                 reorder(newValue, _file[bucketNum]);  
             }
             else if (bucket.bits < log2(_table.len)){
-              print("Hashing bits are less than log2(T)");
+              print("<Direct File> Hashing bits are less than log2(T)");
               reorder2(newValue,_file[bucketNum]);
             }
 
@@ -111,13 +110,13 @@ class DirectFile{
 
         }
       }
-    print("*> Inserting value end -");
+    print("<Direct File> * Inserting value end -");
     return true; 
   }
 
 
 reorder(BaseRegister newValue, Bucket overflowedBucket){
-    print("*> Reordering Registers");
+    print("<Direct File> * Reordering Registers");
 
     int lastBucketId=_file.length;
     //Duplico la tabla
@@ -131,37 +130,37 @@ reorder(BaseRegister newValue, Bucket overflowedBucket){
     //recorro los registos de la cubeta desbordada y le aplico el mod.
     List<BaseRegister> obList = overflowedBucket.getRegList();
     obList.forEach((reg) {
-      print("*** Overflowed bucket:"+ "value:" + reg.toString());
+      print("<Direct File> *** Overflowed bucket:"+ "value:" + reg.toString());
       var newBucketNum = reg.value % T;
-      print("**** New mode result:" + newBucketNum.toString());
+      print("<Direct File> **** New Bucket num:" + newBucketNum.toString());
       insert(reg);
-      print("*> Reordering Registers END -");
+      print("<Direct File> * Reordering Registers END -");
     });
     int index = newValue.value % T;
-    print("Directory index:"+ index.toString());
+    print("<Direct File> Directory index:"+ index.toString());
     int bucketNum = _table.getBucketNumber(index);
     _file[bucketNum].setValue(newValue);
     //print("___Overflowed Bucket Number:" + bucketNum.toString());
-    print("___Bucket index:" + bucketNum.toString());
+    print("<Direct File> ___Bucket index:" + bucketNum.toString());
     //se suma 1 a los bits de dispersion de la cubeta desbordada y se copia este valor al bucket creado
     overflowedBucket.bits+=1;
     _file[bucketNum].bits=overflowedBucket.bits;
     
     if (bucketNum == overflowedBucket.id){
-      print("Losing new bucket bits");
+      print("<Direct File> Deleting new bucket bits");
       newBucket.bits=overflowedBucket.bits;
     }
 
-    print("*> Reordering Registers END -");
+    print("<Direct File> * Reordering Registers END -");
 
 
   }
 
   reorder2(BaseRegister newValue, Bucket overflowedBucket){
-    print("*> Reordering Registers version 2");
+    print("<Direct File> * Reordering Registers version 2");
     
 
-    print("*> Reordering Registers version 2 END -");
+    print("<Direct File> * Reordering Registers version 2 END -");
   }
 
   bool delete(BaseRegister delValue){

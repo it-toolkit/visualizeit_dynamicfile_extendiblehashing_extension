@@ -3,7 +3,6 @@ import 'package:flutter/semantics.dart';
 
 class Directory{
 
-  //late Map<int, int> _map;
   late List<int> _map;
   int _pointer = 0;
 
@@ -27,7 +26,7 @@ class Directory{
   }
 
   duplicate(int lastBucketId){
-   print("*Duplicate*");
+   print("<Directory> *Duplicate*");
    print("Actual Directory:" + _map.toString());
    var mapCopy = [..._map];//copy of the original list
    print("Pointer:" + _pointer.toString());
@@ -38,13 +37,13 @@ class Directory{
    print("Pointer:" + _pointer.toString());
    print("New directory:" + mapCopy.toString());
    _map = mapCopy;
-   print("*Duplicate END*");
+   print("<Directory> *Duplicate END*");
   }
 
   update(int pointer, int newBucketNum, int jump){
-    print("*Update Directory*");
+    print("<Directory> *Update Directory*");
     
-    print("*Update Directory END*");
+    print("<Directory> *Update Directory END*");
   }
 
   @override
