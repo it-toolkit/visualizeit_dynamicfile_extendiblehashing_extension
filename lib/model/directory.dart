@@ -40,9 +40,20 @@ class Directory{
    print("<Directory> *Duplicate END*");
   }
 
-  update(int pointer, int newBucketNum, int jump){
+  update(int init, int newBucketNum, int jump){
     print("<Directory> *Update Directory*");
-    
+    _map[init] = newBucketNum;
+    var i=1;
+    var pointer = 0;
+    while (true){
+      pointer = (init + jump*i) % _map.length;
+      i++;
+      if(pointer == init){
+        break;
+      }
+      print("________ point:" + pointer.toString());
+      _map[pointer]= newBucketNum;
+    }     
     print("<Directory> *Update Directory END*");
   }
 

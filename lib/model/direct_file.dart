@@ -59,12 +59,14 @@ class DirectFile{
   bool insert(BaseRegister newValue){
 
     print("<Direct File> * Inserting value: " + newValue.toString());
-    bool exist = false;
+    
+    //bool exist = false;
     //Calculating mod
+    
     int index = newValue.value % _table.len;
     
     print("<Direct File> Directory index:"+ index.toString());
-    int? bucketNum = _table.getBucketNumber(index);
+    int bucketNum = _table.getBucketNumber(index);
     print("<Direct File> Directory Bucket number:"+ bucketNum.toString());
     //si file esta vacio crea el bucket agrega el registro con ese value.
     //sino agrega el value al bucket apuntado por bucketNum
@@ -77,8 +79,8 @@ class DirectFile{
         _file.add(bucket);      
       }
       else{
-        if (bucketNum != Null){
-          bucket = _file[bucketNum!.toInt()];
+        if (bucketNum != -1){
+          bucket = _file[bucketNum.toInt()];
           
           //TODO:Check if the register is already there.
           /*
@@ -102,7 +104,7 @@ class DirectFile{
             }
             else if (bucket.bits < log2(_table.len)){
               print("<Direct File> Hashing bits are less than log2(T)");
-              reorder2(newValue,_file[bucketNum]);
+              reorder2(newValue,_file[bucketNum],index);
             }
 
 
@@ -156,10 +158,45 @@ reorder(BaseRegister newValue, Bucket overflowedBucket){
 
   }
 
-  reorder2(BaseRegister newValue, Bucket overflowedBucket){
+  reorder2(BaseRegister newValue, Bucket overflowedBucket, int bucketInitialIndex){
     print("<Direct File> * Reordering Registers version 2");
-    
 
+    int lastBucketId=_file.length;
+    Bucket newBucket = Bucket(_bucketSize,lastBucketId);
+    int T = _table.len;
+
+    //Modifying hashing bits and adding a new bucket to the file.
+    overflowedBucket.bits+=1;
+    newBucket.bits = overflowedBucket.bits;
+    _file.add(newBucket);
+
+    //Calculating values for updating the directory.
+    int x = 2;
+    int b = newBucket.bits;
+    int jump = pow(x, b).ceil();
+    print("Initial position:" + bucketInitialIndex.toString());
+    print("New bucket num:" + newBucket.id.toString() );
+    print("Jump:" + jump.toString());
+    _table.update(bucketInitialIndex,newBucket.id,jump);
+
+    //acomodo los registros nuevamente
+    //recorro los registos de la cubeta desbordada y le aplico el mod.
+    //puede que caigan en la misma cubeta y hay que hacerlo recursivo.
+    List<BaseRegister> obList = overflowedBucket.getRegList();
+    obList.forEach((reg) {
+      print("<Direct File> *** Overflowed bucket:" + "value:" + reg.toString());
+      var newBucketNum = reg.value % T;
+      print("<Direct File> **** New Bucket num:" + newBucketNum.toString());
+      insert(reg);
+      print("<Direct File> * Reordering Registers END -");
+    });
+    //Finally adding the new value:
+    int index = newValue.value % T;
+    print("<Direct File> Directory index:"+ index.toString());
+    int bucketNum = _table.getBucketNumber(index);
+    _file[bucketNum].setValue(newValue);
+
+    //print("<<< Directory " + _table.toString() + ">>>>>");
     print("<Direct File> * Reordering Registers version 2 END -");
   }
 
