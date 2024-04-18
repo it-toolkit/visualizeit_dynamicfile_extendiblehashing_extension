@@ -125,9 +125,13 @@ reorder(BaseRegister newValue, Bucket overflowedBucket){
     _table.duplicate(lastBucketId);
     int T = _table.len;
     print("<<< Directory " + _table.toString() + ">>>>>");
-    //Creo una nueva cubeta y la agrego al file
+    
+    //Modifying hashing bits and adding a new bucket to the file.
+    overflowedBucket.bits+=1;
     Bucket newBucket = Bucket(_bucketSize,lastBucketId);
+    newBucket.bits = overflowedBucket.bits;
     _file.add(newBucket);
+
     //acomodo los registros nuevamente de acuerdo al nuevo T
     //recorro los registos de la cubeta desbordada y le aplico el mod.
     List<BaseRegister> obList = overflowedBucket.getRegList();
@@ -138,13 +142,15 @@ reorder(BaseRegister newValue, Bucket overflowedBucket){
       insert(reg);
       print("<Direct File> * Reordering Registers END -");
     });
-    int index = newValue.value % T;
-    print("<Direct File> Directory index:"+ index.toString());
-    int bucketNum = _table.getBucketNumber(index);
-    _file[bucketNum].setValue(newValue);
+    insert(newValue);
+    //int index = newValue.value % T;
+    //print("<Direct File> Directory index:"+ index.toString());
+    //int bucketNum = _table.getBucketNumber(index);
+    //_file[bucketNum].setValue(newValue);
     //print("___Overflowed Bucket Number:" + bucketNum.toString());
-    print("<Direct File> ___Bucket index:" + bucketNum.toString());
+    //print("<Direct File> ___Bucket index:" + bucketNum.toString());
     //se suma 1 a los bits de dispersion de la cubeta desbordada y se copia este valor al bucket creado
+    /*
     overflowedBucket.bits+=1;
     _file[bucketNum].bits=overflowedBucket.bits;
     
@@ -152,9 +158,8 @@ reorder(BaseRegister newValue, Bucket overflowedBucket){
       print("<Direct File> Deleting new bucket bits");
       newBucket.bits=overflowedBucket.bits;
     }
-
+    */
     print("<Direct File> * Reordering Registers END -");
-
 
   }
 
@@ -191,11 +196,13 @@ reorder(BaseRegister newValue, Bucket overflowedBucket){
       print("<Direct File> * Reordering Registers END -");
     });
     //Finally adding the new value:
-    int index = newValue.value % T;
+    insert(newValue);
+
+    /*int index = newValue.value % T;
     print("<Direct File> Directory index:"+ index.toString());
     int bucketNum = _table.getBucketNumber(index);
     _file[bucketNum].setValue(newValue);
-
+    */
     //print("<<< Directory " + _table.toString() + ">>>>>");
     print("<Direct File> * Reordering Registers version 2 END -");
   }

@@ -43,9 +43,27 @@ void main() {
   myfile.status();
   myfile.insert(FixedLengthRegister(410));
   myfile.status();
+  /*
   //Testing second algoritm for insertion.
   myfile.insert(FixedLengthRegister(789));
   myfile.status();
+  //Continue adding
+  myfile.insert(FixedLengthRegister(484));
+  myfile.status();
+  myfile.insert(FixedLengthRegister(305));
+  myfile.status();
+  myfile.insert(FixedLengthRegister(462));
+  myfile.insert(FixedLengthRegister(809));
+  myfile.insert(FixedLengthRegister(459));
+  myfile.status();
+  */
 
+  /*testing recursive algorithm*/
+  /*
+  myfile.insert(FixedLengthRegister(442));
+  myfile.insert(FixedLengthRegister(506));
+  myfile.insert(FixedLengthRegister(1466));
+  myfile.status();
+  */
 
 }
