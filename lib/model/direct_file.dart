@@ -10,14 +10,14 @@ class DirectFile{
   late List<Bucket> _file;
   late Directory _table;
   late int _bucketSize;
-  late List<int> _free;
+  late List<int> _freed;
 
   DirectFile(int bucketSize){
     _file = [];
     _table = Directory();
     _table.create();
     _bucketSize = bucketSize;
-    _free = [];
+    _freed = [];
   }
 
   //utils:
@@ -33,7 +33,7 @@ class DirectFile{
     for (int i=0 ; i<_file.length; i++){
       print("Bucket num: " + i.toString() + " - Bucket:" +_file[i].toString());
     }
-    print("Free Bucket list:"+ _free.toString());
+    print("Free Bucket list:"+ _freed.toString());
     print("********************* FILE END **********************");    
   }
 
@@ -246,8 +246,8 @@ reorder(BaseRegister newValue, Bucket overflowedBucket){
             //TODO: Review this.
             myBucket.setValue(delValue);
             //Changing bucket status to "free"
-            myBucket.setStatus(BucketStatus.free);
-            _free.add(bucketNum);
+            myBucket.setStatus(BucketStatus.freed);
+            _freed.add(bucketNum);
             print("Free bucket bits:"+ myBucket.bits.toString());
 
             if (myBucket.bits == log2(_table.len)){

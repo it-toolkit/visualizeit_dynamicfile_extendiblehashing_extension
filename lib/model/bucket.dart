@@ -7,9 +7,9 @@ import 'package:visualizeit_dynamicfile_extendiblehashing/model/register.dart';
 empty: The bucket is empty.
 full: The bucket is full. Will be overflowed on an insert opertation
 active: The bucket has space, single insert operation will success.
-free: The bucket was released and is in the _free list. The bucket should contain one registry.
+freed: The bucket was released and is in the _freed list. The bucket should contain one registry.
 */
-enum BucketStatus { empty, full, active, free }
+enum BucketStatus { empty, full, active, freed }
 
 
 class Bucket{

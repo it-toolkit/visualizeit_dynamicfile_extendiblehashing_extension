@@ -82,4 +82,8 @@ void main() {
   myfile.delete(FixedLengthRegister(954));
   myfile.status();
   
+
+  /* adding more values again*/
+  myfile.insert(FixedLengthRegister(954));
+  myfile.status();
 }
