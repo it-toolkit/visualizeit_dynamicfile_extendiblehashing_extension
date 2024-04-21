@@ -33,26 +33,27 @@ class DirectFile{
     for (int i=0 ; i<_file.length; i++){
       print("Bucket num: " + i.toString() + " - Bucket:" +_file[i].toString());
     }
+    print("Free Bucket list:"+ _free.toString());
     print("********************* FILE END **********************");    
   }
 
   bool exist(BaseRegister reg){
-    print("<Direct File> *Checking value: " + reg.toString());
+    print("<Direct File> - Exist - * Checking value: " + reg.toString());
     bool exist = false;
     if (_file.isEmpty){
-        print("<Direct File> File is empty");
+        print("<Direct File> - Exist - File is empty");
         return exist;
     }
     int index = reg.value % _table.len;
     int? bucketNum = _table.getBucketNumber(index);
-    print("<Direct File> Directory Bucket number:"+ bucketNum.toString());
+    print("<Direct File> - Exist - Directory Bucket number:"+ bucketNum.toString());
     Bucket mybucket = _file[bucketNum];
     mybucket.getRegList().forEach((register) {
       if(register.value == reg.value){
           exist = true;
       } 
     });
-    print("<Direct File> * Checking value ");
+    print("<Direct File> - Exist - Result:"+ exist.toString());
     return exist;
   }
 
@@ -208,8 +209,48 @@ reorder(BaseRegister newValue, Bucket overflowedBucket){
   }
 
   bool delete(BaseRegister delValue){
-    //TODO
-    return false;
+    print("<Direct File> * Deleting value: " + delValue.toString());
+    
+    /*
+    if (!exist(delValue)){
+      return false;
+    }
+    */
+
+    int index = delValue.value % _table.len;
+    
+    print("<Direct File> Directory index:"+ index.toString());
+    int bucketNum = _table.getBucketNumber(index);
+    print("<Direct File> Directory Bucket number:"+ bucketNum.toString());
+
+    Bucket myBucket = _file[bucketNum];
+    print ("Bucket found:" + myBucket.toString());
+    if (myBucket.delValue(delValue)){
+       //Check if the bucket is empty
+       if (myBucket.isEmpty()){
+          int x = 2;
+          int b = myBucket.bits;
+          int jump1 = pow(x, b-1).ceil();
+          int jump2 = pow(x, b).ceil(); 
+          int replacemmentBucketNum = _table.review(index, jump1);
+          if (replacemmentBucketNum != -1){
+            _file[replacemmentBucketNum].bits-=1;
+            _table.update(index,replacemmentBucketNum,jump2);
+            _free.add(bucketNum);
+            print("Free bucket bits:"+ myBucket.bits.toString());
+
+            if (myBucket.bits == log2(_table.len)){
+              //Checking if the directory is mirrowed. Half part is equal to the other part.
+              _table.reduceIfMirrowed();
+            }
+          }
+       } 
+    }
+    else {
+      return false;
+    }
+
+    return true;
   }
 
 

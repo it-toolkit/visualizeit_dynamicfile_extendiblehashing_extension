@@ -27,6 +27,10 @@ class Bucket{
   int get id => _id;
   int get size => _size;
 
+  bool isEmpty(){
+    return (_registerList.isEmpty); 
+  }
+
   String? getValue(BaseRegister reg)
   {
     var found = false;
@@ -59,6 +63,33 @@ class Bucket{
     }
     print("setValue: END");
 
+  }
+
+  bool delValue(BaseRegister reg)
+  {
+    print("delValue:" + reg.value.toString());
+    var regListCopy = [..._registerList];
+    print("_____/////____" + regListCopy.toString());
+    print("_____/////____" + _registerList.toString());
+    var found=false;
+    for( var value in regListCopy){
+      print("Bucket Value:" + value.toString());
+      if (value.toString() == reg.toString()) {
+        print("<Bucket> Delete value:" + value.toString());
+        /*
+        if (_registerList.length > 1){
+          _registerList.remove(value);
+        }*/
+        _registerList.remove(value);
+        found=true;
+        break;
+      }
+      else {
+        continue;
+      }  
+    }
+    print("delValue: Result:" + found.toString());
+    return found;
   }
 
   BaseRegister? getReg(String my_value)

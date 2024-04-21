@@ -43,7 +43,7 @@ void main() {
   myfile.status();
   myfile.insert(FixedLengthRegister(410));
   myfile.status();
-  /*
+  
   //Testing second algoritm for insertion.
   myfile.insert(FixedLengthRegister(789));
   myfile.status();
@@ -56,7 +56,6 @@ void main() {
   myfile.insert(FixedLengthRegister(809));
   myfile.insert(FixedLengthRegister(459));
   myfile.status();
-  */
 
   /*testing recursive algorithm*/
   /*
@@ -65,5 +64,15 @@ void main() {
   myfile.insert(FixedLengthRegister(1466));
   myfile.status();
   */
+
+  /*testing delete algorithm*/
+  print("//////////// Testing Delete ///////////");
+  myfile.delete(FixedLengthRegister(305));
+  myfile.delete(FixedLengthRegister(809));
+  myfile.delete(FixedLengthRegister(946));
+  myfile.delete(FixedLengthRegister(410));
+  myfile.delete(FixedLengthRegister(954));
+  myfile.status();
+
 
 }
