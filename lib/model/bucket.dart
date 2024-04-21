@@ -80,8 +80,12 @@ class Bucket{
       throw BucketOverflowedException("The bucket is full");
     } else if (_registerList.length < _size){  
       print("<Bucket> Bucket status:" + _status.toString());    
-      if (_status == BucketStatus.empty ){
+      if ((_status == BucketStatus.empty) || (_status == BucketStatus.full) ){
           _status= BucketStatus.active;
+      }
+      if (_status == BucketStatus.freed){
+        _status= BucketStatus.active;
+        _registerList.removeLast();
       }
       _registerList.add(reg);
        if (_status == BucketStatus.active && _registerList.length == _size){

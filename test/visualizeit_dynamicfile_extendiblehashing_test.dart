@@ -23,14 +23,18 @@ void main() {
   myfile.insert(FixedLengthRegister(946));
   myfile.insert(FixedLengthRegister(741));
   myfile.status();
+  
+  
   myfile.insert(FixedLengthRegister(446));
   myfile.status();
   myfile.insert(FixedLengthRegister(123));
   myfile.status();
   myfile.insert(FixedLengthRegister(376));
   myfile.status();
+  
   myfile.insert(FixedLengthRegister(458));
   myfile.status();
+
   //if (myfile.exist(FixedLengthRegister(458))){
   //  print("The object exists!");
   //}
@@ -45,11 +49,11 @@ void main() {
   myfile.status();
   myfile.insert(FixedLengthRegister(410));
   myfile.status();
-  
+
   //Testing second algoritm for insertion.
   myfile.insert(FixedLengthRegister(789));
   myfile.status();
-  
+
   //Continue adding
   myfile.insert(FixedLengthRegister(484));
   myfile.status();
@@ -67,7 +71,7 @@ void main() {
   myfile.insert(FixedLengthRegister(1466));
   myfile.status();
   */
-
+  
   /*testing 1` delete algorithm*/
   
   print("//////////// Testing Delete ///////////");
@@ -82,8 +86,14 @@ void main() {
   myfile.delete(FixedLengthRegister(954));
   myfile.status();
   
-
+  /*
   /* adding more values again*/
   myfile.insert(FixedLengthRegister(954));
   myfile.status();
+  /* Testing insertion using freed list*/
+  myfile.insert(FixedLengthRegister(32));
+  myfile.status();
+  myfile.insert(FixedLengthRegister(64));
+  myfile.status();
+  */
 }

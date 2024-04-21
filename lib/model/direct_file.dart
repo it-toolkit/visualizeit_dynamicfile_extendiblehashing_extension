@@ -37,6 +37,8 @@ class DirectFile{
     print("********************* FILE END **********************");    
   }
 
+
+  //TODO: Review this method.
   bool exist(BaseRegister reg){
     print("<Direct File> - Exist - * Checking value: " + reg.toString());
     bool exist = false;
@@ -69,6 +71,8 @@ class DirectFile{
     print("<Direct File> Directory index:"+ index.toString());
     int bucketNum = _table.getBucketNumber(index);
     print("<Direct File> Directory Bucket number:"+ bucketNum.toString());
+
+
     //si file esta vacio crea el bucket agrega el registro con ese value.
     //sino agrega el value al bucket apuntado por bucketNum
     Bucket bucket;
@@ -80,9 +84,10 @@ class DirectFile{
         _file.add(bucket);      
       }
       else{
+        /* The BucketNume was found in directory */
         if (bucketNum != -1){
-          bucket = _file[bucketNum.toInt()];
           
+          bucket = _file[bucketNum.toInt()];
           //TODO:Check if the register is already there.
           /*
           bucket.getRegList().forEach((register) {
@@ -101,11 +106,11 @@ class DirectFile{
             print("<Direct File> Bucket status is:" + bucket.status.toString());
             // If log(T) is equal to hashing bits of the bucket then T+=1
             if (log2(_table.len) == bucket.bits){
-                print("<Direct File> Hashing bits are equal to log2(T)");
+                print(">>>>>>>>>>>>>>>>>>>>>.<Direct File> Hashing bits are equal to log2(T)");
                 reorder(newValue, _file[bucketNum]);  
             }
             else if (bucket.bits < log2(_table.len)){
-              print("<Direct File> Hashing bits are less than log2(T)");
+              print(">>>>>>>>>>>>>>>>>>>>>>><Direct File> Hashing bits are less than log2(T)");
               reorder2(newValue,_file[bucketNum],index);
             }
 
@@ -120,22 +125,32 @@ class DirectFile{
 
 
 reorder(BaseRegister newValue, Bucket overflowedBucket){
-    print("<Direct File> * Reordering Registers");
+    print("<Direct File> * Reordering Registers Start");
 
-    int lastBucketId=_file.length;
-    //Duplico la tabla
+    int lastBucketId=-1;
+    Bucket newBucket;
+    /*We must considered here the buckets in the _freed list*/
+    if (_freed.contains(overflowedBucket.id+1)){
+      lastBucketId = overflowedBucket.id+1;
+      print("The bucket is in the freed list, we must removed it from there");
+      _freed.remove(lastBucketId);
+    }
+    else{
+      lastBucketId=_file.length;
+      newBucket = Bucket(_bucketSize,lastBucketId);
+      //Modifying hashing bits and adding a new bucket to the file.
+      overflowedBucket.bits+=1;
+      //Changing the status of the overflowed bucket to empty.
+      overflowedBucket.setStatus(BucketStatus.empty);
+      newBucket.bits = overflowedBucket.bits;
+      _file.add(newBucket);
+    }
+    
+    //Duplicating the table
     _table.duplicate(lastBucketId);
     int T = _table.len;
     print("<<< Directory " + _table.toString() + ">>>>>");
     
-    //Modifying hashing bits and adding a new bucket to the file.
-    overflowedBucket.bits+=1;
-    //Changing the status of the overflowed bucket to empty.
-    overflowedBucket.setStatus(BucketStatus.empty);
-    Bucket newBucket = Bucket(_bucketSize,lastBucketId);
-    newBucket.bits = overflowedBucket.bits;
-    _file.add(newBucket);
-
     //acomodo los registros nuevamente de acuerdo al nuevo T
     //recorro los registos de la cubeta desbordada y le aplico el mod.
     List<BaseRegister> obList = overflowedBucket.getRegList();
@@ -147,22 +162,6 @@ reorder(BaseRegister newValue, Bucket overflowedBucket){
       print("<Direct File> * Reordering Registers END -");
     });
     insert(newValue);
-    //int index = newValue.value % T;
-    //print("<Direct File> Directory index:"+ index.toString());
-    //int bucketNum = _table.getBucketNumber(index);
-    //_file[bucketNum].setValue(newValue);
-    //print("___Overflowed Bucket Number:" + bucketNum.toString());
-    //print("<Direct File> ___Bucket index:" + bucketNum.toString());
-    //se suma 1 a los bits de dispersion de la cubeta desbordada y se copia este valor al bucket creado
-    /*
-    overflowedBucket.bits+=1;
-    _file[bucketNum].bits=overflowedBucket.bits;
-    
-    if (bucketNum == overflowedBucket.id){
-      print("<Direct File> Deleting new bucket bits");
-      newBucket.bits=overflowedBucket.bits;
-    }
-    */
     print("<Direct File> * Reordering Registers END -");
 
   }
@@ -170,17 +169,28 @@ reorder(BaseRegister newValue, Bucket overflowedBucket){
   reorder2(BaseRegister newValue, Bucket overflowedBucket, int bucketInitialIndex){
     print("<Direct File> * Reordering Registers version 2");
 
-    int lastBucketId=_file.length;
-    Bucket newBucket = Bucket(_bucketSize,lastBucketId);
+    //int lastBucketId=_file.length;
+    int lastBucketId=-1;
+    Bucket newBucket;
+    /*We must considered here the buckets in the _freed list*/
+    if (_freed.contains(overflowedBucket.id+1)){
+      lastBucketId = overflowedBucket.id+1;
+      print("The bucket is in the freed list, we must removed it from there");
+      _freed.remove(lastBucketId);
+      newBucket = _file[lastBucketId];
+    }
+    else{
+      lastBucketId=_file.length;
+      newBucket = Bucket(_bucketSize,lastBucketId);
+      //Modifying hashing bits and adding a new bucket to the file.
+      overflowedBucket.bits+=1;
+      //Changing the status of the overflowed bucket to empty.
+      overflowedBucket.setStatus(BucketStatus.empty);
+      newBucket.bits = overflowedBucket.bits;
+      _file.add(newBucket);
+    }
+
     int T = _table.len;
-
-    //Modifying hashing bits and adding a new bucket to the file.
-    overflowedBucket.bits+=1;
-    //Changing the status of the overflowed bucket to empty.
-    overflowedBucket.setStatus(BucketStatus.empty);
-    newBucket.bits = overflowedBucket.bits;
-    _file.add(newBucket);
-
     //Calculating values for updating the directory.
     int x = 2;
     int b = newBucket.bits;
