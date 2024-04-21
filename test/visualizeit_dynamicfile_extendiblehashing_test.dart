@@ -18,6 +18,7 @@ void main() {
   DirectFile myfile = DirectFile(3);
   print("My file status:");
   myfile.status();
+  /* First insert algorithm test */
   myfile.insert(FixedLengthRegister(270));
   myfile.insert(FixedLengthRegister(946));
   myfile.insert(FixedLengthRegister(741));
@@ -35,6 +36,7 @@ void main() {
   //}
   //myfile.insert(FixedLengthRegister(458));
   //myfile.status();
+  
   myfile.insert(FixedLengthRegister(954));
   myfile.status();
   myfile.insert(FixedLengthRegister(973));
@@ -47,6 +49,7 @@ void main() {
   //Testing second algoritm for insertion.
   myfile.insert(FixedLengthRegister(789));
   myfile.status();
+  
   //Continue adding
   myfile.insert(FixedLengthRegister(484));
   myfile.status();
@@ -56,7 +59,7 @@ void main() {
   myfile.insert(FixedLengthRegister(809));
   myfile.insert(FixedLengthRegister(459));
   myfile.status();
-
+  
   /*testing recursive algorithm*/
   /*
   myfile.insert(FixedLengthRegister(442));
@@ -66,6 +69,7 @@ void main() {
   */
 
   /*testing delete algorithm*/
+  /*
   print("//////////// Testing Delete ///////////");
   myfile.delete(FixedLengthRegister(305));
   myfile.delete(FixedLengthRegister(809));
@@ -73,6 +77,6 @@ void main() {
   myfile.delete(FixedLengthRegister(410));
   myfile.delete(FixedLengthRegister(954));
   myfile.status();
-
+  */
 
 }

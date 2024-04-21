@@ -98,6 +98,7 @@ class DirectFile{
             bucket.setValue(newValue);
           } on BucketOverflowedException {
             print("<Direct File> Bucket " + bucketNum.toString() + "overflowed");
+            print("<Direct File> Bucket status is:" + bucket.status.toString());
             // If log(T) is equal to hashing bits of the bucket then T+=1
             if (log2(_table.len) == bucket.bits){
                 print("<Direct File> Hashing bits are equal to log2(T)");
@@ -129,6 +130,8 @@ reorder(BaseRegister newValue, Bucket overflowedBucket){
     
     //Modifying hashing bits and adding a new bucket to the file.
     overflowedBucket.bits+=1;
+    //Changing the status of the overflowed bucket to empty.
+    overflowedBucket.setStatus(BucketStatus.empty);
     Bucket newBucket = Bucket(_bucketSize,lastBucketId);
     newBucket.bits = overflowedBucket.bits;
     _file.add(newBucket);
@@ -173,6 +176,8 @@ reorder(BaseRegister newValue, Bucket overflowedBucket){
 
     //Modifying hashing bits and adding a new bucket to the file.
     overflowedBucket.bits+=1;
+    //Changing the status of the overflowed bucket to empty.
+    overflowedBucket.setStatus(BucketStatus.empty);
     newBucket.bits = overflowedBucket.bits;
     _file.add(newBucket);
 
