@@ -241,6 +241,12 @@ reorder(BaseRegister newValue, Bucket overflowedBucket){
           if (replacemmentBucketNum != -1){
             _file[replacemmentBucketNum].bits-=1;
             _table.update(index,replacemmentBucketNum,jump2);
+            //Adding the value again to appy to the model
+            //The freed bucket should contain the value and i cannot know this at the moment of deleting.
+            //TODO: Review this.
+            myBucket.setValue(delValue);
+            //Changing bucket status to "free"
+            myBucket.setStatus(BucketStatus.free);
             _free.add(bucketNum);
             print("Free bucket bits:"+ myBucket.bits.toString());
 

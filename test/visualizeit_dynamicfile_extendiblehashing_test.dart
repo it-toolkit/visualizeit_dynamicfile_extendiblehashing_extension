@@ -68,15 +68,18 @@ void main() {
   myfile.status();
   */
 
-  /*testing delete algorithm*/
-  /*
+  /*testing 1` delete algorithm*/
+  
   print("//////////// Testing Delete ///////////");
   myfile.delete(FixedLengthRegister(305));
   myfile.delete(FixedLengthRegister(809));
+  
+  // Testing 2 delete algorithm 
   myfile.delete(FixedLengthRegister(946));
+  myfile.status();
+  
   myfile.delete(FixedLengthRegister(410));
   myfile.delete(FixedLengthRegister(954));
   myfile.status();
-  */
-
+  
 }

@@ -40,8 +40,14 @@ class Bucket{
   int get size => _size;
   BucketStatus get status => _status;
 
+  /*
   bool isEmpty(){
     return (_registerList.isEmpty); 
+  }*/
+
+  bool isEmpty(){
+    print("<Bucket> Bucket status is:" + _status.name);
+    return (_status==BucketStatus.empty)? true : false; 
   }
 
   String? getValue(BaseRegister reg)
@@ -90,6 +96,7 @@ class Bucket{
   bool delValue(BaseRegister reg)
   {
     print("<Bucket> *delValue:" + reg.value.toString());
+    print("<Bucket> *delValue - Bucket status:" + _status.name);
     var regListCopy = [..._registerList];
     print("<Bucket> *_____/////____" + regListCopy.toString());
     print("<Bucket> *_____/////____" + _registerList.toString());
@@ -97,19 +104,24 @@ class Bucket{
     for( var value in regListCopy){
       print("Bucket Value:" + value.toString());
       if (value.toString() == reg.toString()) {
-        print("<Bucket> Delete value:" + value.toString());
-        /*
-        if (_registerList.length > 1){
-          _registerList.remove(value);
-        }*/
-        _registerList.remove(value);
+        print("<Bucket> Deleting value:" + value.toString());
         found=true;
+ 
+        if (_status == BucketStatus.full){
+          _status= BucketStatus.active;
+        }
+        if ((_status == BucketStatus.active) &&( _registerList.length == 1)){
+          _status= BucketStatus.empty;
+          //break;
+        }
+        _registerList.remove(value);
         break;
       }
       else {
         continue;
       }  
     }
+    print("<Bucket> *delValue - Final bucket status:" + _status.name);
     print("<Bucket> * delValue: Result:" + found.toString());
     return found;
   }
