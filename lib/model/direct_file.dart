@@ -129,22 +129,31 @@ reorder(BaseRegister newValue, Bucket overflowedBucket){
 
     int lastBucketId=-1;
     Bucket newBucket;
-    /*We must considered here the buckets in the _freed list*/
-    if (_freed.contains(overflowedBucket.id+1)){
+    /*We must considered here the buckets in the _freed list and if the next bucket is empty*/
+    if (_freed.contains(overflowedBucket.id+1) || ((overflowedBucket.id+1 < _file.length ) &&_file[overflowedBucket.id+1].isEmpty())){
       lastBucketId = overflowedBucket.id+1;
+      newBucket = _file[lastBucketId];
+
       print("The bucket is in the freed list, we must removed it from there");
-      _freed.remove(lastBucketId);
+      if (_freed.contains(overflowedBucket.id+1)) {
+          _freed.remove(lastBucketId);
+      }
     }
     else{
       lastBucketId=_file.length;
       newBucket = Bucket(_bucketSize,lastBucketId);
       //Modifying hashing bits and adding a new bucket to the file.
-      overflowedBucket.bits+=1;
+      //overflowedBucket.bits+=1;
       //Changing the status of the overflowed bucket to empty.
-      overflowedBucket.setStatus(BucketStatus.empty);
-      newBucket.bits = overflowedBucket.bits;
+      //overflowedBucket.setStatus(BucketStatus.empty);
+      //newBucket.bits = overflowedBucket.bits;
       _file.add(newBucket);
     }
+    //Modifying hashing bits and adding a new bucket to the file.
+    overflowedBucket.bits+=1;
+    //Changing the status of the overflowed bucket to empty.
+    overflowedBucket.setStatus(BucketStatus.empty);
+    newBucket.bits = overflowedBucket.bits;
     
     //Duplicating the table
     _table.duplicate(lastBucketId);
@@ -172,23 +181,31 @@ reorder(BaseRegister newValue, Bucket overflowedBucket){
     //int lastBucketId=_file.length;
     int lastBucketId=-1;
     Bucket newBucket;
-    /*We must considered here the buckets in the _freed list*/
-    if (_freed.contains(overflowedBucket.id+1)){
+    /*We must considered here the buckets in the _freed list and if the next bucket is empty*/
+     if (_freed.contains(overflowedBucket.id+1) || ((overflowedBucket.id+1 < _file.length ) &&_file[overflowedBucket.id+1].isEmpty())){
       lastBucketId = overflowedBucket.id+1;
-      print("The bucket is in the freed list, we must removed it from there");
-      _freed.remove(lastBucketId);
       newBucket = _file[lastBucketId];
+      
+      print("The bucket is in the freed list, we must removed it from there");
+      if (_freed.contains(overflowedBucket.id+1)) {
+          _freed.remove(lastBucketId);
+      }
     }
     else{
       lastBucketId=_file.length;
       newBucket = Bucket(_bucketSize,lastBucketId);
       //Modifying hashing bits and adding a new bucket to the file.
-      overflowedBucket.bits+=1;
+      //overflowedBucket.bits+=1;
       //Changing the status of the overflowed bucket to empty.
-      overflowedBucket.setStatus(BucketStatus.empty);
-      newBucket.bits = overflowedBucket.bits;
+      //overflowedBucket.setStatus(BucketStatus.empty);
+      //newBucket.bits = overflowedBucket.bits;
       _file.add(newBucket);
     }
+    //Modifying hashing bits and adding a new bucket to the file.
+    overflowedBucket.bits+=1;
+    //Changing the status of the overflowed bucket to empty.
+    overflowedBucket.setStatus(BucketStatus.empty);
+    newBucket.bits = overflowedBucket.bits;
 
     int T = _table.len;
     //Calculating values for updating the directory.

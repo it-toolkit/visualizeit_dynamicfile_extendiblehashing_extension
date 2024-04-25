@@ -72,13 +72,13 @@ void main() {
   myfile.status();
   */
   
-  /*testing 1` delete algorithm*/
+  /*Testing 1ª delete algorithm*/
   
   print("//////////// Testing Delete ///////////");
   myfile.delete(FixedLengthRegister(305));
   myfile.delete(FixedLengthRegister(809));
   
-  // Testing 2 delete algorithm 
+  /*Testing 2ª delete algorithm*/
   myfile.delete(FixedLengthRegister(946));
   myfile.status();
   
@@ -86,13 +86,20 @@ void main() {
   myfile.delete(FixedLengthRegister(954));
   myfile.status();
   
-  /*
+  
   /* adding more values again*/
+  /*
   myfile.insert(FixedLengthRegister(954));
   myfile.status();
   /* Testing insertion using freed list*/
   myfile.insert(FixedLengthRegister(32));
   myfile.status();
+  
+  myfile.insert(FixedLengthRegister(64));
+  myfile.status();
+  */
+  /* Testing reusing the empty bucket */
+  /*
   myfile.insert(FixedLengthRegister(64));
   myfile.status();
   */
