@@ -83,8 +83,8 @@ class Directory{
     //check if the first half of the directory is the same as the last one.
     var halfList = _map.sublist(0,(_map.length/2).ceil());
     var backList = _map.sublist((_map.length/2).ceil(),_map.length);
-    print("HalfList:" + halfList.toString());
-    print("BackList:" + backList.toString());
+    //print("HalfList:" + halfList.toString());
+    //print("BackList:" + backList.toString());
     
     if (listEquals(halfList,backList)){
       _map = halfList;

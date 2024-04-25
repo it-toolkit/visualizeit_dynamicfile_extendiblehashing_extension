@@ -129,15 +129,10 @@ reorder(BaseRegister newValue, Bucket overflowedBucket){
 
     int lastBucketId=-1;
     Bucket newBucket;
-    /*We must considered here the buckets in the _freed list and if the next bucket is empty*/
-    if (_freed.contains(overflowedBucket.id+1) || ((overflowedBucket.id+1 < _file.length ) &&_file[overflowedBucket.id+1].isEmpty())){
-      lastBucketId = overflowedBucket.id+1;
+    /*We must considered here the buckets in the _freed list*/
+    if (_freed.isNotEmpty){
+      lastBucketId = getFreedBucket();
       newBucket = _file[lastBucketId];
-
-      print("The bucket is in the freed list, we must removed it from there");
-      if (_freed.contains(overflowedBucket.id+1)) {
-          _freed.remove(lastBucketId);
-      }
     }
     else{
       lastBucketId=_file.length;
@@ -181,15 +176,10 @@ reorder(BaseRegister newValue, Bucket overflowedBucket){
     //int lastBucketId=_file.length;
     int lastBucketId=-1;
     Bucket newBucket;
-    /*We must considered here the buckets in the _freed list and if the next bucket is empty*/
-     if (_freed.contains(overflowedBucket.id+1) || ((overflowedBucket.id+1 < _file.length ) &&_file[overflowedBucket.id+1].isEmpty())){
-      lastBucketId = overflowedBucket.id+1;
+    /*We must considered here the buckets in the _freed list*/
+    if (_freed.isNotEmpty){
+      lastBucketId = getFreedBucket();
       newBucket = _file[lastBucketId];
-      
-      print("The bucket is in the freed list, we must removed it from there");
-      if (_freed.contains(overflowedBucket.id+1)) {
-          _freed.remove(lastBucketId);
-      }
     }
     else{
       lastBucketId=_file.length;
@@ -289,6 +279,15 @@ reorder(BaseRegister newValue, Bucket overflowedBucket){
     }
 
     return true;
+  }
+
+
+  int getFreedBucket(){
+    if (_freed.isEmpty) {
+      return -1;
+    } else{
+      return _freed.removeLast();
+    }
   }
 
 
