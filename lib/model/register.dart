@@ -6,6 +6,8 @@ abstract class BaseRegister<T>{
   T? get value => _value;
   int get length => _length;
   String get status => _status;
+  
+  @override
   String toString(){
     return _value.toString();
   }

@@ -50,7 +50,7 @@ class DirectFile{
     int? bucketNum = _table.getBucketNumber(index);
     print("<Direct File> - Exist - Directory Bucket number:"+ bucketNum.toString());
     Bucket mybucket = _file[bucketNum];
-    mybucket.getRegList().forEach((register) {
+    mybucket.getList().forEach((register) {
       if(register.value == reg.value){
           exist = true;
       } 

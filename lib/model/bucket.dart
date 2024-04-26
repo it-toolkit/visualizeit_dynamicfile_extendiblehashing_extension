@@ -38,12 +38,8 @@ class Bucket{
   
   int get id => _id;
   int get size => _size;
+  int get len => _registerList.length;
   BucketStatus get status => _status;
-
-  /*
-  bool isEmpty(){
-    return (_registerList.isEmpty); 
-  }*/
 
   bool isEmpty(){
     print("<Bucket> Bucket status is:" + _status.name);
@@ -75,7 +71,7 @@ class Bucket{
     print("<Bucket> *setValue:" + reg.toString());
     print("<Bucket> Reg list size:" +_registerList.length.toString());
     print("<Bucket> Size:" + _size.toString());
-    if (_registerList.length == _size) {
+    if ( len == _size) {
       
       throw BucketOverflowedException("The bucket is full");
     } else if (_registerList.length < _size){  
@@ -163,13 +159,17 @@ class Bucket{
       return reg;
     }  
   }
-  
+  /* This method should be used when there is a reorganization of registers*/
   List<BaseRegister> getRegList(){
     List<BaseRegister> copyList = List.from(_registerList);
     _registerList = [];
     return copyList;
   }
-  
+  /* Used to iterate over the registries in the bucket */
+  List<BaseRegister> getList(){
+    return _registerList;
+  }
+
   @override
   String toString(){
     var result = StringBuffer();
