@@ -19,15 +19,6 @@ class Bucket{
   late int bits;
   late BucketStatus _status;
 
-  /*
-  Bucket(int bucketSize, BaseRegister reg, String id){
-    _registerList.add(reg);
-    _id = id;
-    _size = bucketSize;
-    bits = 0;
-  }
-  */
-
   Bucket(int bucketSize, int id){
     _id = id;
     _size = bucketSize;
@@ -165,7 +156,7 @@ class Bucket{
     _registerList = [];
     return copyList;
   }
-  /* Used to iterate over the registries in the bucket */
+  /* Used to iterate over the registers in the bucket */
   List<BaseRegister> getList(){
     return _registerList;
   }
