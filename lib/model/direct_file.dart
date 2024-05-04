@@ -20,6 +20,10 @@ class DirectFile{
     _freed = [];
   }
 
+  List getFileContent() => _file;
+  Directory getDirectory() => _table;
+  List getFreedList() => _freed;
+
   //utils:
   double logBase(num x, num base) => log(x) / log(base);
   int log2(num x) => (logBase(x, 2)).round();

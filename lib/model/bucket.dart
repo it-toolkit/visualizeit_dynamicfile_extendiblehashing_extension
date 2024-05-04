@@ -146,7 +146,7 @@ class Bucket{
     }
     else {
       var reg =_registerList[index];
-      _registerList.remove(reg);
+      //_registerList.remove(reg);
       return reg;
     }  
   }

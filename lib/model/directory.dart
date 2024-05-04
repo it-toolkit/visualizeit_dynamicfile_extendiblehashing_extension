@@ -11,6 +11,10 @@ class Directory{
     _hashMap.add(0); 
   }
 
+  set(List<int> newHashMap){
+    _hashMap = newHashMap;
+  }
+
   int getBucketNumber(int index){
     if (index <= len ){
       _pointer = index;
@@ -46,7 +50,7 @@ class Directory{
       if(pointer == init){
         break;
       }
-      print("________ point:" + pointer.toString());
+      //print("________ point:" + pointer.toString());
       _hashMap[pointer]= newBucketNum;
     }     
     print("<Directory> *Update Directory END*");
@@ -69,9 +73,9 @@ class Directory{
         print("<Directory> *Review Directory - Bucket numbers are equal");
         return _hashMap[p_after];
     }
+    print("<Directory> *Review Directory END*");
     return -1;
 
-    print("<Directory> *Review Directory END*");
   }
   /* Used in deletion algorithm, reduce the table if the first half is equal to the second one*/
   void reduceIfMirrowed(){
@@ -108,6 +112,10 @@ class Directory{
   @override
   String toString() {
     return "T="+ _hashMap.length.toString()+" - Table:" + _hashMap.toString();
+  }
+
+  bool equalsTo(Directory newDir){
+    return _listEquals(_hashMap, newDir._hashMap);
   }
 
 }
