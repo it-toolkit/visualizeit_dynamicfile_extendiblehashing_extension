@@ -1,7 +1,8 @@
 import 'package:visualizeit_dynamicfile_extendiblehashing/exception/bucket_overflowed_exception.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing/exception/register_not_found_exception.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing/model/register.dart';
-
+import 'package:visualizeit_extensions/logging.dart'; 
+final _logger = Logger("DFEH-bucket");
 
 /*
 empty: The bucket is empty.
@@ -24,7 +25,7 @@ class Bucket{
     _size = bucketSize;
     bits = 0;
     _status = BucketStatus.empty;
-    print("Bucket "+ _id.toString() + " created");
+    _logger.debug(() => "Creating bucket with id ${id.toString()}");
   }
   
   int get id => _id;
@@ -33,7 +34,7 @@ class Bucket{
   BucketStatus get status => _status;
 
   bool isEmpty(){
-    print("<Bucket> Bucket status is:" + _status.name);
+    _logger.debug(() => "isEmpty() - Bucket $_id is ${_status.name}");
     return (_status==BucketStatus.empty)? true : false; 
   }
 
@@ -43,6 +44,7 @@ class Bucket{
     for( var value in _registerList){
       if (value.toString() == reg.toString()) {
         found= true;
+        _logger.debug(() => "getValue() - Register with value ${reg.value.toString()} was found");
         break;
       }
       else {
@@ -50,6 +52,7 @@ class Bucket{
       }  
     }
     if (!found) {
+      _logger.debug(() => "getValue() - The register was not found in bucket");
       throw RegisterNotFoundException("The register was not found in bucket");
     }
     else {
@@ -59,14 +62,15 @@ class Bucket{
 
   setValue(BaseRegister reg)
   {
-    print("<Bucket> *setValue:" + reg.toString());
-    print("<Bucket> Reg list size:" +_registerList.length.toString());
-    print("<Bucket> Size:" + _size.toString());
+    _logger.debug(() => "setValue() - Setting value ${reg.value.toString()}");
+    //print("<Bucket> Reg list size:" +_registerList.length.toString());
+    //print("<Bucket> Size:" + _size.toString());
+    
     if ( len == _size) {
-      
+      _logger.debug(() => "setValue() - Bucket $_id is full");
       throw BucketOverflowedException("The bucket is full");
-    } else if (_registerList.length < _size){  
-      print("<Bucket> Bucket status:" + _status.toString());    
+    } else if ( len < _size){  
+      _logger.debug(() => "setValue() - Bucket $_id is ${_status.name}");   
       if ((_status == BucketStatus.empty) || (_status == BucketStatus.full) ){
           _status= BucketStatus.active;
       }
@@ -75,33 +79,32 @@ class Bucket{
         _registerList.removeLast();
       }
       _registerList.add(reg);
-       if (_status == BucketStatus.active && _registerList.length == _size){
+       if (_status == BucketStatus.active && len == _size){
         _status= BucketStatus.full;
        }
     }
-    print("<Bucket> Final bucket status :" + _status.toString());   
-    print("<Bucket> *setValue: END");
-
+    _logger.debug(() => "setValue() - Bucket $_id, final status is ${_status.name}");  
+    _logger.debug(() => "setValue() - END");
   }
 
   bool delValue(BaseRegister reg)
   {
-    print("<Bucket> *delValue:" + reg.value.toString());
-    print("<Bucket> *delValue - Bucket status:" + _status.name);
+    _logger.debug(() => "delValue() - Trying to delete value ${reg.value.toString()}");
+    
+    //print("<Bucket> *delValue - Bucket status:" + _status.name);
     var regListCopy = [..._registerList];
-    print("<Bucket> *_____/////____" + regListCopy.toString());
-    print("<Bucket> *_____/////____" + _registerList.toString());
     var found=false;
     for( var value in regListCopy){
-      print("Bucket Value:" + value.toString());
+      //print("Bucket Value:" + value.toString());
       if (value.toString() == reg.toString()) {
-        print("<Bucket> Deleting value:" + value.toString());
+        //print("<Bucket> Deleting value:" + value.toString());
+        _logger.debug(() => "delValue() - The value as found, deleting value ${value.toString()}"); 
         found=true;
  
         if (_status == BucketStatus.full){
           _status= BucketStatus.active;
         }
-        if ((_status == BucketStatus.active) &&( _registerList.length == 1)){
+        if ((_status == BucketStatus.active) &&( len == 1)){
           _status= BucketStatus.empty;
           //break;
         }
@@ -112,11 +115,12 @@ class Bucket{
         continue;
       }  
     }
-    print("<Bucket> *delValue - Final bucket status:" + _status.name);
-    print("<Bucket> * delValue: Result:" + found.toString());
+    _logger.debug(() => "delValue() - Bucket $_id, final status is ${_status.name}");  
+    _logger.debug(() => "delValue() - END");
     return found;
   }
 
+  /*
   BaseRegister? getReg(String my_value)
   {
     var found = false;
@@ -138,7 +142,8 @@ class Bucket{
       return reg;
     }
   }
-
+  */
+  /*
   BaseRegister? getRegbyIndex(int index)
   {
     if (index >= _registerList.length) {
@@ -150,6 +155,8 @@ class Bucket{
       return reg;
     }  
   }
+  */
+
   /* This method should be used when there is a reorganization of registers*/
   List<BaseRegister> getRegList(){
     List<BaseRegister> copyList = List.from(_registerList);
@@ -164,7 +171,7 @@ class Bucket{
   @override
   String toString(){
     var result = StringBuffer();
-    result.write("[ Status: "+ _status.name +", b:" + bits.toString()+ "-");
+    result.write("[ Status: ${_status.name}, b:$bits-");
     _registerList.forEach((value) {
       result.write("${value.value},");
     });
@@ -172,8 +179,8 @@ class Bucket{
     return result.toString();
   }
 
-  void setStatus(BucketStatus new_status) {
-    _status = new_status;
+  void setStatus(BucketStatus newStatus) {
+    _status = newStatus;
   }
 
 }

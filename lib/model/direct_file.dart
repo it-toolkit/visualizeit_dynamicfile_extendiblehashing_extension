@@ -1,9 +1,12 @@
 
+import 'dart:math';
+
 import 'package:visualizeit_dynamicfile_extendiblehashing/exception/bucket_overflowed_exception.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing/model/register.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing/model/bucket.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing/model/directory.dart';
-import 'dart:math';
+import 'package:visualizeit_extensions/logging.dart'; 
+final _logger = Logger("DFEH-DirectFile");
 
 class DirectFile{
 
@@ -20,10 +23,13 @@ class DirectFile{
     _freed = [];
   }
 
+  /*only for testing pourposes*/
+  Directory get table => _table;
+
   //utils:
   double logBase(num x, num base) => log(x) / log(base);
   int log2(num x) => (logBase(x, 2)).round();
-
+  /*
   status(){
     //print("File content:" + this._file.toString());
     print("********************* FILE **********************");
@@ -36,9 +42,20 @@ class DirectFile{
     print("Free Bucket list:"+ _freed.toString());
     print("********************* FILE END **********************");    
   }
+  */
+  status(){
+    _logger.debug(() => "status()");
+    print("********************* FILE **********************");
+    print("Bucket Size:" +this._bucketSize.toString());
+     print("<<<<< Directory:" + _table.toString() + ">>>>>>>>>>>>>>>>>>");
+    print("File content:\n");
+    for (int i=0 ; i<_file.length; i++){
+      print("Bucket num: " + i.toString() + " - Bucket:" +_file[i].toString());
+    }
+    print("Free Bucket list:"+ _freed.toString());
+    print("********************* FILE END **********************");    
+  }
 
-
-  //TODO: Review this method.
   bool exist(BaseRegister reg){
     print("<Direct File> - Exist - * Checking value: " + reg.toString());
     bool exist = false;
@@ -65,7 +82,6 @@ class DirectFile{
     
     //bool exist = false;
     //Calculating mod
-    
     int index = newValue.value % _table.len;
     
     print("<Direct File> Directory index:"+ index.toString());

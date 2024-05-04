@@ -92,6 +92,7 @@ void main() {
   myfile.insert(FixedLengthRegister(954));
   myfile.status();
   /* Testing insertion using freed list*/
+  
   myfile.insert(FixedLengthRegister(32));
   myfile.status();
   
@@ -103,4 +104,15 @@ void main() {
   myfile.insert(FixedLengthRegister(64));
   myfile.status();
   */
+
+  /*Checking searchs*/
+
+  if (myfile.exist(FixedLengthRegister(954))){
+    print("The reg was found");
+  }
+  if (myfile.exist(FixedLengthRegister(459))){
+    print("The reg was found");
+  }
+  myfile.status();
+
 }
