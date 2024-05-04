@@ -69,6 +69,12 @@ class DirectFile{
     
     //bool exist = false;
     //Calculating mod
+
+    if (exist(newValue)) {
+      print("The register already exist in the file");
+      return false;
+    }
+
     
     int index = newValue.value % _table.len;
     

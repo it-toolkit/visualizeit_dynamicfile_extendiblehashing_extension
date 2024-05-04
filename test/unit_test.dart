@@ -9,6 +9,7 @@ import 'package:visualizeit_dynamicfile_extendiblehashing/model/register.dart';
 class DirectFileMock extends Mock implements DirectFile {}
 
 late DirectFile testFile;
+late DirectFile testInsertFile;
 void main() {
 
   var myTestFile = DirectFileMock();
@@ -101,10 +102,19 @@ void main() {
   });
  
  group("Testing insertions", () {
+    
+    setUp((){
+      testInsertFile = DirectFile(3);
+    });
+
     test("Checking if the value exists in the file", () {
-      DirectFile file = DirectFile(3);
-      file.insert(FixedLengthRegister(270));
-      expect(file.exist(FixedLengthRegister(270)),true); 
+      testInsertFile.insert(FixedLengthRegister(270));
+      expect(testInsertFile.exist(FixedLengthRegister(270)),true); 
+    });
+
+    test("Checking if the value already exists in the file", () {
+      testInsertFile.insert(FixedLengthRegister(480));
+      expect(testInsertFile.insert(FixedLengthRegister(480)),false); 
     });
   
   });
