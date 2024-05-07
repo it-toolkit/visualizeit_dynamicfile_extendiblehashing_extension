@@ -5,7 +5,8 @@ import 'package:visualizeit_dynamicfile_extendiblehashing/exception/bucket_overf
 import 'package:visualizeit_dynamicfile_extendiblehashing/model/register.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing/model/bucket.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing/model/directory.dart';
-import 'package:visualizeit_extensions/logging.dart'; 
+import 'package:visualizeit_extensions/logging.dart';
+ 
 final _logger = Logger("DFEH-DirectFile");
 
 class DirectFile{
