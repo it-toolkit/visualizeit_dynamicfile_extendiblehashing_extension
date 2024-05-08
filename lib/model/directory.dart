@@ -1,3 +1,6 @@
+import 'package:visualizeit_extensions/logging.dart';
+
+final _logger = Logger("DFEH.Directory");
 
 class Directory{
 
@@ -8,7 +11,8 @@ class Directory{
 
   create(){
     _hashMap = [];
-    _hashMap.add(0); 
+    _hashMap.add(0);
+    _logger.trace(() => "Creating Hash table for file"); 
   }
 
   set(List<int> newHashMap){
@@ -22,25 +26,26 @@ class Directory{
     }
     return -1;//TODO: review this 
   }
+
   /* Used in the insertion when is necessary to duplicate the hash table */
   duplicate(int lastBucketId){
-   print("<Directory> *Duplicate*");
-   print("Actual Directory:" + _hashMap.toString());
+   _logger.trace(() => "duplicate() - Begins");
+   _logger.trace(() => "duplicate() - Actual hash table: ${_hashMap.toString()}");
    var mapCopy = [..._hashMap];//copy of the original list
-   print("Pointer:" + _pointer.toString());
+
    //Duplicating the table.
    mapCopy.addAll(_hashMap);
    //Updating the Bucket number.
    mapCopy[_pointer]=lastBucketId;
-   print("Pointer:" + _pointer.toString());
-   print("New directory:" + mapCopy.toString());
+   _logger.debug(() => "duplicate() - New hash table: ${mapCopy.toString()}");
    _hashMap = mapCopy;
-   print("<Directory> *Duplicate END*");
+   _logger.trace(() => "duplicate() - END");
   }
+
   /* Update the hash table, used to update the bucket number in a circular way */
   update(int init, int newBucketNum, int jump){
-    print("<Directory> *Update Directory*");
-    print("<Directory> *Update Directory* Init:"+init.toString()+" is pointing to bucket:"+ newBucketNum.toString());
+    _logger.trace(() => "update() - Begins");
+    _logger.debug(() => "update() - Position <$init> (init variable) is pointing to bucket ${newBucketNum.toString()}");
     _hashMap[init] = newBucketNum;
     var i=1;
     var pointer = 0;
@@ -50,35 +55,33 @@ class Directory{
       if(pointer == init){
         break;
       }
-      //print("________ point:" + pointer.toString());
       _hashMap[pointer]= newBucketNum;
     }     
-    print("<Directory> *Update Directory END*");
+    _logger.trace(() => "update() - END");
   }
   
   /* Used in deletion algorithm, return replacemment bucket number if init+jump and init-jump are equal if not return -1 */
   int review(int init, int jump){
-    print("<Directory> *Review Directory*");
-    print("<Directory> *Review Directory* init:" + init.toString());
-    print("<Directory> *Review Directory* jump:" + jump.toString());
-    var p_after = (init + jump) % _hashMap.length;
-    var p_before = (init - jump) % _hashMap.length;
+    _logger.trace(() => "review() - Begins");
+    _logger.trace(() => "review() - Initial position: $init");
+    _logger.trace(() => "review() - Jump value: $jump");
+    int result = -1;
+    var pAfter = (init + jump) % _hashMap.length;
+    var pBefore = (init - jump) % _hashMap.length;
 
-    print("<Directory> *Review Directory* p_after:" + p_after.toString());
-    print("<Directory> *Review Directory* p_before:" + p_before.toString());
-    //print("<Directory> *Review Directory* Dir:" + _hashMap.toString());
-
-    if (_hashMap[p_after] == _hashMap[p_before]){
+    if (_hashMap[pAfter] == _hashMap[pBefore]){
         //Then it is possible to free the bucket
-        print("<Directory> *Review Directory - Bucket numbers are equal");
-        return _hashMap[p_after];
+        _logger.debug(() => "review() - Bucket numbers are equal");
+        return _hashMap[pAfter];
     }
-    print("<Directory> *Review Directory END*");
-    return -1;
+    _logger.trace(() => "review() - Bucket numbers are equal");
+    return result;
 
   }
+
   /* Used in deletion algorithm, reduce the table if the first half is equal to the second one*/
   void reduceIfMirrowed(){
+    _logger.trace(() => "reduceIfMirrowed() - Begins");
     //check if the first half of the directory is the same as the last one.
     var halfList = _hashMap.sublist(0,(_hashMap.length/2).ceil());
     var backList = _hashMap.sublist((_hashMap.length/2).ceil(),_hashMap.length);
@@ -87,10 +90,13 @@ class Directory{
     
     if (_listEquals(halfList,backList)){
       _hashMap = halfList;
+      _logger.debug(() => "reduceIfMirrowed() - The hash table must be reduce it");
+      _logger.trace(() => "reduceIfMirrowed() - New hash table: ${halfList.toString()}");
     }
+    _logger.trace(() => "reduceIfMirrowed() - END");
   }
 
-  /* Private method to check if two list are equal */
+  /* Private method to check if two lists are equal */
   bool _listEquals<T>(List<T>? a, List<T>? b) {
     if (a == null) {
       return b == null;
@@ -111,7 +117,7 @@ class Directory{
 
   @override
   String toString() {
-    return "T="+ _hashMap.length.toString()+" - Table:" + _hashMap.toString();
+    return "T=${_hashMap.length} - Table:$_hashMap";
   }
 
   bool equalsTo(Directory newDir){

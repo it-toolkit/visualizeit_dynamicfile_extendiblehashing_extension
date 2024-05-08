@@ -1,9 +1,12 @@
 
+import 'dart:math';
 import 'package:visualizeit_dynamicfile_extendiblehashing/exception/bucket_overflowed_exception.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing/model/register.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing/model/bucket.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing/model/directory.dart';
-import 'dart:math';
+import 'package:visualizeit_extensions/logging.dart';
+
+final _logger = Logger("DFEH.DirectFile");
 
 class DirectFile{
 
@@ -18,6 +21,7 @@ class DirectFile{
     _table.create();
     _bucketSize = bucketSize;
     _freed = [];
+    _logger.trace(() => "Creating Direct File"); 
   }
 
   List getFileContent() => _file;
@@ -28,6 +32,7 @@ class DirectFile{
   double logBase(num x, num base) => log(x) / log(base);
   int log2(num x) => (logBase(x, 2)).round();
 
+  /*
   status(){
     //print("File content:" + this._file.toString());
     print("********************* FILE **********************");
@@ -39,56 +44,63 @@ class DirectFile{
     }
     print("Free Bucket list:"+ _freed.toString());
     print("********************* FILE END **********************");    
+  }*/
+
+  status(){
+    _logger.trace(() => "********************* FILE **********************"); 
+    _logger.trace(() => "Bucket Size:$_bucketSize");
+    _logger.trace(() => "<<<<< Hash Table:$_table>>>>>>>>>>>>>>>>>>"); 
+    _logger.trace(() => "File content:\n"); 
+    for (int i=0 ; i<_file.length; i++){
+      _logger.trace(() => "Bucket num: $i - Bucket:${_file[i]}"); 
+    }
+    _logger.trace(() => "Free Bucket list:$_freed");
+    _logger.trace(() => "********************* FILE END **********************");    
   }
 
-
-  //TODO: Review this method.
   bool exist(BaseRegister reg){
-    print("<Direct File> - Exist - * Checking value: " + reg.toString());
+    _logger.trace(() => "exist() - Checking if $reg is in file"); 
     bool exist = false;
     if (_file.isEmpty){
-        print("<Direct File> - Exist - File is empty");
+        _logger.trace(() => "exist() - File is empty");
+        _logger.trace(() => "exist() - END"); 
         return exist;
     }
     int index = reg.value % _table.len;
     int? bucketNum = _table.getBucketNumber(index);
-    print("<Direct File> - Exist - Directory Bucket number:"+ bucketNum.toString());
+    _logger.trace(() => "exist() - Directory Bucket number is $bucketNum"); 
     Bucket mybucket = _file[bucketNum];
     mybucket.getList().forEach((register) {
       if(register.value == reg.value){
           exist = true;
       } 
     });
-    print("<Direct File> - Exist - Result:"+ exist.toString());
+    _logger.trace(() => "exist() - Result: $exist"); 
     return exist;
   }
 
   bool insert(BaseRegister newValue){
-
-    print("<Direct File> * Inserting value: " + newValue.toString());
-    
-    //bool exist = false;
-    //Calculating mod
-
+    _logger.trace(() => "insert() - Begins");
+    _logger.trace(() => "insert() - Inserting value: $newValue");
     if (exist(newValue)) {
-      print("The register already exist in the file");
+      _logger.trace(() => "insert() - The register already exist in the file");
       return false;
     }
 
-    
+    //Calculation Mod
     int index = newValue.value % _table.len;
     
-    print("<Direct File> Directory index:"+ index.toString());
+    _logger.trace(() => "insert() - Modular value - Directory index is $index");
     int bucketNum = _table.getBucketNumber(index);
-    print("<Direct File> Directory Bucket number:"+ bucketNum.toString());
-
-
-    //si file esta vacio crea el bucket agrega el registro con ese value.
-    //sino agrega el value al bucket apuntado por bucketNum
+    _logger.debug(() => "insert() - Directory is pointing to bucket $bucketNum");
+    
+    // If the file is empty, then the register should be added to the bucket.
+    // if not, the register should be added to the bucket pointed by the hash table
+    // or directory.
     Bucket bucket;
     
       if (_file.isEmpty){
-        print("<Direct File> File is empty");
+        _logger.trace(() => "insert() - File is empty");
         bucket = Bucket(_bucketSize,0);
         bucket.setValue(newValue);
         _file.add(bucket);      
@@ -98,44 +110,32 @@ class DirectFile{
         if (bucketNum != -1){
           
           bucket = _file[bucketNum.toInt()];
-          //TODO:Check if the register is already there.
-          /*
-          bucket.getRegList().forEach((register) {
-            if(register.value == newValue.value){
-              exist=true;
-            } 
-          });
-          if (exist){
-              return false;
-          }
-          */
           try{
             bucket.setValue(newValue);
           } on BucketOverflowedException {
-            print("<Direct File> Bucket " + bucketNum.toString() + "overflowed");
-            print("<Direct File> Bucket status is:" + bucket.status.toString());
+            _logger.debug(() => "insert() - Bucket $bucketNum overflowed");
+
             // If log(T) is equal to hashing bits of the bucket then T+=1
             if (log2(_table.len) == bucket.bits){
-                print(">>>>>>>>>>>>>>>>>>>>>.<Direct File> Hashing bits are equal to log2(T)");
+                _logger.debug(() => "insert() - Hashing bits are equal to log2(T)");
+                _logger.trace(() => "insert() - Calling reorder");
                 reorder(newValue, _file[bucketNum]);  
             }
             else if (bucket.bits < log2(_table.len)){
-              print(">>>>>>>>>>>>>>>>>>>>>>><Direct File> Hashing bits are less than log2(T)");
+              _logger.debug(() => "insert() - Hashing bits are less than log2(T)");
+              _logger.trace(() => "insert() - Calling reorder2");
               reorder2(newValue,_file[bucketNum],index);
             }
-
-
           }
-
         }
       }
-    print("<Direct File> * Inserting value end -");
+    _logger.trace(() => "insert() - END");
     return true; 
   }
 
 
 reorder(BaseRegister newValue, Bucket overflowedBucket){
-    print("<Direct File> * Reordering Registers Start");
+    _logger.trace(() => "reorder() - Reordering Registers Starting");
 
     int lastBucketId=-1;
     Bucket newBucket;
@@ -163,27 +163,28 @@ reorder(BaseRegister newValue, Bucket overflowedBucket){
     //Duplicating the table
     _table.duplicate(lastBucketId);
     int T = _table.len;
-    print("<<< Directory " + _table.toString() + ">>>>>");
+    _logger.trace(() => "reorder() - New hash table: $_table");
     
-    //acomodo los registros nuevamente de acuerdo al nuevo T
-    //recorro los registos de la cubeta desbordada y le aplico el mod.
+    // Reordering registers acordingly to the new T value, 
+    // iterate over the overflowed bucket and calculate the mod again.
     List<BaseRegister> obList = overflowedBucket.getRegList();
     obList.forEach((reg) {
-      print("<Direct File> *** Overflowed bucket:"+ "value:" + reg.toString());
+      _logger.trace(() => "reorder() - *** Overflowed bucket *** Reordering register value: $reg");
       var newBucketNum = reg.value % T;
-      print("<Direct File> **** New Bucket num:" + newBucketNum.toString());
+      _logger.trace(() => "reorder() - New Bucket number is $newBucketNum");
+      _logger.debug(() => "reorder() - Inserting value $reg in $newBucketNum");
       insert(reg);
-      print("<Direct File> * Reordering Registers END -");
+      _logger.trace(() => "reorder() - Reordering Registers End");
     });
+    _logger.debug(() => "reorder() - Inserting new value $newValue");
     insert(newValue);
-    print("<Direct File> * Reordering Registers END -");
+    _logger.trace(() => "reorder() - Reordering Registers Starting");
 
   }
 
   reorder2(BaseRegister newValue, Bucket overflowedBucket, int bucketInitialIndex){
-    print("<Direct File> * Reordering Registers version 2");
+    _logger.trace(() => "reorder2() - Reordering Registers Starting");
 
-    //int lastBucketId=_file.length;
     int lastBucketId=-1;
     Bucket newBucket;
     /*We must considered here the buckets in the _freed list*/
@@ -212,36 +213,30 @@ reorder(BaseRegister newValue, Bucket overflowedBucket){
     int x = 2;
     int b = newBucket.bits;
     int jump = pow(x, b).ceil();
-    print("Initial position:" + bucketInitialIndex.toString());
-    print("New bucket num:" + newBucket.id.toString() );
-    print("Jump:" + jump.toString());
+    _logger.trace(() => "reorder2() - Initial position: $bucketInitialIndex");
+    _logger.trace(() => "reorder2() - New bucket id: ${newBucket.id}");
+    _logger.trace(() => "reorder2() - Jump: $jump");
     _table.update(bucketInitialIndex,newBucket.id,jump);
 
-    //acomodo los registros nuevamente
-    //recorro los registos de la cubeta desbordada y le aplico el mod.
-    //puede que caigan en la misma cubeta y hay que hacerlo recursivo.
+    //Reordering registers again, iterating over the overflowed bucket and calculating mod.
+    //The result could be the same bucket and we must work recursively
     List<BaseRegister> obList = overflowedBucket.getRegList();
     obList.forEach((reg) {
-      print("<Direct File> *** Overflowed bucket:" + "value:" + reg.toString());
+      _logger.trace(() => "reorder2() - *** Overflowed bucket *** Reordering register value: $reg");
       var newBucketNum = reg.value % T;
-      print("<Direct File> **** New Bucket num:" + newBucketNum.toString());
+      _logger.trace(() => "reorder2() - New Bucket number is $newBucketNum");
+      _logger.debug(() => "reorder2() - Inserting value $reg in $newBucketNum");
       insert(reg);
-      print("<Direct File> * Reordering Registers END -");
+      _logger.trace(() => "reorder() - Reordering Registers End");
     });
-    //Finally adding the new value:
+    //Finally adding the new value
+    _logger.debug(() => "reorder2() - Inserting last value $newValue");
     insert(newValue);
-
-    /*int index = newValue.value % T;
-    print("<Direct File> Directory index:"+ index.toString());
-    int bucketNum = _table.getBucketNumber(index);
-    _file[bucketNum].setValue(newValue);
-    */
-    //print("<<< Directory " + _table.toString() + ">>>>>");
-    print("<Direct File> * Reordering Registers version 2 END -");
+    _logger.trace(() => "reorder2() - Reordering Registers End");
   }
 
   bool delete(BaseRegister delValue){
-    print("<Direct File> * Deleting value: " + delValue.toString());
+    _logger.trace(() => "delete() - Deleting value: $delValue");
     
     /*
     if (!exist(delValue)){
@@ -251,12 +246,12 @@ reorder(BaseRegister newValue, Bucket overflowedBucket){
 
     int index = delValue.value % _table.len;
     
-    print("<Direct File> Directory index:"+ index.toString());
+    _logger.trace(() => "delete() - Directory index value: $index");
     int bucketNum = _table.getBucketNumber(index);
-    print("<Direct File> Directory Bucket number:"+ bucketNum.toString());
+    _logger.debug(() => "delete() - Directory is pointing to bucket $bucketNum");
 
     Bucket myBucket = _file[bucketNum];
-    print ("Bucket found:" + myBucket.toString());
+    _logger.debug(() => "delete() - Bucket with id ${myBucket.id} was found");
     if (myBucket.delValue(delValue)){
        //Check if the bucket is empty
        if (myBucket.isEmpty()){
@@ -273,9 +268,10 @@ reorder(BaseRegister newValue, Bucket overflowedBucket){
             //TODO: Review this.
             myBucket.setValue(delValue);
             //Changing bucket status to "free"
+            _logger.trace(() => "delete() - The bucket status is now 'free'");
             myBucket.setStatus(BucketStatus.freed);
+            _logger.trace(() => "delete() - The bucket was added to the freed list");
             _freed.add(bucketNum);
-            print("Free bucket bits:"+ myBucket.bits.toString());
 
             if (myBucket.bits == log2(_table.len)){
               //Checking if the directory is mirrowed. Half part is equal to the other part.
@@ -285,12 +281,12 @@ reorder(BaseRegister newValue, Bucket overflowedBucket){
        } 
     }
     else {
+      _logger.trace(() => "delete() - Deleting value ends unsuscesful");
       return false;
     }
-
+    _logger.trace(() => "delete() - END");
     return true;
   }
-
 
   int getFreedBucket(){
     if (_freed.isEmpty) {
@@ -299,6 +295,5 @@ reorder(BaseRegister newValue, Bucket overflowedBucket){
       return _freed.removeLast();
     }
   }
-
 
 }
