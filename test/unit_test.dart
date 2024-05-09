@@ -7,12 +7,14 @@ import 'package:visualizeit_dynamicfile_extendiblehashing/model/directory.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing/model/register.dart';
 
 class DirectFileMock extends Mock implements DirectFile {}
+class DirectoryMock extends Mock implements Directory {}
 
 late DirectFile testFile;
 late DirectFile testInsertFile;
 void main() {
 
-  var myTestFile = DirectFileMock();
+  var mockFile = DirectFileMock();
+  var mockDir = DirectoryMock();
 
   group("Testing final state of the file after severals inserts and deletions", () {
    setUp(() {
@@ -44,15 +46,14 @@ void main() {
     } );
 
     test("Checking final state of the file - Checking Hash Table", () {
-      Directory newDir = Directory();
-      newDir.set([2, 6, 4, 0, 2, 6, 1, 0, 2, 6, 5, 0, 2, 6, 1, 0]);
-      expect(testFile.getDirectory().equalsTo(newDir),true); 
-      
+      when(() => mockDir.hash).thenReturn([2, 6, 4, 0, 2, 6, 1, 0, 2, 6, 5, 0, 2, 6, 1, 0]);
+      when(() => mockFile.getDirectory()).thenReturn(mockDir);
+      expect(listEquals(testFile.getDirectory().hash,mockFile.getDirectory().hash),true);
     });
 
     test("Checking final state of the file - Checking Freed List", () {
-      var newFreedList = [7,3];
-      expect(listEquals(newFreedList,testFile.getFreedList()),true); 
+      when(() => mockFile.getFreedList()).thenReturn([7,3]);
+      expect(listEquals(mockFile.getFreedList(),testFile.getFreedList()),true); 
     });
 
     test("Checking final state of the file - Checking Buckets", () {

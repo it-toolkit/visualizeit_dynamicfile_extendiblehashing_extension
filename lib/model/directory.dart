@@ -8,15 +8,12 @@ class Directory{
   int _pointer = 0;
 
   int get len => _hashMap.length;
+  List<int> get hash => _hashMap;
 
   create(){
     _hashMap = [];
     _hashMap.add(0);
     _logger.trace(() => "Creating Hash table for file"); 
-  }
-
-  set(List<int> newHashMap){
-    _hashMap = newHashMap;
   }
 
   int getBucketNumber(int index){
