@@ -107,25 +107,7 @@ class _HashingTableState extends State<HashingTable> {
       ],
     );
   }
-  /*
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(10),
-      padding: EdgeInsets.all(10),
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(5), boxShadow: [
-        BoxShadow(color: Colors.black87, spreadRadius: 5, blurRadius: 7, offset: const Offset(0, 3)),
-      ]),
-      child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: getWidgets(),
-          )),
-    );
-  }
-  */
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -323,51 +305,6 @@ class _DirectFileState extends State<DirectFile> {
       ],
     );
   }
-  /*
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Container(
-            margin: EdgeInsets.all(10),
-            padding: EdgeInsets.all(10),
-            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(5), boxShadow: [
-              BoxShadow(color: Colors.black87, spreadRadius: 5, blurRadius: 7, offset: const Offset(0, 3)),
-            ]),
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [for (var b in buckets) buildBucket(position: b.position, status: b.status, b: b.b, records: b.records)])));
-  }
-  */
-  /*
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Container(
-            margin: EdgeInsets.all(10),
-            padding: EdgeInsets.all(10),
-            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(5), boxShadow: [
-              BoxShadow(color: Colors.black87, spreadRadius: 5, blurRadius: 7, offset: const Offset(0, 3)),
-            ]),
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [ 
-                  const Row( mainAxisAlignment: MainAxisAlignment.center, children: 
-                    [
-                      Center(child: Text("Bucket #")),
-                      Center(child: Text("Status")),
-                      Center(child: Text("b")),
-                      Center(child: Text("Record 1")),
-                      Center(child: Text("Record 2")),
-                      Center(child: Text("Record 3")),//TODO: Fix this.
-                    ]), 
-                  for (var b in buckets) 
-                  buildBucket(position: b.position, status: b.status, b: b.b, records: b.records)
-                ])));
-  }
-}
-*/
 
 @override
 Widget build(BuildContext context) {
