@@ -59,7 +59,7 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
+              children: [ widget.file.getFreedList().isNotEmpty ? 
                 //const Spacer(),
                 Column( 
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -68,13 +68,17 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
                                 child: const Center(child: Text("Lista de Cubetas Libres", style: TextStyle(fontWeight: FontWeight.bold))),
                               ),
                     ConstrainedBox(constraints: BoxConstraints(maxHeight: 100),child: FreedBucketListWidget(freedBucketNumbers: widget.file.getFreedList())),
-                  ]
+                ]) : const Column (crossAxisAlignment: CrossAxisAlignment.center,) ]
                 ),
               ],
-            ),
-          ],
         );
   }
+    @override
+  Widget build(BuildContext context) {
+    //_components = createWidgetsFromFile();
+    return createWidgetsFromFile();
+  }
+
   /*
   Map<int, List<Widget>> createWidgetsFromTree() {
     return widget.tree.getAllNodesByLevel().map((level, listOfNodes) =>
@@ -94,7 +98,7 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
     return TreeNodeWidget(node, nodeTransition);
   }
   */
-
+  /*
   @override
   Widget build(BuildContext context) {
     _components = createWidgetsFromFile();
@@ -215,4 +219,6 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
       ],
     );
   }
+  */
+
 }

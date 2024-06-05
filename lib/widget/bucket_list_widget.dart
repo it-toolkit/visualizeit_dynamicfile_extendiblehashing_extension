@@ -102,7 +102,7 @@ Widget build(BuildContext context) {
                                     padding: EdgeInsets.all(4),
                                     alignment: Alignment.centerLeft,
                                     //decoration: BoxDecoration(border: Border(right: BorderSide(color: Colors.black))),
-                                    child: Center(child: Text("Bucket #", style: const TextStyle(fontWeight: FontWeight.bold))),
+                                    child: Center(child: Text("Cubeta #", style: const TextStyle(fontWeight: FontWeight.bold))),
                                   ),
                                   Container(
                                     width: 70,
@@ -133,7 +133,7 @@ Widget build(BuildContext context) {
                                             //margin: EdgeInsets.all(2) + EdgeInsets.only(left: 2),
                                             //decoration:
                                              //   BoxDecoration(border: Border.all(color: Colors.grey), borderRadius: BorderRadius.all(Radius.circular(10))),
-                                            child: Center(child: Text( "Record $i", style: const TextStyle(fontWeight: FontWeight.bold))),
+                                            child: Center(child: Text( "Registro $i", style: const TextStyle(fontWeight: FontWeight.bold))),
                                           ),
                                       ],
                                     ),
