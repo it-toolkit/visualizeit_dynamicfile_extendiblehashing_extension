@@ -24,9 +24,10 @@ class DirectFile{
     _logger.trace(() => "Creating Direct File"); 
   }
 
-  List getFileContent() => _file;
+  List<Bucket> getFileContent() => _file;
   Directory getDirectory() => _table;
-  List getFreedList() => _freed;
+  List<int> getFreedList() => _freed;
+  int bucketRecordCapacity() => _bucketSize;
 
   //utils:
   double logBase(num x, num base) => log(x) / log(base);
@@ -157,7 +158,7 @@ reorder(BaseRegister newValue, Bucket overflowedBucket){
     //Modifying hashing bits and adding a new bucket to the file.
     overflowedBucket.bits+=1;
     //Changing the status of the overflowed bucket to empty.
-    overflowedBucket.setStatus(BucketStatus.empty);
+    overflowedBucket.setStatus(BucketStatus.Empty);
     newBucket.bits = overflowedBucket.bits;
     
     //Duplicating the table
@@ -205,7 +206,7 @@ reorder(BaseRegister newValue, Bucket overflowedBucket){
     //Modifying hashing bits and adding a new bucket to the file.
     overflowedBucket.bits+=1;
     //Changing the status of the overflowed bucket to empty.
-    overflowedBucket.setStatus(BucketStatus.empty);
+    overflowedBucket.setStatus(BucketStatus.Empty);
     newBucket.bits = overflowedBucket.bits;
 
     int T = _table.len;
@@ -269,7 +270,7 @@ reorder(BaseRegister newValue, Bucket overflowedBucket){
             myBucket.setValue(delValue);
             //Changing bucket status to "free"
             _logger.trace(() => "delete() - The bucket status is now 'free'");
-            myBucket.setStatus(BucketStatus.freed);
+            myBucket.setStatus(BucketStatus.Freed);
             _logger.trace(() => "delete() - The bucket was added to the freed list");
             _freed.add(bucketNum);
 

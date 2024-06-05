@@ -11,7 +11,15 @@ full: The bucket is full. Will be overflowed on an insert opertation
 active: The bucket has space, single insert operation will success.
 freed: The bucket was released and is in the _freed list. The bucket should contain one registry.
 */
-enum BucketStatus { empty, full, active, freed }
+enum BucketStatus {
+  Active,
+  Full,
+  Freed,
+  Empty;
+
+  @override
+  String toString() => name;
+}
 
 
 class Bucket{
@@ -25,7 +33,7 @@ class Bucket{
     _id = id;
     _size = bucketSize;
     bits = 0;
-    _status = BucketStatus.empty;
+    _status = BucketStatus.Empty;
     _logger.trace(() => "Creating bucket with id ${id.toString()}");
   }
   
@@ -36,7 +44,7 @@ class Bucket{
 
   bool isEmpty(){
     _logger.debug(() => "isEmpty() - Bucket $_id is ${_status.name}");
-    return (_status==BucketStatus.empty)? true : false; 
+    return (_status==BucketStatus.Empty)? true : false; 
   }
 
   String? getValue(BaseRegister reg)
@@ -71,16 +79,16 @@ class Bucket{
       throw BucketOverflowedException("The bucket is full");
     } else if ( len < _size){ 
       _logger.trace(() => "setValue() - Bucket $_id is ${_status.name}");
-      if ((_status == BucketStatus.empty) || (_status == BucketStatus.full) ){  
-          _status= BucketStatus.active;
+      if ((_status == BucketStatus.Empty) || (_status == BucketStatus.Full) ){  
+          _status= BucketStatus.Active;
       }
-      if (_status == BucketStatus.freed){
-        _status= BucketStatus.active;
+      if (_status == BucketStatus.Freed){
+        _status= BucketStatus.Active;
         _registerList.removeLast();
       }
       _registerList.add(reg);
-       if (_status == BucketStatus.active && _registerList.length == _size){
-        _status= BucketStatus.full;
+       if (_status == BucketStatus.Active && _registerList.length == _size){
+        _status= BucketStatus.Full;
        }
     }
     _logger.debug(() => "setValue() - Bucket $_id, final status is ${_status.name}");
@@ -97,11 +105,11 @@ class Bucket{
         _logger.debug(() => "delValue() - The value as found, deleting value ${value.toString()}");
         found=true;
  
-        if (_status == BucketStatus.full){
-          _status= BucketStatus.active;
+        if (_status == BucketStatus.Full){
+          _status= BucketStatus.Active;
         }
-        if ((_status == BucketStatus.active) &&( len == 1)){
-          _status= BucketStatus.empty;
+        if ((_status == BucketStatus.Active) &&( len == 1)){
+          _status= BucketStatus.Empty;
         }
         _registerList.remove(value);
         break;
