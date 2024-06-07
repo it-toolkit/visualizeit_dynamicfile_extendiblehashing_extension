@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing/extension/direct_file_transition.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing/model/direct_file.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing/model/register.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing/widget/direct_file_widget.dart';
@@ -31,19 +32,32 @@ void main() {
   myfile.delete(FixedLengthRegister(410));
   myfile.delete(FixedLengthRegister(954));
 
-  runApp(MyApp(myfile));
+  //Transition 1
+  //DirectFileTransition transition = DirectFileTransition.bucketFound(myfile, 1);
+  //Transition 2
+  //DirectFileTransition transition = DirectFileTransition.bucketOverflowed(myfile, 1);
+  //Transition 3 (Duplicate the hashing table)
+  //DirectFileTransition transition = DirectFileTransition.hashTableDuplicateSize(myfile, 4);
+  //Transition 4 (creating new bucket)
+  //DirectFileTransition transition = DirectFileTransition.bucketCreated(myfile, 2, 3);
+  //Transition 5 (reordering records - empty overflowed bucket)
+  //DirectFileTransition transition = DirectFileTransition.bucketReorganized(myfile, 3);
+  //Transition 6 to N (reordering records - reinserting the record)
+  DirectFileTransition transition = DirectFileTransition.bucketReorganizedInsertRecord(myfile, 6, 1, FixedLengthRegister(270));
+  runApp(MyApp(myfile, transition));
 }
 
 class MyApp extends StatelessWidget {
   final DirectFile file;
+  final DirectFileTransition fileTransition;
   
-  const MyApp(this.file, {super.key});
+  const MyApp(this.file, this.fileTransition, {super.key});
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(title: const Text('Hashing Extensible example', style: TextStyle(fontWeight: FontWeight.bold))),
-        body: DirectFileExtendibleHashingWidget(file)
+        body: DirectFileExtendibleHashingWidget(file, fileTransition)
       ),
     );
   }

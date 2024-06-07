@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing/extension/direct_file_transition.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing/model/direct_file.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing/widget/bucket_list_widget.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing/widget/directory_widget.dart';
@@ -6,14 +7,14 @@ import 'package:visualizeit_dynamicfile_extendiblehashing/widget/freed_bucket_li
 
 class DirectFileExtendibleHashingWidget extends StatefulWidget {
   final DirectFile file;
-  //final BSharpTreeTransition? currentTransition;
+  final DirectFileTransition? _currentTransition;
   //final BSharpTreeCommand? commandInExecution;
   /*
   const DirectFileExtendibleHashingWidget(this.file, this.currentTransition, this.commandInExecution,
       {super.key});
   */
   
-  const DirectFileExtendibleHashingWidget(this.file,
+  const DirectFileExtendibleHashingWidget(this.file, this._currentTransition,
       {super.key});
 
   @override
@@ -37,46 +38,47 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
 
   Widget createWidgetsFromFile() {
     return Column(
-          children: [
-            Row(
-              children: [
-                Column( 
-                  children:[ Container(
-                                child: const Center(child: Text("Tabla de Hashing", style: TextStyle(fontWeight: FontWeight.bold))),
-                              ),
-                              ConstrainedBox(constraints: const BoxConstraints(maxWidth: 150), child: HashingTableWidget(initialValues: widget.file.getDirectory().hash))
-                  ],
+            children: [
+              Row(
+                children: [
+                  Column( 
+                    children:[ Container(
+                                  child: const Center(child: Text("Tabla de Hashing", style: TextStyle(fontWeight: FontWeight.bold))),
+                                ),
+                                ConstrainedBox(constraints: const BoxConstraints(maxWidth: 150), child: HashingTableWidget(initialValues: widget.file.getDirectory().hash, currentTransition: widget._currentTransition))
+                    ],
+                    ),
+                  const Spacer(),
+                  Column( 
+                    children:[ Container(
+                                  child: const Center(child: Text("Archivo Directo", style: TextStyle(fontWeight: FontWeight.bold))),
+                                ),
+                                BucketListWidget(bucketRecordCapacity:  widget.file.bucketRecordCapacity(), initialBuckets: widget.file.getFileContent(), currentTransition: widget._currentTransition)
+                    ],
+                    ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [ widget.file.getFreedList().isNotEmpty ? 
+                  //const Spacer(),
+                  Column( 
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                                  child: const Center(child: Text("Lista de Cubetas Libres", style: TextStyle(fontWeight: FontWeight.bold))),
+                                ),
+                      ConstrainedBox(constraints: BoxConstraints(maxHeight: 100),child: FreedBucketListWidget(freedBucketNumbers: widget.file.getFreedList())),
+                  ]) : const Column (crossAxisAlignment: CrossAxisAlignment.center,) ]
                   ),
-                const Spacer(),
-                Column( 
-                  children:[ Container(
-                                child: const Center(child: Text("Archivo Directo", style: TextStyle(fontWeight: FontWeight.bold))),
-                              ),
-                              BucketListWidget(bucketRecordCapacity:  widget.file.bucketRecordCapacity(), initialBuckets: widget.file.getFileContent())
-                  ],
-                  ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [ widget.file.getFreedList().isNotEmpty ? 
-                //const Spacer(),
-                Column( 
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                                child: const Center(child: Text("Lista de Cubetas Libres", style: TextStyle(fontWeight: FontWeight.bold))),
-                              ),
-                    ConstrainedBox(constraints: BoxConstraints(maxHeight: 100),child: FreedBucketListWidget(freedBucketNumbers: widget.file.getFreedList())),
-                ]) : const Column (crossAxisAlignment: CrossAxisAlignment.center,) ]
-                ),
-              ],
-        );
+                ],
+          );
   }
     @override
   Widget build(BuildContext context) {
     //_components = createWidgetsFromFile();
     return createWidgetsFromFile();
+    //return _components;
   }
 
   /*

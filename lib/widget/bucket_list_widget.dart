@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing/extension/direct_file_transition.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing/model/bucket.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing/model/register.dart';
 
 class BucketListWidget extends StatefulWidget {
   final List<Bucket> initialBuckets;
   final int bucketRecordCapacity;
-  BucketListWidget({required this.bucketRecordCapacity, this.initialBuckets = const []});
+  final DirectFileTransition? currentTransition;
+  const BucketListWidget({super.key, required this.bucketRecordCapacity, this.initialBuckets = const [], this.currentTransition});
 
   @override
   State<StatefulWidget> createState() {
@@ -23,12 +25,39 @@ class _BucketListWidgetState extends State<BucketListWidget> {
   }
 
   Widget buildBucket({required int position, required BucketStatus status, required int b, List<BaseRegister> records = const []}) {
+    // ignore: non_constant_identifier_names
+    Color BucketColorByTransition;
+    if ( widget.currentTransition?.bucketOverflowedId == position ){
+        BucketColorByTransition = Color.fromARGB(255, 247, 75, 84);
+    }else if (widget.currentTransition?.bucketCreatedId == position ){
+        BucketColorByTransition = Color.fromARGB(255, 111, 245, 58);
+    }else if (widget.currentTransition?.bucketReorganizedId == position ){
+        BucketColorByTransition = Color.fromARGB(255, 236, 243, 145);
+    }else{
+        BucketColorByTransition = Colors.blue.shade50;
+    }
+
+    // ignore: non_constant_identifier_names
+    Color BucketColorPosition;
+    if ( widget.currentTransition?.bucketFoundId == position && widget.currentTransition?.bucketOverflowedId == position ){
+        BucketColorPosition = Color.fromARGB(255, 247, 75, 84);
+    }else if (widget.currentTransition?.bucketFoundId == position && widget.currentTransition?.bucketCreatedId == position ){
+        BucketColorPosition = Color.fromARGB(255, 111, 245, 58);
+    }else if (widget.currentTransition?.bucketFoundId == position ){
+        BucketColorPosition = Color.fromARGB(255, 233, 152, 179);
+    }else if (widget.currentTransition?.bucketReorganizedId == position ){
+        BucketColorPosition = Color.fromARGB(255, 236, 243, 145);
+    }else{
+        BucketColorPosition = Colors.blue.shade50;
+    }
+    
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
             margin: EdgeInsets.all(1),
-            decoration: BoxDecoration(color: Colors.blue.shade50, borderRadius: const BorderRadius.all(Radius.circular(10))),
+            decoration: BoxDecoration( color: BucketColorPosition, borderRadius: const BorderRadius.all(Radius.circular(10))),
+            //decoration: BoxDecoration(color: Colors.blue.shade50, borderRadius: const BorderRadius.all(Radius.circular(10))),
             child: Row(
               children: [
                 Container(
@@ -40,20 +69,20 @@ class _BucketListWidgetState extends State<BucketListWidget> {
                 Container(
                   width: 70,
                   padding: EdgeInsets.all(4),
-                  child: Center(child: Text(status.toString())),
+                  child: Center(child: Text(widget.currentTransition!.bucketReorganizedId == position ? "" : status.toString())),
                 )
               ],
             )),
         Container(
             margin: EdgeInsets.all(1),
-            decoration: BoxDecoration(color: Colors.blue.shade50, borderRadius: BorderRadius.all(Radius.circular(10))),
+            decoration: BoxDecoration(color:BucketColorByTransition, borderRadius: BorderRadius.all(Radius.circular(10))),
             child: Row(
               children: [
                 Container(
                   width: 40,
                   padding: EdgeInsets.all(4),
                   decoration: BoxDecoration(border: Border(right: BorderSide(color: Colors.black))),
-                  child: Center(child: Text(b.toString())),
+                  child: Center(child: Text(b.toString(), style: widget.currentTransition?.bucketOverflowedId == position ? TextStyle(fontWeight: FontWeight.bold) : TextStyle(fontWeight: FontWeight.normal))),
                 ),
                 Container(
                   // padding: EdgeInsets.all(4),
@@ -66,7 +95,7 @@ class _BucketListWidgetState extends State<BucketListWidget> {
                           margin: EdgeInsets.all(2) + EdgeInsets.only(left: 2),
                           decoration:
                               BoxDecoration(border: Border.all(color: Colors.grey), borderRadius: BorderRadius.all(Radius.circular(10))),
-                          child: Center(child: Text(i < records.length ? records[i].toString() : '')),
+                          child: Center(child: Text((i < records.length && widget.currentTransition!.bucketReorganizedId != position) ? records[i].toString() : '')),
                         )
                     ],
                   ),
@@ -120,7 +149,7 @@ Widget build(BuildContext context) {
                                     width: 40,
                                     padding: EdgeInsets.all(4),
                                     //decoration: BoxDecoration(border: Border(right: BorderSide(color: Colors.black))),
-                                    child: const Center(child: Text("b",style: TextStyle(fontWeight: FontWeight.bold))),
+                                    child: const Center(child: Text("Bits",style: TextStyle(fontWeight: FontWeight.bold))),
                                   ),
                                   Container(
                                     // padding: EdgeInsets.all(4),

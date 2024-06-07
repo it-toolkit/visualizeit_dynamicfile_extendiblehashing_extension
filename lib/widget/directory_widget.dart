@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing/extension/direct_file_transition.dart';
 
 class HashingTableWidget extends StatefulWidget {
   final List<int?> initialValues;
+  final DirectFileTransition? currentTransition;
 
-  HashingTableWidget({this.initialValues = const []});
+  const HashingTableWidget({this.initialValues = const [], this.currentTransition});
 
   @override
   State<StatefulWidget> createState() {
@@ -21,6 +23,22 @@ class _HashingTableWidgetState extends State<HashingTableWidget> {
   }
 
   Widget buildRecord(int position, int? value) {
+    
+    Color ColorBox = Colors.blue.shade50;
+
+    /*
+    if (widget.currentTransition?.bucketPositionInHashTable == position ){
+      ColorBox = Color.fromARGB(255, 233, 152, 179);
+    }
+    */
+    if ( widget.currentTransition?.bucketPositionInHashTable == position && widget.currentTransition!.bucketOverflowedId > 0){
+        ColorBox = Color.fromARGB(255, 247, 75, 84);
+    }else if (widget.currentTransition?.bucketPositionInHashTable == position && widget.currentTransition!.bucketCreatedId > 0 ){
+        ColorBox = Color.fromARGB(255, 111, 245, 58);
+    }else if (widget.currentTransition?.bucketPositionInHashTable == position ){
+        ColorBox = Color.fromARGB(255, 233, 152, 179);
+    }
+    
     return Row(
       children: [
         Container(
@@ -32,7 +50,7 @@ class _HashingTableWidgetState extends State<HashingTableWidget> {
             child: Container(
           padding: EdgeInsets.all(4),
           margin: EdgeInsets.all(1),
-          decoration: BoxDecoration(color: Colors.blue.shade50, borderRadius: BorderRadius.all(Radius.circular(10))),
+          decoration: BoxDecoration( color: ColorBox, borderRadius: BorderRadius.all(Radius.circular(10))),
           child: Center(child: Text(value?.toString() ?? '')),
         ))
       ],
