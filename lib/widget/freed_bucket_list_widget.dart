@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing/extension/direct_file_transition.dart';
 
 class FreedBucketListWidget extends StatefulWidget {
   final List<int?> freedBucketNumbers;
+  final DirectFileTransition? currentTransition;
 
-  FreedBucketListWidget({this.freedBucketNumbers = const []});
+  const FreedBucketListWidget({super.key, this.freedBucketNumbers = const [], this.currentTransition});
 
   @override
   State<StatefulWidget> createState() {
@@ -21,12 +23,16 @@ class _FreedBucketListWidgetState extends State<FreedBucketListWidget> {
   }
 
   Widget buildRecord(int? value) {
+    Color recordColor = Colors.blue.shade50;
+    if ( widget.currentTransition?.bucketFreedId == value ){
+      recordColor = Color.fromARGB(255, 111, 120, 241);
+    }
     return Row(
       children: [
         Container(
           padding: EdgeInsets.all(4),
           margin: EdgeInsets.all(1),
-          decoration: BoxDecoration(color: Colors.blue.shade50, borderRadius: BorderRadius.all(Radius.circular(10))),
+          decoration: BoxDecoration(color: recordColor, borderRadius: BorderRadius.all(Radius.circular(10))),
           child: Center(child: Text(value.toString())),
         )
       ],

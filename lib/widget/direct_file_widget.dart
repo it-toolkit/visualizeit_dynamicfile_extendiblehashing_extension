@@ -68,7 +68,7 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
                       Container(
                                   child: const Center(child: Text("Lista de Cubetas Libres", style: TextStyle(fontWeight: FontWeight.bold))),
                                 ),
-                      ConstrainedBox(constraints: BoxConstraints(maxHeight: 100),child: FreedBucketListWidget(freedBucketNumbers: widget.file.getFreedList())),
+                      ConstrainedBox(constraints: BoxConstraints(maxHeight: 100),child: FreedBucketListWidget(freedBucketNumbers: widget.file.getFreedList(), currentTransition: widget._currentTransition)),
                   ]) : const Column (crossAxisAlignment: CrossAxisAlignment.center,) ]
                   ),
                 ],

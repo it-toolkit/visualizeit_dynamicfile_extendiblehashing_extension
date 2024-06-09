@@ -25,17 +25,24 @@ class _BucketListWidgetState extends State<BucketListWidget> {
   }
 
   Widget buildBucket({required int position, required BucketStatus status, required int b, List<BaseRegister> records = const []}) {
+    
     // ignore: non_constant_identifier_names
     Color BucketColorByTransition;
+    Color RecordColor; 
     if ( widget.currentTransition?.bucketOverflowedId == position ){
-        BucketColorByTransition = Color.fromARGB(255, 247, 75, 84);
+        BucketColorByTransition = Color.fromARGB(255, 247, 75, 84); 
     }else if (widget.currentTransition?.bucketCreatedId == position ){
         BucketColorByTransition = Color.fromARGB(255, 111, 245, 58);
     }else if (widget.currentTransition?.bucketReorganizedId == position ){
         BucketColorByTransition = Color.fromARGB(255, 236, 243, 145);
+    }else if (widget.currentTransition?.bucketFreedId == position ){
+        BucketColorByTransition = Color.fromARGB(255, 111, 120, 241);
+    }else if (widget.currentTransition?.bucketEmptyId == position ){
+        BucketColorByTransition = Color.fromARGB(255, 231, 195, 118);
     }else{
         BucketColorByTransition = Colors.blue.shade50;
     }
+    RecordColor = BucketColorByTransition;
 
     // ignore: non_constant_identifier_names
     Color BucketColorPosition;
@@ -43,6 +50,10 @@ class _BucketListWidgetState extends State<BucketListWidget> {
         BucketColorPosition = Color.fromARGB(255, 247, 75, 84);
     }else if (widget.currentTransition?.bucketFoundId == position && widget.currentTransition?.bucketCreatedId == position ){
         BucketColorPosition = Color.fromARGB(255, 111, 245, 58);
+    }else if (widget.currentTransition?.bucketFoundId == position && widget.currentTransition?.bucketFreedId == position ){
+        BucketColorPosition = Color.fromARGB(255, 111, 120, 241);
+    }else if (widget.currentTransition?.bucketFoundId == position && widget.currentTransition?.bucketEmptyId == position ){
+        BucketColorPosition = Color.fromARGB(255, 231, 195, 118);
     }else if (widget.currentTransition?.bucketFoundId == position ){
         BucketColorPosition = Color.fromARGB(255, 233, 152, 179);
     }else if (widget.currentTransition?.bucketReorganizedId == position ){
@@ -51,6 +62,19 @@ class _BucketListWidgetState extends State<BucketListWidget> {
         BucketColorPosition = Colors.blue.shade50;
     }
     
+    List<Color> recordColors = [];
+    for (var i = 0; i < widget.bucketRecordCapacity; i++){
+      recordColors.add(RecordColor);
+    }
+    
+    for (var i = 0; i < records.length; i++){
+      if(widget.currentTransition?.type.name == "recordFound" && widget.currentTransition!.recordFound?.value == records[i].value ) {
+        recordColors[i] = Color.fromARGB(255, 233, 152, 179);
+      }
+      if(widget.currentTransition?.type.name == "recordSaved" && widget.currentTransition?.recordSaved?.value == records[i].value ) {
+        recordColors[i] = Color.fromARGB(255, 153, 1, 153);
+      }
+    }
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -94,7 +118,10 @@ class _BucketListWidgetState extends State<BucketListWidget> {
                           padding: EdgeInsets.all(1),
                           margin: EdgeInsets.all(2) + EdgeInsets.only(left: 2),
                           decoration:
-                              BoxDecoration(border: Border.all(color: Colors.grey), borderRadius: BorderRadius.all(Radius.circular(10))),
+                              BoxDecoration(color: recordColors[i],border: Border.all(color: Colors.grey), borderRadius: BorderRadius.all(Radius.circular(10))),
+                              //BoxDecoration(color: (widget.currentTransition!.isRecordFound && widget.currentTransition!.recordFound?.toString() == records[i].toString())? RecordFoundColor : RecordColor ,border: Border.all(color: Colors.grey), borderRadius: BorderRadius.all(Radius.circular(10))),
+                              //BoxDecoration(color: (widget.currentTransition!.isRecordFound && widget.currentTransition!.recordFound?.value == records[i].value )? RecordFoundColor : RecordColor ,border: Border.all(color: Colors.grey), borderRadius: BorderRadius.all(Radius.circular(10))),
+                              //BoxDecoration(color: RecordFoundColor,border: Border.all(color: Colors.grey), borderRadius: BorderRadius.all(Radius.circular(10))),
                           child: Center(child: Text((i < records.length && widget.currentTransition!.bucketReorganizedId != position) ? records[i].toString() : '')),
                         )
                     ],

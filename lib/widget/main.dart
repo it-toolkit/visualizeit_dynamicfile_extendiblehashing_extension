@@ -39,11 +39,19 @@ void main() {
   //Transition 3 (Duplicate the hashing table)
   //DirectFileTransition transition = DirectFileTransition.hashTableDuplicateSize(myfile, 4);
   //Transition 4 (creating new bucket)
-  //DirectFileTransition transition = DirectFileTransition.bucketCreated(myfile, 2, 3);
+  //DirectFileTransition transition = DirectFileTransition.bucketCreated(myfile, 2, 4);
   //Transition 5 (reordering records - empty overflowed bucket)
   //DirectFileTransition transition = DirectFileTransition.bucketReorganized(myfile, 3);
   //Transition 6 to N (reordering records - reinserting the record)
-  DirectFileTransition transition = DirectFileTransition.bucketReorganizedInsertRecord(myfile, 6, 1, FixedLengthRegister(270));
+  // Saving Record
+  //DirectFileTransition transition = DirectFileTransition.recordSaved(myfile, 6, FixedLengthRegister(270));
+  // Different Transition
+  //DirectFileTransition transition = DirectFileTransition.recordFound(myfile, 6, FixedLengthRegister(270));
+  // Transition bucket Freed
+  // DirectFileTransition transition = DirectFileTransition.bucketFreed(myfile, 3);
+  
+  // Transition bucket Empty
+  DirectFileTransition transition = DirectFileTransition.bucketEmpty(myfile, 4);
   runApp(MyApp(myfile, transition));
 }
 

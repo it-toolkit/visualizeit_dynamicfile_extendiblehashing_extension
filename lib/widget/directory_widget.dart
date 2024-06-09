@@ -25,12 +25,6 @@ class _HashingTableWidgetState extends State<HashingTableWidget> {
   Widget buildRecord(int position, int? value) {
     
     Color ColorBox = Colors.blue.shade50;
-
-    /*
-    if (widget.currentTransition?.bucketPositionInHashTable == position ){
-      ColorBox = Color.fromARGB(255, 233, 152, 179);
-    }
-    */
     if ( widget.currentTransition?.bucketPositionInHashTable == position && widget.currentTransition!.bucketOverflowedId > 0){
         ColorBox = Color.fromARGB(255, 247, 75, 84);
     }else if (widget.currentTransition?.bucketPositionInHashTable == position && widget.currentTransition!.bucketCreatedId > 0 ){

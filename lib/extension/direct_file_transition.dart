@@ -1,4 +1,5 @@
 import 'package:visualizeit_dynamicfile_extendiblehashing/model/direct_file.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing/model/register.dart';
 
 
 class DirectFileTransition {
@@ -10,9 +11,15 @@ class DirectFileTransition {
   late int bucketCreatedId = -1;
   late int bucketReorganizedId = -1;
   late int bucketReorganizedInsertRecordId = -1;
+  late int bucketRecordSavedId = -1;
+  late int bucketEmptyId = -1;
+  late int bucketFreedId = -1;
+  BaseRegister? recordFound;
+  BaseRegister? recordSaved;
 
   TransitionType get type => _type;
   DirectFile get transitionFile => _transitionFile;
+  bool get isRecordFound => recordFound != null ? true : false;
  
   DirectFileTransition(
       this._type,
@@ -48,12 +55,27 @@ class DirectFileTransition {
      
   }
 
+  DirectFileTransition.bucketFreed(this._transitionFile, this.bucketFreedId){
+    _type = TransitionType.bucketFreed; 
+    bucketFoundId = bucketFreedId;
+  }
+
+  DirectFileTransition.bucketEmpty(this._transitionFile, this.bucketEmptyId){
+    _type = TransitionType.bucketEmpty; 
+    bucketFoundId = bucketEmptyId;
+  }
+  
   DirectFileTransition.bucketReorganized(this._transitionFile, this.bucketReorganizedId){
     _type = TransitionType.bucketReorganized; 
   }
 
-  DirectFileTransition.bucketReorganizedInsertRecord(this._transitionFile, this.bucketPositionInHashTable, this.bucketReorganizedInsertRecordId){
-    _type = TransitionType.bucketReorganizedInsertRecord; 
+  DirectFileTransition.hashTableDuplicateSize(this._transitionFile, this.bucketOverflowedId){
+    _type = TransitionType.hashTableDuplicateSize;
+    bucketFoundId = bucketOverflowedId;
+  }
+
+  DirectFileTransition.recordSaved(this._transitionFile, this.bucketPositionInHashTable, this.recordSaved){
+    _type = TransitionType.recordSaved; 
     if (_transitionFile != Null && bucketPositionInHashTable.clamp(0,_transitionFile.getDirectory().len) == bucketPositionInHashTable){
       bucketFoundId = _transitionFile.getDirectory().hash[bucketPositionInHashTable];
     }else {
@@ -61,11 +83,15 @@ class DirectFileTransition {
     }
   }
 
-  DirectFileTransition.hashTableDuplicateSize(this._transitionFile, this.bucketOverflowedId){
-    _type = TransitionType.hashTableDuplicateSize;
-    bucketFoundId = bucketOverflowedId;
+  DirectFileTransition.recordFound(this._transitionFile, this.bucketPositionInHashTable, this.recordFound){
+    _type = TransitionType.recordFound; 
+    if (_transitionFile != Null && bucketPositionInHashTable.clamp(0,_transitionFile.getDirectory().len) == bucketPositionInHashTable){
+      bucketFoundId = _transitionFile.getDirectory().hash[bucketPositionInHashTable];
+    }else {
+      bucketFoundId = -1;
+    }
   }
-     
+
   /*
   ExternalSortTransition.indexArrayBuilt( this._fragments,
       this._buffer, this._unsortedFilePointer, this._indexArray)
@@ -112,7 +138,6 @@ enum TransitionType {
   bucketFreed,
   bucketEmpty,
   bucketReorganized,
-  bucketReorganizedInsertRecord,
   recordSaved,
   recordDeleted,
   recordFound,
