@@ -74,7 +74,13 @@ class _BucketListWidgetState extends State<BucketListWidget> {
       if(widget.currentTransition?.type.name == "recordSaved" && widget.currentTransition?.recordSaved?.value == records[i].value ) {
         recordColors[i] = Color.fromARGB(255, 153, 1, 153);
       }
+
     }
+    
+    if(widget.currentTransition?.type.name == "recordDeleted" && widget.currentTransition?.bucketFoundId == position) {   
+        recordColors[widget.currentTransition!.recordDeletedPositionInBucket] = Color.fromARGB(255, 153, 1, 26);
+    }
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

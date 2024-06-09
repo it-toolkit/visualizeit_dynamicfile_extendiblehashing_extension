@@ -24,13 +24,17 @@ class _HashingTableWidgetState extends State<HashingTableWidget> {
 
   Widget buildRecord(int position, int? value) {
     
-    Color ColorBox = Colors.blue.shade50;
+    Color colorBox = Colors.blue.shade50;
+    TextStyle textStyleForValue = TextStyle(fontWeight: FontWeight.normal);
     if ( widget.currentTransition?.bucketPositionInHashTable == position && widget.currentTransition!.bucketOverflowedId > 0){
-        ColorBox = Color.fromARGB(255, 247, 75, 84);
+        colorBox = Color.fromARGB(255, 247, 75, 84);
     }else if (widget.currentTransition?.bucketPositionInHashTable == position && widget.currentTransition!.bucketCreatedId > 0 ){
-        ColorBox = Color.fromARGB(255, 111, 245, 58);
+        colorBox = Color.fromARGB(255, 111, 245, 58);
     }else if (widget.currentTransition?.bucketPositionInHashTable == position ){
-        ColorBox = Color.fromARGB(255, 233, 152, 179);
+        colorBox = Color.fromARGB(255, 233, 152, 179);
+    }else if (widget.currentTransition?.hashTablePositionToUpdate == position){
+        colorBox = Color.fromARGB(255, 241, 162, 44);
+        textStyleForValue = TextStyle(fontWeight: FontWeight.bold);
     }
     
     return Row(
@@ -44,8 +48,8 @@ class _HashingTableWidgetState extends State<HashingTableWidget> {
             child: Container(
           padding: EdgeInsets.all(4),
           margin: EdgeInsets.all(1),
-          decoration: BoxDecoration( color: ColorBox, borderRadius: BorderRadius.all(Radius.circular(10))),
-          child: Center(child: Text(value?.toString() ?? '')),
+          decoration: BoxDecoration( color: colorBox, borderRadius: BorderRadius.all(Radius.circular(10))),
+          child: Center(child: Text(value?.toString() ?? '', style: textStyleForValue)),
         ))
       ],
     );

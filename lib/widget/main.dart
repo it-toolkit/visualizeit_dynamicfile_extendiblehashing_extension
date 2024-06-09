@@ -51,7 +51,13 @@ void main() {
   // DirectFileTransition transition = DirectFileTransition.bucketFreed(myfile, 3);
   
   // Transition bucket Empty
-  DirectFileTransition transition = DirectFileTransition.bucketEmpty(myfile, 4);
+  //DirectFileTransition transition = DirectFileTransition.bucketEmpty(myfile, 4);
+
+  // Transition Hash table updated
+  //DirectFileTransition transition = DirectFileTransition.hashTableUpdated(myfile, 4, 3);
+
+  // Transition Record deleted.
+  DirectFileTransition transition = DirectFileTransition.recordDeleted(myfile, 0, FixedLengthRegister(980), 4);
   runApp(MyApp(myfile, transition));
 }
 
