@@ -29,8 +29,9 @@ class _BucketListWidgetState extends State<BucketListWidget> {
     // ignore: non_constant_identifier_names
     Color BucketColorByTransition;
     Color RecordColor; 
+    TextStyle textStyleForHashingBits = TextStyle(fontWeight: FontWeight.normal);
     if ( widget.currentTransition?.bucketOverflowedId == position ){
-        BucketColorByTransition = Color.fromARGB(255, 247, 75, 84); 
+        BucketColorByTransition = Color.fromARGB(255, 247, 75, 84);
     }else if (widget.currentTransition?.bucketCreatedId == position ){
         BucketColorByTransition = Color.fromARGB(255, 111, 245, 58);
     }else if (widget.currentTransition?.bucketReorganizedId == position ){
@@ -61,6 +62,10 @@ class _BucketListWidgetState extends State<BucketListWidget> {
     }else{
         BucketColorPosition = Colors.blue.shade50;
     }
+
+    if (widget.currentTransition?.type.name == "bucketUpdateHashingBits" && widget.currentTransition?.bucketFoundId == position){
+        textStyleForHashingBits = TextStyle(fontWeight: FontWeight.bold);
+    }
     
     List<Color> recordColors = [];
     for (var i = 0; i < widget.bucketRecordCapacity; i++){
@@ -76,7 +81,7 @@ class _BucketListWidgetState extends State<BucketListWidget> {
       }
 
     }
-    
+
     if(widget.currentTransition?.type.name == "recordDeleted" && widget.currentTransition?.bucketFoundId == position) {   
         recordColors[widget.currentTransition!.recordDeletedPositionInBucket] = Color.fromARGB(255, 153, 1, 26);
     }
@@ -112,7 +117,7 @@ class _BucketListWidgetState extends State<BucketListWidget> {
                   width: 40,
                   padding: EdgeInsets.all(4),
                   decoration: BoxDecoration(border: Border(right: BorderSide(color: Colors.black))),
-                  child: Center(child: Text(b.toString(), style: widget.currentTransition?.bucketOverflowedId == position ? TextStyle(fontWeight: FontWeight.bold) : TextStyle(fontWeight: FontWeight.normal))),
+                  child: Center(child: Text(b.toString(), style: textStyleForHashingBits)),
                 ),
                 Container(
                   // padding: EdgeInsets.all(4),

@@ -36,10 +36,14 @@ void main() {
   //DirectFileTransition transition = DirectFileTransition.bucketFound(myfile, 1);
   //Transition 2
   //DirectFileTransition transition = DirectFileTransition.bucketOverflowed(myfile, 1);
+  //Transition 2.1
+  //DirectFileTransition transition = DirectFileTransition.bucketUpdateHashingBits(myfile, 6, TransitionType.bucketOverflowed);
   //Transition 3 (Duplicate the hashing table)
   //DirectFileTransition transition = DirectFileTransition.hashTableDuplicateSize(myfile, 4);
   //Transition 4 (creating new bucket)
   //DirectFileTransition transition = DirectFileTransition.bucketCreated(myfile, 2, 4);
+  //Transition 4.1
+  //DirectFileTransition transition = DirectFileTransition.bucketUpdateHashingBits(myfile, 4, TransitionType.bucketCreated);
   //Transition 5 (reordering records - empty overflowed bucket)
   //DirectFileTransition transition = DirectFileTransition.bucketReorganized(myfile, 3);
   //Transition 6 to N (reordering records - reinserting the record)
@@ -48,16 +52,21 @@ void main() {
   // Different Transition
   //DirectFileTransition transition = DirectFileTransition.recordFound(myfile, 6, FixedLengthRegister(270));
   // Transition bucket Freed
-  // DirectFileTransition transition = DirectFileTransition.bucketFreed(myfile, 3);
+  //DirectFileTransition transition = DirectFileTransition.bucketFreed(myfile, 3);
   
-  // Transition bucket Empty
+  // Transition bucket Empty (used in deletion)
   //DirectFileTransition transition = DirectFileTransition.bucketEmpty(myfile, 4);
 
-  // Transition Hash table updated
-  //DirectFileTransition transition = DirectFileTransition.hashTableUpdated(myfile, 4, 3);
+  // Transition Hash table updated (for creation)
+  //DirectFileTransition transition = DirectFileTransition.hashTableUpdated(myfile, 4, 3, TransitionType.bucketCreated);
+  // Transition Hash table updated (for record deletion)
+  DirectFileTransition transition = DirectFileTransition.hashTableUpdated(myfile, 4, 3, TransitionType.recordDeleted);
 
   // Transition Record deleted.
-  DirectFileTransition transition = DirectFileTransition.recordDeleted(myfile, 0, FixedLengthRegister(980), 4);
+  //DirectFileTransition transition = DirectFileTransition.recordDeleted(myfile, 0, FixedLengthRegister(980), 4);
+
+   // Transition Update Hashing bits in buckets. this occurs when the bucket is overflowed, and when the bucket is freed or rewrited empty.
+  //DirectFileTransition transition = DirectFileTransition.bucketUpdateHashingBits(myfile, 4, TransitionType.bucketFreed);
   runApp(MyApp(myfile, transition));
 }
 

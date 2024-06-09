@@ -20,6 +20,7 @@ class DirectFileTransition {
   BaseRegister? recordSaved;
   BaseRegister? recordDeleted;
   late int recordDeletedPositionInBucket = -1;
+  late final TransitionType currentTransitionType;
 
   TransitionType get type => _type;
   DirectFile get transitionFile => _transitionFile;
@@ -73,6 +74,20 @@ class DirectFileTransition {
     _type = TransitionType.bucketReorganized; 
   }
 
+  DirectFileTransition.bucketUpdateHashingBits(this._transitionFile, this.bucketPositionInHashTable, this.currentTransitionType){
+    _type = TransitionType.bucketUpdateHashingBits; 
+     if (_transitionFile != Null && bucketPositionInHashTable.clamp(0,_transitionFile.getDirectory().len-1) == bucketPositionInHashTable){
+      bucketFoundId = _transitionFile.getDirectory().hash[bucketPositionInHashTable];
+    }else {
+      bucketFoundId = -1;
+    }
+    if (this.currentTransitionType.name == "bucketOverflowed"){
+      bucketOverflowedId = bucketFoundId;
+    }else if (this.currentTransitionType.name == "bucketCreated") {
+      bucketCreatedId = bucketFoundId;
+    }
+  }
+
   DirectFileTransition.hashTableDuplicateSize(this._transitionFile, this.bucketOverflowedId){
     _type = TransitionType.hashTableDuplicateSize;
     bucketFoundId = bucketOverflowedId;
@@ -84,9 +99,12 @@ class DirectFileTransition {
     bucketFoundId = bucketOverflowedId;
   }
 
-  DirectFileTransition.hashTableUpdated(this._transitionFile, this.bucketCreatedId, this.hashTablePositionToUpdate){
+  DirectFileTransition.hashTableUpdated(this._transitionFile, this.bucketFoundId, this.hashTablePositionToUpdate, this.currentTransitionType){
     _type = TransitionType.hashTableUpdated;
-    bucketFoundId = bucketCreatedId;
+    if (currentTransitionType.name == "bucketCreated"){
+      bucketCreatedId = bucketFoundId;
+    }
+    
   }
 
 
@@ -108,45 +126,18 @@ class DirectFileTransition {
     }
   }
 
-  DirectFileTransition.recordDeleted(this._transitionFile, this.recordDeletedPositionInBucket, this.recordDeleted, this.bucketFoundId){
+  DirectFileTransition.recordDeleted(this._transitionFile, this.recordDeletedPositionInBucket, this.recordDeleted, this.bucketPositionInHashTable){
     _type = TransitionType.recordDeleted;
     if (recordDeletedPositionInBucket.clamp(0,_transitionFile.bucketRecordCapacity()-1) != recordDeletedPositionInBucket){
       throw RegisterOutOfBoundsException("The position in bucket that you provided is not valid");
     }
-
+    if (_transitionFile != Null && bucketPositionInHashTable.clamp(0,_transitionFile.getDirectory().len-1) == bucketPositionInHashTable){
+      bucketFoundId = _transitionFile.getDirectory().hash[bucketPositionInHashTable];
+    }else {
+      bucketFoundId = -1;
+    }
   }
 
-  /*
-  ExternalSortTransition.indexArrayBuilt( this._fragments,
-      this._buffer, this._unsortedFilePointer, this._indexArray)
-      : _type = TransitionType.indexArrayBuilt;
-  ExternalSortTransition.indexArrayFrozen(
-      this._fragments,
-      this._buffer,
-      this._unsortedFilePointer,
-      this._indexArray,
-      this._fragmentIndex)
-      : _type = TransitionType.indexArrayFrozen;
-  ExternalSortTransition.replacedEntry(
-      this._fragments,
-      this._buffer,
-      this._unsortedFilePointer,
-      this._indexArray,
-      this._fragmentIndex,
-      this._bufferPositionToReplace)
-      : _type = TransitionType.replacedEntry;
-  ExternalSortTransition.frozenEntry(
-      this._fragments,
-      this._buffer,
-      this._unsortedFilePointer,
-      this._indexArray,
-      this._fragmentIndex,
-      this._bufferPositionToReplace)
-      : _type = TransitionType.frozenEntry;
-  ExternalSortTransition.fileToSortEnded(
-    this._fragments,
-  ): _type = TransitionType.fileToSortEnded;
-  */
   @override
   String toString() {
     
@@ -162,6 +153,7 @@ enum TransitionType {
   bucketFreed,
   bucketEmpty,
   bucketReorganized,
+  bucketUpdateHashingBits,
   recordSaved,
   recordDeleted,
   recordFound,
