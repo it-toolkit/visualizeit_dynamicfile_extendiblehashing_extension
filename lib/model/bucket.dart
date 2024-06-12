@@ -3,7 +3,7 @@ import 'package:visualizeit_dynamicfile_extendiblehashing/exception/register_not
 import 'package:visualizeit_dynamicfile_extendiblehashing/model/register.dart';
 import 'package:visualizeit_extensions/logging.dart';
 
-final _logger = Logger("DFEH.Bucket");
+final _logger = Logger("Extension.DFEH.Model.Bucket");
 
 /*
 empty: The bucket is empty.
@@ -36,6 +36,8 @@ class Bucket{
     _status = BucketStatus.Empty;
     _logger.trace(() => "Creating bucket with id ${id.toString()}");
   }
+
+  Bucket._copy(this._id,this._size,this.bits,this._registerList, this._status);
   
   int get id => _id;
   int get size => _size;
@@ -183,6 +185,15 @@ class Bucket{
   void setStatus(BucketStatus newStatus) {
     _logger.debug(() => "setStatus() - Bucket $_id new status is $newStatus");
     _status = newStatus;
+  }
+
+  Bucket clone(){
+    List<BaseRegister> newRegisterList = List.empty(growable: true);
+    _registerList.forEach((element) { 
+      newRegisterList.add(element.clone());
+    });
+    
+    return Bucket._copy(_id,_size,bits,newRegisterList,_status);
   }
 
 }

@@ -1,6 +1,6 @@
 import 'package:visualizeit_extensions/logging.dart';
 
-final _logger = Logger("DFEH.Directory");
+final _logger = Logger("Extension.DFEH.Model.Directory");
 
 class Directory{
 
@@ -15,6 +15,9 @@ class Directory{
     _hashMap.add(0);
     _logger.trace(() => "Creating Hash table for file"); 
   }
+
+  Directory();
+  Directory._copy(this._hashMap, this._pointer);
 
   int getBucketNumber(int index){
     if (index <= len ){
@@ -119,6 +122,10 @@ class Directory{
 
   bool equalsTo(Directory newDir){
     return _listEquals(_hashMap, newDir._hashMap);
+  }
+
+  Directory clone(){
+    return Directory._copy(_hashMap.toList(), _pointer);
   }
 
 }

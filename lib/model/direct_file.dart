@@ -1,14 +1,16 @@
 
 import 'dart:math';
 import 'package:visualizeit_dynamicfile_extendiblehashing/exception/bucket_overflowed_exception.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing/extension/direct_file_transition.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing/model/observer.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing/model/register.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing/model/bucket.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing/model/directory.dart';
 import 'package:visualizeit_extensions/logging.dart';
 
-final _logger = Logger("DFEH.DirectFile");
+final _logger = Logger("Extension.DFEH.Model.DirectFile");
 
-class DirectFile{
+class DirectFile extends Observable{
 
   late List<Bucket> _file;
   late Directory _table;
@@ -23,6 +25,7 @@ class DirectFile{
     _freed = [];
     _logger.trace(() => "Creating Direct File"); 
   }
+  DirectFile._copy(this._bucketSize, this._file, this._table, this._freed);
 
   List<Bucket> getFileContent() => _file;
   Directory getDirectory() => _table;
@@ -94,7 +97,8 @@ class DirectFile{
     _logger.trace(() => "insert() - Modular value - Directory index is $index");
     int bucketNum = _table.getBucketNumber(index);
     _logger.debug(() => "insert() - Directory is pointing to bucket $bucketNum");
-    
+    notifyObservers(DirectFileTransition.bucketFound(this,index));
+
     // If the file is empty, then the register should be added to the bucket.
     // if not, the register should be added to the bucket pointed by the hash table
     // or directory.
@@ -102,20 +106,26 @@ class DirectFile{
     
       if (_file.isEmpty){
         _logger.trace(() => "insert() - File is empty");
+        notifyObservers(DirectFileTransition.fileIsEmpty(this));  
         bucket = Bucket(_bucketSize,0);
+        notifyObservers(DirectFileTransition.bucketCreated(this,index,0));
+        notifyObservers(DirectFileTransition.bucketFound(this,index)); 
         bucket.setValue(newValue);
-        _file.add(bucket);      
+        notifyObservers(DirectFileTransition.recordSaved(this,index,newValue));
+        _file.add(bucket);
       }
       else{
         /* The BucketNume was found in directory */
         if (bucketNum != -1){
           
           bucket = _file[bucketNum.toInt()];
+          notifyObservers(DirectFileTransition.bucketFound(this,index));
           try{
             bucket.setValue(newValue);
+            notifyObservers(DirectFileTransition.recordSaved(this,index,newValue));
           } on BucketOverflowedException {
             _logger.debug(() => "insert() - Bucket $bucketNum overflowed");
-
+            notifyObservers(DirectFileTransition.bucketOverflowed(this,index));  
             // If log(T) is equal to hashing bits of the bucket then T+=1
             if (log2(_table.len) == bucket.bits){
                 _logger.debug(() => "insert() - Hashing bits are equal to log2(T)");
@@ -295,6 +305,14 @@ reorder(BaseRegister newValue, Bucket overflowedBucket){
     } else{
       return _freed.removeLast();
     }
+  }
+
+  DirectFile clone() {
+    List<Bucket> fileCopy = List.empty(growable: true);
+    _file.forEach((element) {
+      fileCopy.add(element.clone());
+    });
+    return DirectFile._copy(_bucketSize,fileCopy,_table.clone(),_freed.toList());
   }
 
 }
