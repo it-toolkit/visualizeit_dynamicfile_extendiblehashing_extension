@@ -2,6 +2,18 @@ import 'package:visualizeit_dynamicfile_extendiblehashing/exception/register_pos
 import 'package:visualizeit_dynamicfile_extendiblehashing/model/direct_file.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing/model/register.dart';
 
+/*
+abstract class FileTransition{
+  final TransitionType type;
+
+  FileTransition(this.type);
+
+  @override
+  String toString() {
+    return type.toString();
+  }
+}
+*/
 
 class DirectFileTransition {
   late final TransitionType _type;
@@ -81,9 +93,9 @@ class DirectFileTransition {
     }else {
       bucketFoundId = -1;
     }
-    if (this.currentTransitionType.name == "bucketOverflowed"){
+    if (currentTransitionType.name == "bucketOverflowed"){
       bucketOverflowedId = bucketFoundId;
-    }else if (this.currentTransitionType.name == "bucketCreated") {
+    }else if (currentTransitionType.name == "bucketCreated") {
       bucketCreatedId = bucketFoundId;
     }
   }
@@ -138,6 +150,10 @@ class DirectFileTransition {
     }
   }
 
+  DirectFileTransition.fileIsEmpty(this._transitionFile) {
+    _type = TransitionType.fileIsEmpty;
+  }
+
   @override
   String toString() {
     
@@ -159,7 +175,8 @@ enum TransitionType {
   recordFound,
   hashTableDuplicateSize,
   hashTableReduceSize,
-  hashTableUpdated;
+  hashTableUpdated,
+  fileIsEmpty;
 
   @override
   String toString() => name;
