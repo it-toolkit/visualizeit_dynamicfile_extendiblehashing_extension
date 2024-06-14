@@ -22,14 +22,14 @@ class DirectFileExtendibleHashingWidget extends StatefulWidget {
 }
 
 class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendibleHashingWidget> {
-  Widget? _components;
+  //Widget? _components;
 
   _DirectFileExtendibleHashingWidgetState();
 
   @override
   void initState() {
     super.initState();
-    _components = createWidgetsFromFile();
+    //_components = createWidgetsFromFile();
   }
 
 
@@ -67,7 +67,7 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
                       Container(
                                   child: const Center(child: Text("Freed Bucket List", style: TextStyle(fontWeight: FontWeight.bold))),
                                 ),
-                      ConstrainedBox(constraints: BoxConstraints(maxHeight: 100),child: FreedBucketListWidget(freedBucketNumbers: widget._currentTransition!.transitionFile.getFreedList(), currentTransition: widget._currentTransition)),
+                      ConstrainedBox(constraints: const BoxConstraints(maxHeight: 100),child: FreedBucketListWidget(freedBucketNumbers: widget._currentTransition!.transitionFile.getFreedList(), currentTransition: widget._currentTransition)),
                   ]) : const Column (crossAxisAlignment: CrossAxisAlignment.center,) ]
                   ),
                 ],
@@ -75,9 +75,18 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
   }
     @override
   Widget build(BuildContext context) {
-    //_components = createWidgetsFromFile();
-    return createWidgetsFromFile();
-    //return _components;
+    return LayoutBuilder(
+        builder:
+            (BuildContext context, BoxConstraints viewportConstraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints:
+                  BoxConstraints(minHeight: viewportConstraints.maxHeight),
+              child: createWidgetsFromFile(),
+            ),
+          );
+        },
+      );
   }
 
   /*

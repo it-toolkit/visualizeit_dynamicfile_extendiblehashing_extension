@@ -25,12 +25,12 @@ void main() {
   myfile.insert(FixedLengthRegister(462));
   myfile.insert(FixedLengthRegister(809));
   myfile.insert(FixedLengthRegister(459));
-  myfile.delete(FixedLengthRegister(305));
-  myfile.delete(FixedLengthRegister(809));
+  //myfile.delete(FixedLengthRegister(305));
+  //myfile.delete(FixedLengthRegister(809));
   /*Testing 2ª delete algorithm*/
-  myfile.delete(FixedLengthRegister(946));
-  myfile.delete(FixedLengthRegister(410));
-  myfile.delete(FixedLengthRegister(954));
+  //myfile.delete(FixedLengthRegister(946));
+  //myfile.delete(FixedLengthRegister(410));
+  //myfile.delete(FixedLengthRegister(954));
 
   //Transition 1
   //DirectFileTransition transition = DirectFileTransition.bucketFound(myfile, 1);

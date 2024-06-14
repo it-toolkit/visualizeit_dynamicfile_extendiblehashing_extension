@@ -14,16 +14,16 @@ void main() {
   myfile.insert(FixedLengthRegister(946));
   myfile.insert(FixedLengthRegister(741));
   myfile.insert(FixedLengthRegister(446));
-  
   myfile.insert(FixedLengthRegister(123));
   myfile.insert(FixedLengthRegister(376));
-  /*
   myfile.insert(FixedLengthRegister(458));
   myfile.insert(FixedLengthRegister(954));
   myfile.insert(FixedLengthRegister(973));
   myfile.insert(FixedLengthRegister(426));
   myfile.insert(FixedLengthRegister(410));
-  */
+  
+
+
   print("# Transitions: ${observer.transitions.length}");
 
   //Transition 2 is Bucket Created.
@@ -36,7 +36,8 @@ void main() {
   //Transition 29, Bucket created, updating hashing bits
   //Transition 30, updating Hashing table with the new bucket.(Green color)
   //Transition 31, reorganization of bucket 1
-  runApp(MyApp(myfile, observer.transitions[30]));
+  //Transition 88, saving record 410.
+  runApp(MyApp(myfile, observer.transitions[88]));
 }
 
 class MyApp extends StatelessWidget {

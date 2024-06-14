@@ -5,7 +5,7 @@ class HashingTableWidget extends StatefulWidget {
   final List<int?> initialValues;
   final DirectFileTransition? currentTransition;
 
-  const HashingTableWidget({this.initialValues = const [], this.currentTransition});
+  const HashingTableWidget({super.key, this.initialValues = const [], this.currentTransition});
 
   @override
   State<StatefulWidget> createState() {
