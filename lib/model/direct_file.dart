@@ -116,7 +116,7 @@ class DirectFile extends Observable{
         notifyObservers(DirectFileTransition.recordSaved(clone(),index,newValue));
       }
       else{
-        /* The BucketNume was found in directory */
+        /* The BucketNum was found in directory */
         if (bucketNum != -1){
           
           bucket = _file[bucketNum.toInt()];
@@ -153,8 +153,10 @@ reorder(BaseRegister newValue, Bucket overflowedBucket, int bucketInitialIndex){
     Bucket newBucket;
     /*We must considered here the buckets in the _freed list*/
     if (_freed.isNotEmpty){
+      DirectFile myClone = clone();
       lastBucketId = getFreedBucket();
       newBucket = _file[lastBucketId];
+      notifyObservers(DirectFileTransition.usingBucketFreed(myClone,lastBucketId));
     }
     else{
       lastBucketId=_file.length;
@@ -205,8 +207,10 @@ reorder(BaseRegister newValue, Bucket overflowedBucket, int bucketInitialIndex){
     Bucket newBucket;
     /*We must considered here the buckets in the _freed list*/
     if (_freed.isNotEmpty){
+      DirectFile myClone = clone();
       lastBucketId = getFreedBucket();
       newBucket = _file[lastBucketId];
+      notifyObservers(DirectFileTransition.usingBucketFreed(myClone,lastBucketId));
     }
     else{
       lastBucketId=_file.length;
@@ -217,12 +221,15 @@ reorder(BaseRegister newValue, Bucket overflowedBucket, int bucketInitialIndex){
       //overflowedBucket.setStatus(BucketStatus.empty);
       //newBucket.bits = overflowedBucket.bits;
       _file.add(newBucket);
+      notifyObservers(DirectFileTransition.bucketCreated(clone(),-1,lastBucketId));
     }
     //Modifying hashing bits and adding a new bucket to the file.
     overflowedBucket.bits+=1;
+    notifyObservers(DirectFileTransition.bucketUpdateHashingBits(clone(),-1,overflowedBucket.id,TransitionType.bucketOverflowed));
     //Changing the status of the overflowed bucket to empty.
     overflowedBucket.setStatus(BucketStatus.Empty);
     newBucket.bits = overflowedBucket.bits;
+    notifyObservers(DirectFileTransition.bucketUpdateHashingBits(clone(),-1,newBucket.id,TransitionType.bucketCreated));
 
     int T = _table.len;
     //Calculating values for updating the directory.
@@ -233,6 +240,7 @@ reorder(BaseRegister newValue, Bucket overflowedBucket, int bucketInitialIndex){
     _logger.trace(() => "reorder2() - New bucket id: ${newBucket.id}");
     _logger.trace(() => "reorder2() - Jump: $jump");
     _table.update(bucketInitialIndex,newBucket.id,jump);
+    notifyObservers(DirectFileTransition.hashTableUpdated(clone(),newBucket.id,bucketInitialIndex,TransitionType.bucketCreated));
 
     //Reordering registers again, iterating over the overflowed bucket and calculating mod.
     //The result could be the same bucket and we must work recursively
@@ -267,7 +275,9 @@ reorder(BaseRegister newValue, Bucket overflowedBucket, int bucketInitialIndex){
     _logger.debug(() => "delete() - Directory is pointing to bucket $bucketNum");
 
     Bucket myBucket = _file[bucketNum];
+    notifyObservers(DirectFileTransition.bucketFound(clone(),index));
     _logger.debug(() => "delete() - Bucket with id ${myBucket.id} was found");
+    DirectFile myClone = clone();
     if (myBucket.delValue(delValue)){
        //Check if the bucket is empty
        if (myBucket.isEmpty()){
@@ -276,8 +286,10 @@ reorder(BaseRegister newValue, Bucket overflowedBucket, int bucketInitialIndex){
           int jump1 = pow(x, b-1).ceil();
           int jump2 = pow(x, b).ceil(); 
           int replacemmentBucketNum = _table.review(index, jump1);
+          //This part is when a Bucket will be freed
           if (replacemmentBucketNum != -1){
             _file[replacemmentBucketNum].bits-=1;
+            notifyObservers(DirectFileTransition.bucketUpdateHashingBits(myClone,-1,replacemmentBucketNum,TransitionType.replacemmentBucketFound));
             _table.update(index,replacemmentBucketNum,jump2);
             //Adding the value again to appy to the model
             //The freed bucket should contain the value and i cannot know this at the moment of deleting.
@@ -288,11 +300,16 @@ reorder(BaseRegister newValue, Bucket overflowedBucket, int bucketInitialIndex){
             myBucket.setStatus(BucketStatus.Freed);
             _logger.trace(() => "delete() - The bucket was added to the freed list");
             _freed.add(bucketNum);
+            notifyObservers(DirectFileTransition.bucketFreed(clone(),bucketNum));
 
             if (myBucket.bits == log2(_table.len)){
               //Checking if the directory is mirrowed. Half part is equal to the other part.
               _table.reduceIfMirrowed();
+              notifyObservers(DirectFileTransition.hashTableReduceSize(clone(), -1));
             }
+          }else{
+            //This part when the bucket will be saved in Empty state.
+            notifyObservers(DirectFileTransition.bucketEmpty(clone(),bucketNum));
           }
        } 
     }

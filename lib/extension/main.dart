@@ -14,9 +14,10 @@ void main() {
   myfile.insert(FixedLengthRegister(946));
   myfile.insert(FixedLengthRegister(741));
   myfile.insert(FixedLengthRegister(446));
-  /*
+  
   myfile.insert(FixedLengthRegister(123));
   myfile.insert(FixedLengthRegister(376));
+  /*
   myfile.insert(FixedLengthRegister(458));
   myfile.insert(FixedLengthRegister(954));
   myfile.insert(FixedLengthRegister(973));
@@ -29,7 +30,13 @@ void main() {
   //Transition 9 bucket overflowed
   //Transition 10 Bucket created
   //Transition 21, record 741 saved in bucket 0
-  runApp(MyApp(myfile, observer.transitions[14]));
+  //Transition 26, Bucket 1 overflowed.
+  //Transition 27, Bucket 2 created.
+  //Transition 28, Bucket overflowed updating hashing bits
+  //Transition 29, Bucket created, updating hashing bits
+  //Transition 30, updating Hashing table with the new bucket.(Green color)
+  //Transition 31, reorganization of bucket 1
+  runApp(MyApp(myfile, observer.transitions[30]));
 }
 
 class MyApp extends StatelessWidget {

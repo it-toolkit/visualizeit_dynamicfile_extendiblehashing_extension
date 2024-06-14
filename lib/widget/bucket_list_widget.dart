@@ -49,7 +49,7 @@ class _BucketListWidgetState extends State<BucketListWidget> {
 
     // ignore: non_constant_identifier_names
     Color BucketColorPosition;
-    if ( widget.currentTransition?.bucketFoundId == position && widget.currentTransition?.bucketOverflowedId == position ){
+    if ( widget.currentTransition?.bucketOverflowedId == position ){
         BucketColorPosition = Color.fromARGB(255, 247, 75, 84);
     }else if (widget.currentTransition?.bucketCreatedId == position ){
         BucketColorPosition = Color.fromARGB(255, 111, 245, 58);
@@ -66,7 +66,7 @@ class _BucketListWidgetState extends State<BucketListWidget> {
     }
 
     if (widget.currentTransition?.type.name == "bucketUpdateHashingBits" && ( widget.currentTransition?.bucketCreatedId == position || widget.currentTransition?.bucketOverflowedId == position)){
-        textStyleForHashingBits = TextStyle(fontWeight: FontWeight.bold);
+        textStyleForHashingBits = const TextStyle(color: Colors.white,backgroundColor: Colors.black, fontWeight: FontWeight.bold);
     }
     
     List<Color> recordColors = [];
@@ -119,7 +119,7 @@ class _BucketListWidgetState extends State<BucketListWidget> {
                   width: 40,
                   padding: EdgeInsets.all(4),
                   decoration: BoxDecoration(border: Border(right: BorderSide(color: Colors.black))),
-                  child: Center(child: Text(b.toString(), style: textStyleForHashingBits)),
+                  child: Center(child: Text(" $b ", style: textStyleForHashingBits)),
                 ),
                 Container(
                   // padding: EdgeInsets.all(4),

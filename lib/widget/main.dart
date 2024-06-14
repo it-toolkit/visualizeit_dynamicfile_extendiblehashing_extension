@@ -41,9 +41,9 @@ void main() {
   //Transition 3 (Duplicate the hashing table)
   //DirectFileTransition transition = DirectFileTransition.hashTableDuplicateSize(myfile, 4);
   //Transition 4 (creating new bucket)
-  DirectFileTransition transition = DirectFileTransition.bucketCreated(myfile, 2, 1);
+  //DirectFileTransition transition = DirectFileTransition.bucketCreated(myfile, 2, 1);
   //Transition 4.1
-  //DirectFileTransition transition = DirectFileTransition.bucketUpdateHashingBits(myfile, 4, TransitionType.bucketCreated);
+  DirectFileTransition transition = DirectFileTransition.bucketUpdateHashingBits(myfile, -1, 4, TransitionType.bucketCreated);
   //Transition 5 (reordering records - empty overflowed bucket)
   //DirectFileTransition transition = DirectFileTransition.bucketReorganized(myfile, 6);
   //Transition 6 to N (reordering records - reinserting the record)

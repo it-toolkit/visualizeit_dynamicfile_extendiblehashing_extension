@@ -68,8 +68,7 @@ class DirectFileTransition {
       bucketFoundId = bucketCreatedId;
     }else {
       bucketFoundId = -1;
-    }*/
-     
+    }*/  
   }
 
   DirectFileTransition.bucketFreed(this._transitionFile, this.bucketFreedId){
@@ -81,26 +80,15 @@ class DirectFileTransition {
     _type = TransitionType.bucketEmpty; 
     bucketFoundId = bucketEmptyId;
   }
+
+  DirectFileTransition.usingBucketFreed(this._transitionFile, this.bucketFreedId){
+    _type = TransitionType.bucketFreed; 
+    bucketFoundId = bucketFreedId;
+  }
   
   DirectFileTransition.bucketReorganized(this._transitionFile, this.bucketReorganizedId){
     _type = TransitionType.bucketReorganized; 
   }
-
-  /*
-  DirectFileTransition.bucketUpdateHashingBits(this._transitionFile, this.bucketPositionInHashTable, this.currentTransitionType){
-    _type = TransitionType.bucketUpdateHashingBits; 
-     if (_transitionFile != Null && bucketPositionInHashTable.clamp(0,_transitionFile.getDirectory().len-1) == bucketPositionInHashTable){
-      bucketFoundId = _transitionFile.getDirectory().hash[bucketPositionInHashTable];
-    }else {
-      bucketFoundId = -1;
-    }
-    if (currentTransitionType.name == "bucketOverflowed"){
-      bucketOverflowedId = bucketFoundId;
-    }else if (currentTransitionType.name == "bucketCreated") {
-      bucketCreatedId = bucketFoundId;
-    }
-  }
-  */
 
   DirectFileTransition.bucketUpdateHashingBits(this._transitionFile, this.bucketPositionInHashTable, int bucketId , this.currentTransitionType){
     _type = TransitionType.bucketUpdateHashingBits; 
@@ -117,6 +105,8 @@ class DirectFileTransition {
       bucketOverflowedId = bucketId;
     }else if (currentTransitionType.name == "bucketCreated") {
       bucketCreatedId = bucketId;
+    }else if ( currentTransitionType.name == "replacemmentBucketFound"){  
+      bucketFoundId = bucketId;
     }
   }
 
@@ -137,7 +127,6 @@ class DirectFileTransition {
     }
     
   }
-
 
   DirectFileTransition.recordSaved(this._transitionFile, this.bucketPositionInHashTable, this.recordSaved){
     _type = TransitionType.recordSaved; 
@@ -189,6 +178,8 @@ enum TransitionType {
   bucketEmpty,
   bucketReorganized,
   bucketUpdateHashingBits,
+  usingBucketFreed,
+  replacemmentBucketFound,
   recordSaved,
   recordDeleted,
   recordFound,
