@@ -41,14 +41,14 @@ void main() {
   //Transition 3 (Duplicate the hashing table)
   //DirectFileTransition transition = DirectFileTransition.hashTableDuplicateSize(myfile, 4);
   //Transition 4 (creating new bucket)
-  //DirectFileTransition transition = DirectFileTransition.bucketCreated(myfile, 2, 4);
+  DirectFileTransition transition = DirectFileTransition.bucketCreated(myfile, 2, 1);
   //Transition 4.1
   //DirectFileTransition transition = DirectFileTransition.bucketUpdateHashingBits(myfile, 4, TransitionType.bucketCreated);
   //Transition 5 (reordering records - empty overflowed bucket)
-  //DirectFileTransition transition = DirectFileTransition.bucketReorganized(myfile, 3);
+  //DirectFileTransition transition = DirectFileTransition.bucketReorganized(myfile, 6);
   //Transition 6 to N (reordering records - reinserting the record)
   // Saving Record
-  //DirectFileTransition transition = DirectFileTransition.recordSaved(myfile, 6, FixedLengthRegister(270));
+  //DirectFileTransition transition = DirectFileTransition.recordSaved(myfile, 10, FixedLengthRegister(426));
   // Different Transition
   //DirectFileTransition transition = DirectFileTransition.recordFound(myfile, 6, FixedLengthRegister(270));
   // Transition bucket Freed
@@ -60,7 +60,7 @@ void main() {
   // Transition Hash table updated (for creation)
   //DirectFileTransition transition = DirectFileTransition.hashTableUpdated(myfile, 4, 3, TransitionType.bucketCreated);
   // Transition Hash table updated (for record deletion)
-  DirectFileTransition transition = DirectFileTransition.hashTableUpdated(myfile, 4, 3, TransitionType.recordDeleted);
+  //DirectFileTransition transition = DirectFileTransition.hashTableUpdated(myfile, 4, 3, TransitionType.recordDeleted);
 
   // Transition Record deleted.
   //DirectFileTransition transition = DirectFileTransition.recordDeleted(myfile, 0, FixedLengthRegister(980), 4);
@@ -79,8 +79,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: const Text('Hashing Extensible example', style: TextStyle(fontWeight: FontWeight.bold))),
-        body: DirectFileExtendibleHashingWidget(file, fileTransition)
+        appBar: AppBar(title: const Text('Extendible Hashing Sample', style: TextStyle(fontWeight: FontWeight.bold))),
+        body: DirectFileExtendibleHashingWidget(fileTransition)
       ),
     );
   }

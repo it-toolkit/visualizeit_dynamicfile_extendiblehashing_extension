@@ -11,10 +11,10 @@ void main() {
   var observer = DirectFileObserver();
   myfile.registerObserver(observer);
   myfile.insert(FixedLengthRegister(270));
-  /*
   myfile.insert(FixedLengthRegister(946));
   myfile.insert(FixedLengthRegister(741));
   myfile.insert(FixedLengthRegister(446));
+  /*
   myfile.insert(FixedLengthRegister(123));
   myfile.insert(FixedLengthRegister(376));
   myfile.insert(FixedLengthRegister(458));
@@ -24,7 +24,12 @@ void main() {
   myfile.insert(FixedLengthRegister(410));
   */
   print("# Transitions: ${observer.transitions.length}");
-  runApp(MyApp(myfile, observer.transitions[4]));
+
+  //Transition 2 is Bucket Created.
+  //Transition 9 bucket overflowed
+  //Transition 10 Bucket created
+  //Transition 21, record 741 saved in bucket 0
+  runApp(MyApp(myfile, observer.transitions[14]));
 }
 
 class MyApp extends StatelessWidget {
@@ -38,7 +43,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(title: const Text('Hashing Extensible example', style: TextStyle(fontWeight: FontWeight.bold))),
-        body: DirectFileExtendibleHashingWidget(file, fileTransition)
+        body: DirectFileExtendibleHashingWidget(fileTransition)    
       ),
     );
   }

@@ -28,10 +28,12 @@ class _BucketListWidgetState extends State<BucketListWidget> {
     
     // ignore: non_constant_identifier_names
     Color BucketColorByTransition;
-    Color RecordColor; 
+    Color recordColor; 
     TextStyle textStyleForHashingBits = TextStyle(fontWeight: FontWeight.normal);
     if ( widget.currentTransition?.bucketOverflowedId == position ){
         BucketColorByTransition = Color.fromARGB(255, 247, 75, 84);
+    }else if (widget.currentTransition?.bucketFoundId == position ){
+        BucketColorByTransition = Color.fromARGB(255, 233, 152, 179);
     }else if (widget.currentTransition?.bucketCreatedId == position ){
         BucketColorByTransition = Color.fromARGB(255, 111, 245, 58);
     }else if (widget.currentTransition?.bucketReorganizedId == position ){
@@ -43,13 +45,13 @@ class _BucketListWidgetState extends State<BucketListWidget> {
     }else{
         BucketColorByTransition = Colors.blue.shade50;
     }
-    RecordColor = BucketColorByTransition;
+    recordColor = BucketColorByTransition;
 
     // ignore: non_constant_identifier_names
     Color BucketColorPosition;
     if ( widget.currentTransition?.bucketFoundId == position && widget.currentTransition?.bucketOverflowedId == position ){
         BucketColorPosition = Color.fromARGB(255, 247, 75, 84);
-    }else if (widget.currentTransition?.bucketFoundId == position && widget.currentTransition?.bucketCreatedId == position ){
+    }else if (widget.currentTransition?.bucketCreatedId == position ){
         BucketColorPosition = Color.fromARGB(255, 111, 245, 58);
     }else if (widget.currentTransition?.bucketFoundId == position && widget.currentTransition?.bucketFreedId == position ){
         BucketColorPosition = Color.fromARGB(255, 111, 120, 241);
@@ -63,13 +65,13 @@ class _BucketListWidgetState extends State<BucketListWidget> {
         BucketColorPosition = Colors.blue.shade50;
     }
 
-    if (widget.currentTransition?.type.name == "bucketUpdateHashingBits" && widget.currentTransition?.bucketFoundId == position){
+    if (widget.currentTransition?.type.name == "bucketUpdateHashingBits" && ( widget.currentTransition?.bucketCreatedId == position || widget.currentTransition?.bucketOverflowedId == position)){
         textStyleForHashingBits = TextStyle(fontWeight: FontWeight.bold);
     }
     
     List<Color> recordColors = [];
     for (var i = 0; i < widget.bucketRecordCapacity; i++){
-      recordColors.add(RecordColor);
+      recordColors.add(recordColor);
     }
     
     for (var i = 0; i < records.length; i++){

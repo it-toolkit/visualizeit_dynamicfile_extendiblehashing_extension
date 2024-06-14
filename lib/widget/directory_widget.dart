@@ -26,9 +26,9 @@ class _HashingTableWidgetState extends State<HashingTableWidget> {
     
     Color colorBox = Colors.blue.shade50;
     TextStyle textStyleForValue = TextStyle(fontWeight: FontWeight.normal);
-    if ( widget.currentTransition?.bucketPositionInHashTable == position && widget.currentTransition!.bucketOverflowedId > 0){
+    if ( widget.currentTransition?.bucketPositionInHashTable == position && widget.currentTransition!.bucketOverflowedId >= 0){
         colorBox = Color.fromARGB(255, 247, 75, 84);
-    }else if (widget.currentTransition?.bucketPositionInHashTable == position && widget.currentTransition!.bucketCreatedId > 0 ){
+    }else if (widget.currentTransition?.bucketPositionInHashTable == position && widget.currentTransition!.bucketCreatedId >= 0 ){
         colorBox = Color.fromARGB(255, 111, 245, 58);
     }else if (widget.currentTransition?.bucketPositionInHashTable == position ){
         colorBox = Color.fromARGB(255, 233, 152, 179);

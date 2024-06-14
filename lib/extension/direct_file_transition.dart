@@ -64,11 +64,11 @@ class DirectFileTransition {
 
   DirectFileTransition.bucketCreated(this._transitionFile, this.bucketPositionInHashTable, this.bucketCreatedId){
     _type = TransitionType.bucketCreated;
-    if (_transitionFile != Null ){
+    /*if (_transitionFile != Null ){
       bucketFoundId = bucketCreatedId;
     }else {
       bucketFoundId = -1;
-    }
+    }*/
      
   }
 
@@ -86,6 +86,7 @@ class DirectFileTransition {
     _type = TransitionType.bucketReorganized; 
   }
 
+  /*
   DirectFileTransition.bucketUpdateHashingBits(this._transitionFile, this.bucketPositionInHashTable, this.currentTransitionType){
     _type = TransitionType.bucketUpdateHashingBits; 
      if (_transitionFile != Null && bucketPositionInHashTable.clamp(0,_transitionFile.getDirectory().len-1) == bucketPositionInHashTable){
@@ -99,10 +100,28 @@ class DirectFileTransition {
       bucketCreatedId = bucketFoundId;
     }
   }
+  */
 
-  DirectFileTransition.hashTableDuplicateSize(this._transitionFile, this.bucketOverflowedId){
+  DirectFileTransition.bucketUpdateHashingBits(this._transitionFile, this.bucketPositionInHashTable, int bucketId , this.currentTransitionType){
+    _type = TransitionType.bucketUpdateHashingBits; 
+
+    if (this.bucketPositionInHashTable !=-1 ){
+      if ( _transitionFile != Null && bucketPositionInHashTable.clamp(0,_transitionFile.getDirectory().len-1) == bucketPositionInHashTable){
+        bucketFoundId = _transitionFile.getDirectory().hash[bucketPositionInHashTable];
+      }else {
+        bucketFoundId = -1;
+      }
+    }
+
+    if (currentTransitionType.name == "bucketOverflowed"){
+      bucketOverflowedId = bucketId;
+    }else if (currentTransitionType.name == "bucketCreated") {
+      bucketCreatedId = bucketId;
+    }
+  }
+
+  DirectFileTransition.hashTableDuplicateSize(this._transitionFile, this.bucketPositionInHashTable, this.bucketCreatedId){
     _type = TransitionType.hashTableDuplicateSize;
-    bucketFoundId = bucketOverflowedId;
   }
 
   //TODO: REVIEW this

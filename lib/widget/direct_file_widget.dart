@@ -6,15 +6,14 @@ import 'package:visualizeit_dynamicfile_extendiblehashing/widget/directory_widge
 import 'package:visualizeit_dynamicfile_extendiblehashing/widget/freed_bucket_list_widget.dart';
 
 class DirectFileExtendibleHashingWidget extends StatefulWidget {
-  final DirectFile file;
   final DirectFileTransition? _currentTransition;
   //final BSharpTreeCommand? commandInExecution;
   /*
   const DirectFileExtendibleHashingWidget(this.file, this.currentTransition, this.commandInExecution,
       {super.key});
   */
-  
-  const DirectFileExtendibleHashingWidget(this.file, this._currentTransition,
+
+  const DirectFileExtendibleHashingWidget(this._currentTransition,
       {super.key});
 
   @override
@@ -24,7 +23,6 @@ class DirectFileExtendibleHashingWidget extends StatefulWidget {
 }
 
 class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendibleHashingWidget> {
-  //Map<int, List<Widget>>? _components;
   Widget? _components;
 
   _DirectFileExtendibleHashingWidgetState();
@@ -45,7 +43,8 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
                     children:[ Container(
                                   child: const Center(child: Text("Tabla de Hashing", style: TextStyle(fontWeight: FontWeight.bold))),
                                 ),
-                                ConstrainedBox(constraints: const BoxConstraints(maxWidth: 150), child: HashingTableWidget(initialValues: widget.file.getDirectory().hash, currentTransition: widget._currentTransition))
+                                //ConstrainedBox(constraints: const BoxConstraints(maxWidth: 150), child: HashingTableWidget(initialValues: widget.file.getDirectory().hash, currentTransition: widget._currentTransition))
+                                ConstrainedBox(constraints: const BoxConstraints(maxWidth: 150), child: HashingTableWidget(initialValues: widget._currentTransition!.transitionFile.getDirectory().hash, currentTransition: widget._currentTransition))
                     ],
                     ),
                   const Spacer(),
@@ -53,14 +52,15 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
                     children:[ Container(
                                   child: const Center(child: Text("Archivo Directo", style: TextStyle(fontWeight: FontWeight.bold))),
                                 ),
-                                BucketListWidget(bucketRecordCapacity:  widget.file.bucketRecordCapacity(), initialBuckets: widget.file.getFileContent(), currentTransition: widget._currentTransition)
+                                //BucketListWidget(bucketRecordCapacity:  widget.file.bucketRecordCapacity(), initialBuckets: widget.file.getFileContent(), currentTransition: widget._currentTransition)
+                                BucketListWidget(bucketRecordCapacity:  widget._currentTransition!.transitionFile.bucketRecordCapacity(), initialBuckets: widget._currentTransition!.transitionFile.getFileContent(), currentTransition: widget._currentTransition)
                     ],
                     ),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [ widget.file.getFreedList().isNotEmpty ? 
+                children: [ widget._currentTransition!.transitionFile.getFreedList().isNotEmpty ? 
                   //const Spacer(),
                   Column( 
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -68,7 +68,7 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
                       Container(
                                   child: const Center(child: Text("Lista de Cubetas Libres", style: TextStyle(fontWeight: FontWeight.bold))),
                                 ),
-                      ConstrainedBox(constraints: BoxConstraints(maxHeight: 100),child: FreedBucketListWidget(freedBucketNumbers: widget.file.getFreedList(), currentTransition: widget._currentTransition)),
+                      ConstrainedBox(constraints: BoxConstraints(maxHeight: 100),child: FreedBucketListWidget(freedBucketNumbers: widget._currentTransition!.transitionFile.getFreedList(), currentTransition: widget._currentTransition)),
                   ]) : const Column (crossAxisAlignment: CrossAxisAlignment.center,) ]
                   ),
                 ],
