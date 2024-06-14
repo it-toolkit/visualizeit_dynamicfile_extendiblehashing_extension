@@ -75,7 +75,7 @@ class _HashingTableWidgetState extends State<HashingTableWidget> {
               Expanded (
                 child: Container(
                     padding: EdgeInsets.all(4),
-                    child: const Center(child: Text("Cubeta #", style: TextStyle(fontWeight: FontWeight.bold))),
+                    child: const Center(child: Text("Bucket #", style: TextStyle(fontWeight: FontWeight.bold))),
                 ),
               ),
             ],

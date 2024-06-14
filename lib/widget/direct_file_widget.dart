@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing/extension/direct_file_transition.dart';
-import 'package:visualizeit_dynamicfile_extendiblehashing/model/direct_file.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing/widget/bucket_list_widget.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing/widget/directory_widget.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing/widget/freed_bucket_list_widget.dart';
@@ -41,7 +40,7 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
                 children: [
                   Column( 
                     children:[ Container(
-                                  child: const Center(child: Text("Tabla de Hashing", style: TextStyle(fontWeight: FontWeight.bold))),
+                                  child: const Center(child: Text("Hashing Table", style: TextStyle(fontWeight: FontWeight.bold))),
                                 ),
                                 //ConstrainedBox(constraints: const BoxConstraints(maxWidth: 150), child: HashingTableWidget(initialValues: widget.file.getDirectory().hash, currentTransition: widget._currentTransition))
                                 ConstrainedBox(constraints: const BoxConstraints(maxWidth: 150), child: HashingTableWidget(initialValues: widget._currentTransition!.transitionFile.getDirectory().hash, currentTransition: widget._currentTransition))
@@ -50,7 +49,7 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
                   const Spacer(),
                   Column( 
                     children:[ Container(
-                                  child: const Center(child: Text("Archivo Directo", style: TextStyle(fontWeight: FontWeight.bold))),
+                                  child: const Center(child: Text("File", style: TextStyle(fontWeight: FontWeight.bold))),
                                 ),
                                 //BucketListWidget(bucketRecordCapacity:  widget.file.bucketRecordCapacity(), initialBuckets: widget.file.getFileContent(), currentTransition: widget._currentTransition)
                                 BucketListWidget(bucketRecordCapacity:  widget._currentTransition!.transitionFile.bucketRecordCapacity(), initialBuckets: widget._currentTransition!.transitionFile.getFileContent(), currentTransition: widget._currentTransition)
@@ -66,7 +65,7 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
-                                  child: const Center(child: Text("Lista de Cubetas Libres", style: TextStyle(fontWeight: FontWeight.bold))),
+                                  child: const Center(child: Text("Freed Bucket List", style: TextStyle(fontWeight: FontWeight.bold))),
                                 ),
                       ConstrainedBox(constraints: BoxConstraints(maxHeight: 100),child: FreedBucketListWidget(freedBucketNumbers: widget._currentTransition!.transitionFile.getFreedList(), currentTransition: widget._currentTransition)),
                   ]) : const Column (crossAxisAlignment: CrossAxisAlignment.center,) ]
