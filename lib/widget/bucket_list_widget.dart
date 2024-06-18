@@ -4,10 +4,14 @@ import 'package:visualizeit_dynamicfile_extendiblehashing/model/bucket.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing/model/register.dart';
 
 class BucketListWidget extends StatefulWidget {
-  final List<Bucket> initialBuckets;
-  final int bucketRecordCapacity;
-  final DirectFileTransition? currentTransition;
-  const BucketListWidget({super.key, required this.bucketRecordCapacity, this.initialBuckets = const [], this.currentTransition});
+  final BucketListTransition? currentTransition;
+  late List<Bucket> initialBuckets;
+  late int bucketRecordCapacity;
+
+  BucketListWidget(this.bucketRecordCapacity, this.currentTransition, {super.key})
+  {
+    initialBuckets = currentTransition!.getBucketList();
+  }
 
   @override
   State<StatefulWidget> createState() {
@@ -32,8 +36,6 @@ class _BucketListWidgetState extends State<BucketListWidget> {
     TextStyle textStyleForHashingBits = TextStyle(fontWeight: FontWeight.normal);
     if ( widget.currentTransition?.bucketOverflowedId == position ){
         BucketColorByTransition = Color.fromARGB(255, 247, 75, 84);
-    }else if (widget.currentTransition?.bucketFoundId == position ){
-        BucketColorByTransition = Color.fromARGB(255, 233, 152, 179);
     }else if (widget.currentTransition?.bucketCreatedId == position ){
         BucketColorByTransition = Color.fromARGB(255, 111, 245, 58);
     }else if (widget.currentTransition?.bucketReorganizedId == position ){
@@ -42,6 +44,8 @@ class _BucketListWidgetState extends State<BucketListWidget> {
         BucketColorByTransition = Color.fromARGB(255, 111, 120, 241);
     }else if (widget.currentTransition?.bucketEmptyId == position ){
         BucketColorByTransition = Color.fromARGB(255, 231, 195, 118);
+    }else if (widget.currentTransition?.bucketFoundId == position ){
+        BucketColorByTransition = Color.fromARGB(255, 233, 152, 179);
     }else{
         BucketColorByTransition = Colors.blue.shade50;
     }
@@ -65,7 +69,7 @@ class _BucketListWidgetState extends State<BucketListWidget> {
         BucketColorPosition = Colors.blue.shade50;
     }
 
-    if (widget.currentTransition?.type.name == "bucketUpdateHashingBits" && ( widget.currentTransition?.bucketCreatedId == position || widget.currentTransition?.bucketOverflowedId == position)){
+    if (widget.currentTransition?.type.name == "bucketUpdateHashingBits" && ( widget.currentTransition?.bucketCreatedId == position || widget.currentTransition?.bucketOverflowedId == position || widget.currentTransition?.bucketFoundId == position )){
         textStyleForHashingBits = const TextStyle(color: Colors.white,backgroundColor: Colors.black, fontWeight: FontWeight.bold);
     }
     

@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing/extension/direct_file_transition.dart';
 
 class HashingTableWidget extends StatefulWidget {
-  final List<int?> initialValues;
-  final DirectFileTransition? currentTransition;
+  final List<int?>? initialValues;
+  //final DirectFileTransition? currentTransition;
+  final DirectoryTransition? currentTransition;
 
   const HashingTableWidget({super.key, this.initialValues = const [], this.currentTransition});
 
@@ -18,7 +19,7 @@ class _HashingTableWidgetState extends State<HashingTableWidget> {
 
   @override
   void initState() {
-    values = List.from(widget.initialValues);
+    values = List.from(widget.initialValues as Iterable);
     super.initState();
   }
 
@@ -26,15 +27,15 @@ class _HashingTableWidgetState extends State<HashingTableWidget> {
     
     Color colorBox = Colors.blue.shade50;
     TextStyle textStyleForValue = TextStyle(fontWeight: FontWeight.normal);
-    if ( widget.currentTransition?.bucketPositionInHashTable == position && widget.currentTransition!.bucketOverflowedId >= 0){
+    if ( widget.currentTransition?.hashTablePosition == position && widget.currentTransition!.bucketOverflowedId >= 0){
         colorBox = Color.fromARGB(255, 247, 75, 84);
-    }else if (widget.currentTransition?.bucketPositionInHashTable == position && widget.currentTransition!.bucketCreatedId >= 0 ){
+    }else if (widget.currentTransition?.hashTablePosition == position && widget.currentTransition!.bucketCreatedId >= 0 ){
         colorBox = Color.fromARGB(255, 111, 245, 58);
-    }else if (widget.currentTransition?.bucketPositionInHashTable == position ){
-        colorBox = Color.fromARGB(255, 233, 152, 179);
-    }else if (widget.currentTransition?.hashTablePositionToUpdate == position){
+    }else if (widget.currentTransition?.hashTablePosition == position && widget.currentTransition?.currentType.name == "hashTablePointedBucket" ){
         colorBox = Color.fromARGB(255, 241, 162, 44);
         textStyleForValue = TextStyle(fontWeight: FontWeight.bold);
+    }else if (widget.currentTransition?.hashTablePosition == position ){
+        colorBox = Color.fromARGB(255, 233, 152, 179);
     }
     
     return Row(

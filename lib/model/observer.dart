@@ -18,4 +18,9 @@ abstract class Observable {
   void removeObserver(DirectFileObserver observer) {
     observers.removeWhere((element) => element == observer);
   }
+
+  List<DirectFileObserver> getObservers() => observers;
+
+  DirectFileObserver getObserver() => observers[0];
+
 }

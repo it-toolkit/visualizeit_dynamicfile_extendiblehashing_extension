@@ -3,7 +3,8 @@ import 'package:visualizeit_dynamicfile_extendiblehashing/extension/direct_file_
 
 class FreedBucketListWidget extends StatefulWidget {
   final List<int?> freedBucketNumbers;
-  final DirectFileTransition? currentTransition;
+  //final DirectFileTransition? currentTransition;
+  final FreedListTransition? currentTransition;
 
   const FreedBucketListWidget({super.key, this.freedBucketNumbers = const [], this.currentTransition});
 

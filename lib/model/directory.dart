@@ -1,8 +1,11 @@
+import 'package:visualizeit_dynamicfile_extendiblehashing/extension/direct_file_transition.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing/model/direct_file.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing/model/observer.dart';
 import 'package:visualizeit_extensions/logging.dart';
 
 final _logger = Logger("Extension.DFEH.Model.Directory");
 
-class Directory{
+class Directory extends Observable{
 
   late List<int> _hashMap;
   int _pointer = 0;
@@ -19,6 +22,8 @@ class Directory{
   Directory();
   Directory._copy(this._hashMap, this._pointer);
 
+  int getPointer() => _pointer;
+
   int getBucketNumber(int index){
     if (index <= len ){
       _pointer = index;
@@ -28,7 +33,7 @@ class Directory{
   }
 
   /* Used in the insertion when is necessary to duplicate the hash table */
-  duplicate(int lastBucketId){
+  duplicate(int lastBucketId,DirectFile file){
    _logger.trace(() => "duplicate() - Begins");
    _logger.trace(() => "duplicate() - Actual hash table: ${_hashMap.toString()}");
    var mapCopy = [..._hashMap];//copy of the original list
@@ -36,19 +41,26 @@ class Directory{
    //Duplicating the table.
    mapCopy.addAll(_hashMap);
    //Updating the Bucket number.
-   mapCopy[_pointer]=lastBucketId;
+   //mapCopy[_pointer]=lastBucketId;
    _logger.debug(() => "duplicate() - New hash table: ${mapCopy.toString()}");
    _hashMap = mapCopy;
+   notifyObservers(DirectFileTransition.hashTableDuplicateSize(file,file.getFileContent(),clone()));
+   //Updating the Bucket number.
+   _hashMap[_pointer]=lastBucketId;
+   notifyObservers(DirectFileTransition.hashTableUpdated(file,file.getFileContent(),clone(),lastBucketId,_pointer,TransitionType.hashTablePointedBucket));
    _logger.trace(() => "duplicate() - END");
   }
 
   /* Update the hash table, used to update the bucket number in a circular way */
-  update(int init, int newBucketNum, int jump){
+  update(int init, int newBucketNum, int jump, DirectFile file){
     _logger.trace(() => "update() - Begins");
     _logger.debug(() => "update() - Position <$init> (init variable) is pointing to bucket ${newBucketNum.toString()}");
     _hashMap[init] = newBucketNum;
+    var myClone = file.clone();
+    notifyObservers(DirectFileTransition.hashTableUpdated(myClone, myClone.getFileContent(), clone(), newBucketNum, init, TransitionType.hashTablePointedBucket));
     var i=1;
     var pointer = 0;
+   
     while (true){
       pointer = (init + jump*i) % _hashMap.length;
       i++;
@@ -56,6 +68,9 @@ class Directory{
         break;
       }
       _hashMap[pointer]= newBucketNum;
+      myClone = file.clone();
+      //notifyObservers(DirectFileTransition.hashTableUpdated(myClone, myClone.getFileContent(), clone(), newBucketNum, pointer, TransitionType.bucketCreated));
+      //notifyObservers(DirectFileTransition.hashTableUpdated(file, clone(), pointer, newBucketNum, TransitionType.bucketCreated));
     }     
     _logger.trace(() => "update() - END");
   }
