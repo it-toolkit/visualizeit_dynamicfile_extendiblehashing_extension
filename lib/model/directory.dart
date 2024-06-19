@@ -69,7 +69,7 @@ class Directory extends Observable{
       }
       _hashMap[pointer]= newBucketNum;
       myClone = file.clone();
-      //notifyObservers(DirectFileTransition.hashTableUpdated(myClone, myClone.getFileContent(), clone(), newBucketNum, pointer, TransitionType.bucketCreated));
+      notifyObservers(DirectFileTransition.hashTableUpdated(myClone, myClone.getFileContent(), clone(), newBucketNum, pointer, TransitionType.hashTablePointedBucket));
       //notifyObservers(DirectFileTransition.hashTableUpdated(file, clone(), pointer, newBucketNum, TransitionType.bucketCreated));
     }     
     _logger.trace(() => "update() - END");

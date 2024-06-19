@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing/exception/register_position_out_of_bounds.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing/model/bucket.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing/model/direct_file.dart';
@@ -18,147 +17,6 @@ abstract class Transition{
     return type.toString();
   }
 }
-
-/*
-class DirectFileTransition {
-  late final DirectFile? _transitionFile;
-  late int bucketFoundId = -1;
-  late int bucketPositionInHashTable = -1;
-  late int bucketOverflowedId = -1;
-  late int bucketCreatedId = -1;
-  late int bucketReorganizedId = -1;
-  late int bucketReorganizedInsertRecordId = -1;
-  late int bucketRecordSavedId = -1;
-  late int bucketEmptyId = -1;
-  late int bucketFreedId = -1;
-  late int hashTablePositionToUpdate = -1;
-  BaseRegister? recordFound;
-  BaseRegister? recordSaved;
-  BaseRegister? recordDeleted;
-  late int recordDeletedPositionInBucket = -1;
-  late TransitionType currentTransitionType;
-
-  late DirectoryTransition _transitionDirectory;
-
-  DirectFile? get transitionFile => _transitionFile;
-  bool get isRecordFound => recordFound != null ? true : false;
-  set transitionType(TransitionType transitionType) => currentTransitionType = transitionType;
-  Directory? getDirectory() => _transitionFile?.getDirectory();
- 
-  DirectFileTransition(
-      super._type,
-      [this._transitionFile]);
-
-  DirectFileTransition.bucketFound(this._transitionFile, this.bucketPositionInHashTable):super(TransitionType.bucketFound){
-    if (_transitionFile != Null && bucketPositionInHashTable.clamp(0,_transitionFile!.getDirectory().len-1) == bucketPositionInHashTable){
-      bucketFoundId = _transitionFile.getDirectory().hash[bucketPositionInHashTable];
-    }else {
-      bucketFoundId = -1;
-    }
-  }
-
-  DirectFileTransition.bucketOverflowed(this._transitionFile, this.bucketPositionInHashTable):super(TransitionType.bucketOverflowed){
-    if (_transitionFile != Null && bucketPositionInHashTable.clamp(0,_transitionFile!.getDirectory().len-1) == bucketPositionInHashTable){
-      bucketFoundId = _transitionFile.getDirectory().hash[bucketPositionInHashTable];
-    }else {
-      bucketFoundId = -1;
-    }
-    bucketOverflowedId = bucketFoundId;
-  }
-
-  DirectFileTransition.bucketCreated(this._transitionFile, this.bucketPositionInHashTable, this.bucketCreatedId):super(TransitionType.bucketCreated){
-    /*if (_transitionFile != Null ){
-      bucketFoundId = bucketCreatedId;
-    }else {
-      bucketFoundId = -1;
-    }*/  
-  }
-
-  DirectFileTransition.bucketFreed(this._transitionFile, this.bucketFreedId):super(TransitionType.bucketFreed){
-    bucketFoundId = bucketFreedId;
-  }
-
-  DirectFileTransition.bucketEmpty(this._transitionFile, this.bucketEmptyId):super(TransitionType.bucketEmpty){
-    bucketFoundId = bucketEmptyId;
-  }
-
-  DirectFileTransition.usingBucketFreed(this._transitionFile, this.bucketFreedId):super(TransitionType.bucketFreed){
-    bucketFoundId = bucketFreedId;
-  }
-  
-  DirectFileTransition.bucketReorganized(this._transitionFile, this.bucketReorganizedId):super(TransitionType.bucketReorganized);
-
-  DirectFileTransition.bucketUpdateHashingBits(this._transitionFile, this.bucketPositionInHashTable, int bucketId , this.currentTransitionType)
-  :super(TransitionType.bucketUpdateHashingBits){
-    if (bucketPositionInHashTable !=-1 ){
-      if ( _transitionFile != Null && bucketPositionInHashTable.clamp(0,_transitionFile!.getDirectory().len-1) == bucketPositionInHashTable){
-        bucketFoundId = _transitionFile.getDirectory().hash[bucketPositionInHashTable];
-      }else {
-        bucketFoundId = -1;
-      }
-    }
-
-    if (currentTransitionType.name == "bucketOverflowed"){
-      bucketOverflowedId = bucketId;
-    }else if (currentTransitionType.name == "bucketCreated") {
-      bucketCreatedId = bucketId;
-    }else if ( currentTransitionType.name == "replacemmentBucketFound"){  
-      bucketFoundId = bucketId;
-    }
-  }
-
-/*
-  DirectFileTransition.hashTableDuplicateSize(this._transitionFile, this.bucketPositionInHashTable, this.bucketCreatedId):super(TransitionType.hashTableDuplicateSize){
-  }
-
-  //TODO: REVIEW this
-  DirectFileTransition.hashTableReduceSize(this._transitionFile, this.bucketOverflowedId):super(TransitionType.hashTableReduceSize){
-    bucketFoundId = bucketOverflowedId;
-  }
-*/
-  DirectFileTransition.hashTableUpdated(this._transitionFile, Directory transitionDirectory, int bucketId,this.hashTablePositionToUpdate, this.currentTransitionType):super(TransitionType.hashTableUpdated){
-    _transitionDirectory = DirectoryTransition.hashTableUpdated(transitionDirectory, bucketId, hashTablePositionToUpdate, currentTransitionType);
-  }
-
-  DirectFileTransition.recordSaved(this._transitionFile, this.bucketPositionInHashTable, this.recordSaved):super(TransitionType.recordSaved){
-    if (_transitionFile != Null && bucketPositionInHashTable.clamp(0,_transitionFile!.getDirectory().len-1) == bucketPositionInHashTable){
-      bucketFoundId = _transitionFile.getDirectory().hash[bucketPositionInHashTable];
-    }else {
-      bucketFoundId = -1;
-    }
-  }
-
-  DirectFileTransition.recordFound(this._transitionFile, this.bucketPositionInHashTable, this.recordFound):super(TransitionType.recordFound){
-    if (_transitionFile != Null && bucketPositionInHashTable.clamp(0,_transitionFile!.getDirectory().len-1) == bucketPositionInHashTable){
-      bucketFoundId = _transitionFile.getDirectory().hash[bucketPositionInHashTable];
-    }else {
-      bucketFoundId = -1;
-    }
-  }
-
-  DirectFileTransition.recordDeleted(this._transitionFile, this.recordDeletedPositionInBucket, this.recordDeleted, this.bucketPositionInHashTable):super(TransitionType.recordDeleted){
-    if (recordDeletedPositionInBucket.clamp(0,_transitionFile!.bucketRecordCapacity()-1) != recordDeletedPositionInBucket){
-      throw RegisterOutOfBoundsException("The position in bucket that you provided is not valid");
-    }
-    if (_transitionFile != Null && bucketPositionInHashTable.clamp(0,_transitionFile.getDirectory().len-1) == bucketPositionInHashTable){
-      bucketFoundId = _transitionFile.getDirectory().hash[bucketPositionInHashTable];
-    }else {
-      bucketFoundId = -1;
-    }
-  }
-
-  DirectFileTransition.fileIsEmpty(this._transitionFile):super(TransitionType.fileIsEmpty) {
-  }
-
-  @override
-  String toString() {
-    
-    return type.toString();
-  }
-
-}
-*/
-
 
 class BucketListTransition extends Transition {
   final List<Bucket> _transitionBucketList;
@@ -447,22 +305,6 @@ class DirectFileTransition extends Transition {
     _directoryTransition = DirectoryTransition(null);
     _freedListTransition = FreedListTransition([]);
   }
-  /*
-  DirectFileTransition.recordDeleted(this._transitionFile, this.recordDeletedPositionInBucket, this.recordDeleted, this.bucketPositionInHashTable):super(TransitionType.recordDeleted){
-    if (recordDeletedPositionInBucket.clamp(0,_transitionFile!.bucketRecordCapacity()-1) != recordDeletedPositionInBucket){
-      throw RegisterOutOfBoundsException("The position in bucket that you provided is not valid");
-    }
-    if (_transitionFile != Null && bucketPositionInHashTable.clamp(0,_transitionFile.getDirectory().len-1) == bucketPositionInHashTable){
-      bucketFoundId = _transitionFile.getDirectory().hash[bucketPositionInHashTable];
-    }else {
-      bucketFoundId = -1;
-    }
-  }
-
-  DirectFileTransition.fileIsEmpty(this._transitionFile):super(TransitionType.fileIsEmpty) {
-  }
-*/
-
 }
 
 

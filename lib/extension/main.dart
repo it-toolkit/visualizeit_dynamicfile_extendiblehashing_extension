@@ -39,14 +39,17 @@ void main() {
   //Transition 32, Duplicating Hashing table
   //Transition 33, updating Hashing table with the new bucket.(Orange color)
   //Transition 34, reorganization of bucket 1
+  //Review this.
   //Transition 62, updating hashing table with new bucket.
+  //Transition 67. updating hashing table
+  //Transition 68. updading hashing table.
   //Transition 88, saving record 410.
   //Transition 90, Overflowed bucket
   //Transition 93, new bucket updating hashing bits.
   //Transition 94, adding new bucket to the hashing table in the position of the overflowed bucket.
   //Transition 95, first hashing table udpate.
   //print(observer.transitions[31].type.name);
-  runApp(MyApp(myfile, observer.transitions[59]));
+  runApp(MyApp(myfile, observer.transitions[70]));
 }
 
 class MyApp extends StatelessWidget {
