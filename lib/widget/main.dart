@@ -70,6 +70,9 @@ void main() {
   //DirectFileTransition transition = DirectFileTransition.bucketUpdateHashingBits(myfile, 4, TransitionType.bucketFreed);
 
   DirectFileTransition transition = DirectFileTransition.usingBucketFreed(myfile, myfile.getFileContent(), myfile.getDirectory(), 3);
+
+
+
   runApp(MyApp(myfile, transition));
 }
 

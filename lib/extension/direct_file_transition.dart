@@ -152,7 +152,7 @@ class DirectFileTransition extends Transition {
 
   DirectFileTransition.bucketFoundWithModel(this._transitionFile, int bucketFoundId, int hashTableIndex ):super(TransitionType.bucketFound){
     _bucketListTransition = BucketListTransition.bucketFound(_transitionFile.getFileContent(), bucketFoundId);
-    _directoryTransition = DirectoryTransition.hashTablePointedBucket(_transitionFile.getDirectory(), hashTableIndex , TransitionType.hashTablePointedBucket);
+    _directoryTransition = DirectoryTransition.hashTablePointedBucket(_transitionFile.getDirectory(), hashTableIndex , TransitionType.bucketFound);
     _freedListTransition = FreedListTransition(_transitionFile!.getFreedList());
   }
 

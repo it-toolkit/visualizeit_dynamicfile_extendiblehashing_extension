@@ -67,8 +67,8 @@ void main() {
   //Transition 108. Updating hashing table with the replacemente bucket
   //Transition 109, the bucket is marked as freed and is added to the freed bucket list.
   //Transition 110, reducing the hashing table (because the table is mirrowed)
-  print(observer.transitions[107].type.name);
-  runApp(MyApp(myfile, observer.transitions[110]));
+  print(observer.transitions[108].type.name);
+  runApp(MyApp(myfile, observer.transitions[108]));
 }
 
 class MyApp extends StatelessWidget {
