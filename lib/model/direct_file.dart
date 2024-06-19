@@ -2,6 +2,7 @@
 import 'dart:math';
 import 'package:visualizeit_dynamicfile_extendiblehashing/exception/bucket_overflowed_exception.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing/extension/direct_file_transition.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing/model/direct_file_observer.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing/model/observer.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing/model/register.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing/model/bucket.dart';
@@ -26,9 +27,15 @@ class DirectFile extends Observable{
     _logger.trace(() => "Creating Direct File"); 
   }
 
+  @override
+  void registerObserver(DirectFileObserver observer) {
+    observers.add(observer);
+    _table.registerObserver(observer);
+  }
+  /*
   initObserver(){
     _table.registerObserver(getObserver());
-  }
+  }*/
 
   DirectFile.copy(this._bucketSize, this._file, this._table, this._freed);
 
@@ -296,7 +303,7 @@ reorder(BaseRegister newValue, Bucket overflowedBucket, int bucketInitialIndex){
     Bucket myBucket = _file[bucketNum];
     notifyObservers(DirectFileTransition.bucketFoundWithModel(clone(),bucketNum,index));
     _logger.debug(() => "delete() - Bucket with id ${myBucket.id} was found");
-    DirectFile myClone = clone();
+    //DirectFile myClone = clone();
     if (myBucket.delValue(delValue)){
        //Check if the bucket is empty
        if (myBucket.isEmpty()){
@@ -308,13 +315,14 @@ reorder(BaseRegister newValue, Bucket overflowedBucket, int bucketInitialIndex){
           //This part is when a Bucket will be freed
           if (replacemmentBucketNum != -1){
             _file[replacemmentBucketNum].bits-=1;
+            myBucket.setValue(delValue);
             //notifyObservers(DirectFileTransition.bucketUpdateHashingBits(myClone,-1,replacemmentBucketNum,TransitionType.replacemmentBucketFound));
-            notifyObservers(DirectFileTransition.bucketUpdateHashingBitsWithModel(myClone,replacemmentBucketNum,TransitionType.replacemmentBucketFound));
+            notifyObservers(DirectFileTransition.bucketUpdateHashingBitsWithModel(clone(),replacemmentBucketNum,TransitionType.replacemmentBucketFound));
             _table.update(index,replacemmentBucketNum,jump2, clone());
             //Adding the value again to appy to the model
             //The freed bucket should contain the value and i cannot know this at the moment of deleting.
             //TODO: Review this.
-            myBucket.setValue(delValue);
+            //myBucket.setValue(delValue);
             //Changing bucket status to "free"
             _logger.trace(() => "delete() - The bucket status is now 'free'");
             myBucket.setStatus(BucketStatus.Freed);

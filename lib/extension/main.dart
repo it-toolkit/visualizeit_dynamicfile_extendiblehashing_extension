@@ -9,7 +9,7 @@ void main() {
   DirectFile myfile = DirectFile(3); 
   var observer = DirectFileObserver();
   myfile.registerObserver(observer);
-  myfile.initObserver();
+  //myfile.initObserver();
   myfile.insert(FixedLengthRegister(270));
   myfile.insert(FixedLengthRegister(946));
   myfile.insert(FixedLengthRegister(741));
@@ -22,8 +22,19 @@ void main() {
   myfile.insert(FixedLengthRegister(426));
   myfile.insert(FixedLengthRegister(410));
 
-  //Second insertion algorithm
+  //Testing second algoritm for insertion.
   myfile.insert(FixedLengthRegister(789));
+  myfile.insert(FixedLengthRegister(484));
+  myfile.insert(FixedLengthRegister(305));
+  myfile.insert(FixedLengthRegister(462));
+  myfile.insert(FixedLengthRegister(809));
+  myfile.insert(FixedLengthRegister(459));
+  myfile.delete(FixedLengthRegister(305));
+  myfile.delete(FixedLengthRegister(809));
+  /*Testing 2ª delete algorithm*/
+  myfile.delete(FixedLengthRegister(946));
+  myfile.delete(FixedLengthRegister(410));
+  myfile.delete(FixedLengthRegister(954));
   
   print("# Transitions: ${observer.transitions.length}");
 
@@ -48,8 +59,16 @@ void main() {
   //Transition 93, new bucket updating hashing bits.
   //Transition 94, adding new bucket to the hashing table in the position of the overflowed bucket.
   //Transition 95, first hashing table udpate.
-  //print(observer.transitions[31].type.name);
-  runApp(MyApp(myfile, observer.transitions[70]));
+  //Transition 103. Record Found in bucket
+  //Transiton 104. bucket 4 in empty state.
+  //Transition 105. Record found in bucket. (deleting 410)
+  //Transition 106. Record deleted.
+  //Transition 107. Updating replacment bucket bits. reducing the bits in 1.
+  //Transition 108. Updating hashing table with the replacemente bucket
+  //Transition 109, the bucket is marked as freed and is added to the freed bucket list.
+  //Transition 110, reducing the hashing table (because the table is mirrowed)
+  print(observer.transitions[107].type.name);
+  runApp(MyApp(myfile, observer.transitions[110]));
 }
 
 class MyApp extends StatelessWidget {
