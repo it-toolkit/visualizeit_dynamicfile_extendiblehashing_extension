@@ -1,6 +1,6 @@
 {
-    "name": "visualizeit_dynamicfile_extendiblehashing_extension",
-    "short_name": "visualizeit_dynamicfile_extendiblehashing_extension",
+    "name": "visualizeit_dynamicfile_extendiblehashing_extension_extension",
+    "short_name": "visualizeit_dynamicfile_extendiblehashing_extension_extension",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -1,6 +1,7 @@
-import 'package:visualizeit_dynamicfile_extendiblehashing/exception/bucket_overflowed_exception.dart';
-import 'package:visualizeit_dynamicfile_extendiblehashing/exception/register_not_found_exception.dart';
-import 'package:visualizeit_dynamicfile_extendiblehashing/model/register.dart';
+
+import 'package:visualizeit_dynamicfile_extendiblehashing_extension/exception/bucket_overflowed_exception.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing_extension/exception/register_not_found_exception.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing_extension/model/register.dart';
 import 'package:visualizeit_extensions/logging.dart';
 
 final _logger = Logger("Extension.DFEH.Model.Bucket");

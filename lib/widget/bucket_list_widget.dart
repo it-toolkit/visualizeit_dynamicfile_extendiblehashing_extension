@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:visualizeit_dynamicfile_extendiblehashing/extension/direct_file_transition.dart';
-import 'package:visualizeit_dynamicfile_extendiblehashing/model/bucket.dart';
-import 'package:visualizeit_dynamicfile_extendiblehashing/model/register.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing_extension/extension/direct_file_transition.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing_extension/model/bucket.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing_extension/model/register.dart';
 
 class BucketListWidget extends StatefulWidget {
   final BucketListTransition? currentTransition;

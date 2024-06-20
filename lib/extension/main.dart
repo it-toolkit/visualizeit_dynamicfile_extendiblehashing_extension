@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:visualizeit_dynamicfile_extendiblehashing/extension/direct_file_transition.dart';
-import 'package:visualizeit_dynamicfile_extendiblehashing/model/direct_file.dart';
-import 'package:visualizeit_dynamicfile_extendiblehashing/model/direct_file_observer.dart';
-import 'package:visualizeit_dynamicfile_extendiblehashing/model/register.dart';
-import 'package:visualizeit_dynamicfile_extendiblehashing/widget/direct_file_widget.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing_extension/extension/direct_file_transition.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing_extension/model/direct_file.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing_extension/model/direct_file_observer.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing_extension/model/register.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing_extension/widget/direct_file_widget.dart';
 
 void main() {
   DirectFile myfile = DirectFile(3); 
@@ -20,6 +20,8 @@ void main() {
   myfile.insert(FixedLengthRegister(954));
   myfile.insert(FixedLengthRegister(973));
   myfile.insert(FixedLengthRegister(426));
+  
+  /*
   myfile.insert(FixedLengthRegister(410));
 
   //Testing second algoritm for insertion.
@@ -35,7 +37,8 @@ void main() {
   myfile.delete(FixedLengthRegister(946));
   myfile.delete(FixedLengthRegister(410));
   myfile.delete(FixedLengthRegister(954));
-  
+  */
+
   print("# Transitions: ${observer.transitions.length}");
 
   //Transition 1 is Bucket Created.
@@ -67,8 +70,9 @@ void main() {
   //Transition 108. Updating hashing table with the replacemente bucket
   //Transition 109, the bucket is marked as freed and is added to the freed bucket list.
   //Transition 110, reducing the hashing table (because the table is mirrowed)
-  print(observer.transitions[108].type.name);
-  runApp(MyApp(myfile, observer.transitions[108]));
+  DirectFileTransition transition = observer.transitions[43];
+  print(transition.type.name);
+  runApp(MyApp(myfile, transition));
 }
 
 class MyApp extends StatelessWidget {

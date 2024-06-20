@@ -1,6 +1,6 @@
 
-import 'package:visualizeit_dynamicfile_extendiblehashing/extension/direct_file_transition.dart';
-import 'package:visualizeit_dynamicfile_extendiblehashing/model/direct_file_observer.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing_extension/extension/direct_file_transition.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing_extension/model/direct_file_observer.dart';
 
 abstract class Observable {
   final List<DirectFileObserver> observers = [];

@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:test/test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:visualizeit_dynamicfile_extendiblehashing/model/bucket.dart';
-import 'package:visualizeit_dynamicfile_extendiblehashing/model/direct_file.dart';
-import 'package:visualizeit_dynamicfile_extendiblehashing/model/directory.dart';
-import 'package:visualizeit_dynamicfile_extendiblehashing/model/register.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing_extension/model/bucket.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing_extension/model/direct_file.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing_extension/model/directory.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing_extension/model/register.dart';
 
 class DirectFileMock extends Mock implements DirectFile {}
 class DirectoryMock extends Mock implements Directory {}

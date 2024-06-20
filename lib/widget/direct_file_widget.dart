@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:visualizeit_dynamicfile_extendiblehashing/extension/direct_file_transition.dart';
-import 'package:visualizeit_dynamicfile_extendiblehashing/widget/bucket_list_widget.dart';
-import 'package:visualizeit_dynamicfile_extendiblehashing/widget/directory_widget.dart';
-import 'package:visualizeit_dynamicfile_extendiblehashing/widget/freed_bucket_list_widget.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing_extension/extension/direct_file_transition.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing_extension/widget/bucket_list_widget.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing_extension/widget/directory_widget.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing_extension/widget/freed_bucket_list_widget.dart';
 
 class DirectFileExtendibleHashingWidget extends StatefulWidget {
-  final DirectFileTransition? _currentTransition;
+  final DirectFileTransition _currentTransition;
   //final BSharpTreeCommand? commandInExecution;
   /*
   const DirectFileExtendibleHashingWidget(this.file, this.currentTransition, this.commandInExecution,

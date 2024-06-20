@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:visualizeit_dynamicfile_extendiblehashing/extension/direct_file_transition.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing_extension/extension/direct_file_transition.dart';
 
 class HashingTableWidget extends StatefulWidget {
   final List<int?>? initialValues;

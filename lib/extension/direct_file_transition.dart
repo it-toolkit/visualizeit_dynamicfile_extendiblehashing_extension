@@ -1,8 +1,8 @@
-import 'package:visualizeit_dynamicfile_extendiblehashing/exception/register_position_out_of_bounds.dart';
-import 'package:visualizeit_dynamicfile_extendiblehashing/model/bucket.dart';
-import 'package:visualizeit_dynamicfile_extendiblehashing/model/direct_file.dart';
-import 'package:visualizeit_dynamicfile_extendiblehashing/model/directory.dart';
-import 'package:visualizeit_dynamicfile_extendiblehashing/model/register.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing_extension/exception/register_position_out_of_bounds.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing_extension/model/bucket.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing_extension/model/direct_file.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing_extension/model/directory.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing_extension/model/register.dart';
 
 
 abstract class Transition{

@@ -1,7 +1,7 @@
 
-import 'package:visualizeit_dynamicfile_extendiblehashing/model/bucket.dart';
-import 'package:visualizeit_dynamicfile_extendiblehashing/model/direct_file.dart';
-import 'package:visualizeit_dynamicfile_extendiblehashing/model/register.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing_extension/model/bucket.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing_extension/model/direct_file.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing_extension/model/register.dart';
 
 
 void main() {
