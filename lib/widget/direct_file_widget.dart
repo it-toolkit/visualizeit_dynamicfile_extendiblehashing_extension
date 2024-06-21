@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/extension/direct_file_command.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/extension/direct_file_transition.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing_extension/model/direct_file.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/widget/bucket_list_widget.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/widget/directory_widget.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/widget/freed_bucket_list_widget.dart';
 
 class DirectFileExtendibleHashingWidget extends StatefulWidget {
+  final DirectFile _initFile;
   final DirectFileTransition _currentTransition;
   final DirectFileExtendibleHashingCommand? commandInExecution;
 
-  const DirectFileExtendibleHashingWidget(this._currentTransition,this.commandInExecution,
+  const DirectFileExtendibleHashingWidget(this._initFile,this._currentTransition,this.commandInExecution,
       {super.key});
 
   @override
@@ -72,6 +74,10 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
   }
 
   Widget createWidgetsFromFile() {
+    if (widget._currentTransition != null){
+        
+    }
+    
     return Column( children: [ 
             Row( children: [ 
               Column(children:[ 
@@ -103,13 +109,8 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
                                         ), 
                               ],
                   ),
-                  const Spacer(),
-                  Column( 
-                    children:[ 
-                       Container(
-                          child: getInternalBanner()) 
-                      ],
-                  ),
+            const Spacer(),
+            getInternalBanner(),
             const Spacer(),] ),
             Row( children: [
               Column(children:[ 

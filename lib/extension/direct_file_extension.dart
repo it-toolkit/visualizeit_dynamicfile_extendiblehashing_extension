@@ -60,7 +60,7 @@ DirectFileExtendibleHashingExtensionCore()
           // ignore: prefer_interpolation_to_compose_strings
           _logger.trace(() => "BucketList " + model.currentTransition!.getBucketListTransition()!.getBucketList().toString());
           _logger.trace(() => "BucketList 2" + model.currentTransition!.getTransitionFile()!.getFileContent().toString());
-      return DirectFileExtendibleHashingWidget(model.currentTransition!,model.commandInExecution);
+      return DirectFileExtendibleHashingWidget(model.baseFile,model.currentTransition!,model.commandInExecution);
     } else {
       return null;
     }

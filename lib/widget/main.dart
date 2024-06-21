@@ -87,7 +87,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(title: const Text('Extendible Hashing Sample', style: TextStyle(fontWeight: FontWeight.bold))),
-        body: DirectFileExtendibleHashingWidget(fileTransition, DirectFileExtendibleHashingInsertCommand(0, "SomeModelName"))
+        body: DirectFileExtendibleHashingWidget(file,fileTransition, DirectFileExtendibleHashingInsertCommand(0, "SomeModelName"))
       ),
     );
   }

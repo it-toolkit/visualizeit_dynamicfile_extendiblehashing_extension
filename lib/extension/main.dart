@@ -10,7 +10,6 @@ void main() {
   DirectFile myfile = DirectFile(3); 
   var observer = DirectFileObserver();
   myfile.registerObserver(observer);
-  //myfile.initObserver();
   myfile.insert(FixedLengthRegister(270));
   myfile.insert(FixedLengthRegister(946));
   myfile.insert(FixedLengthRegister(741));
@@ -87,7 +86,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(title: const Text('Hashing Extensible example', style: TextStyle(fontWeight: FontWeight.bold))),
-        body: DirectFileExtendibleHashingWidget(fileTransition,DirectFileExtendibleHashingInsertCommand(0, "SomeModelName"))    
+        body: DirectFileExtendibleHashingWidget(file,fileTransition,DirectFileExtendibleHashingInsertCommand(0, "SomeModelName"))    
       ),
     );
   }
