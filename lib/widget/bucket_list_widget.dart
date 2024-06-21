@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/extension/direct_file_transition.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/model/bucket.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/model/register.dart';
+import 'package:visualizeit_extensions/logging.dart';
+
+final _logger = Logger("extension.extendiblehashing.bucketlistwidget");
 
 class BucketListWidget extends StatefulWidget {
   final BucketListTransition? currentTransition;
@@ -11,6 +14,8 @@ class BucketListWidget extends StatefulWidget {
   BucketListWidget(this.bucketRecordCapacity, this.currentTransition, {super.key})
   {
     initialBuckets = currentTransition!.getBucketList();
+    _logger.trace(() => "BucketList " + initialBuckets.toString());
+
   }
 
   @override

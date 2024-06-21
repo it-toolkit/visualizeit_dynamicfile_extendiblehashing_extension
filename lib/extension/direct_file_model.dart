@@ -5,46 +5,49 @@ import 'package:visualizeit_dynamicfile_extendiblehashing_extension/model/direct
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/model/direct_file_observer.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/model/register.dart';
 import 'package:visualizeit_extensions/common.dart';
+import 'package:visualizeit_extensions/logging.dart';
+
+final _logger = Logger("extension.extendiblehashing.model");
 
 class DirectFileExtendibleHashingModel extends Model {
-  final DirectFile _baseFile;
-  DirectFile? _lastTransitionFile;
+  late DirectFile baseFile;
+  //DirectFile? _lastTransitionFile;
   List<DirectFileTransition> _transitions = [];
-  //late TreeLoggerObserver loggerObserver;
 
   int _currentFrame = 0;
   DirectFileExtendibleHashingCommand? commandInExecution;
 
   DirectFileExtendibleHashingModel(String name, int bucketSize, List<int> initialValues, [bool? variableRecordSize])
-      : _baseFile = DirectFile(bucketSize),
+      : baseFile = DirectFile(bucketSize),
         super(DirectFileExtendibleHashingExtension.extensionId, name) {
     
     if (variableRecordSize!){
       //TODO: NOT IMPLEMENTED IN MODEL
     }
     else{
-      //loggerObserver = TreeLoggerObserver(_baseTree);
-      //_baseTree.insertAll(initialValues);
       for (int value in initialValues){
-        _baseFile.insert(FixedLengthRegister(value));
+        baseFile.insert(FixedLengthRegister(value));
       }
     }
-    _lastTransitionFile = _baseFile;
+    //_lastTransitionFile = _baseFile;
+    _logger.trace(() => "Creating DirectFileExtendibleHashingModel"); 
   }
   
   DirectFileExtendibleHashingModel.copyWith(
-      this._baseFile,
-      this._lastTransitionFile,
+      this.baseFile,
+      //this._lastTransitionFile,
       this._transitions,
       this._currentFrame,
       this.commandInExecution,
       super.extensionId,
       super.name);
 
+  /*
   DirectFile? get currentFile => _transitions.isEmpty
       ? _lastTransitionFile
       : _transitions[_currentFrame].getTransitionFile() ?? _lastTransitionFile;// TODO: CHECK if getTransitionFile is returning what is expected here.
-
+  */
+  
   DirectFileTransition? get currentTransition =>
       _transitions.isNotEmpty ? _transitions[_currentFrame] : null;
 
@@ -54,20 +57,23 @@ class DirectFileExtendibleHashingModel extends Model {
     if (_canExecuteCommand(command)) {
       if (isInTransition()) {
         _currentFrame++;
+        _logger.trace(() => "Command: $command");
+        _logger.trace(() => "Current Frame : $_currentFrame"); 
       } else {
         //_lastTransitionFile = _baseFile.clone();
         commandInExecution = command;
         _currentFrame = 0;
         var transitionObserver = DirectFileObserver();
-        _baseFile.registerObserver(transitionObserver);
+        baseFile.registerObserver(transitionObserver);
 
         var functionToExecute = command.commandToFunction();
-        functionToExecute(_baseFile);
+        _logger.trace(() => "Function to Execute $functionToExecute.toString()"); 
+        functionToExecute(baseFile);
+        baseFile.status();
         
         _transitions = transitionObserver.transitions;
-        _baseFile.removeObserver(transitionObserver);//Porque se saca?
-
-        //TODO: tengo que analizar a que commando se llama aca? como se hace en el external sort?
+        _logger.trace(() => "# Transitions generated: $_transitions" );
+        baseFile.removeObserver(transitionObserver);
       
       }
       return (_pendingFrames, this);
@@ -89,8 +95,8 @@ class DirectFileExtendibleHashingModel extends Model {
   @override
   Model clone() {
     return DirectFileExtendibleHashingModel.copyWith(
-        _baseFile.clone(),
-        _lastTransitionFile?.clone(),
+        baseFile.clone(),
+        //_lastTransitionFile?.clone(),
         List.of(_transitions),
         _currentFrame,
         commandInExecution,

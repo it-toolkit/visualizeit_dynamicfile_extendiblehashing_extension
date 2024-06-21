@@ -55,6 +55,10 @@ DirectFileExtendibleHashingExtensionCore()
     if (model is DirectFileExtendibleHashingModel && model.currentTransition != null) {
       /*return DirectFileExtendibleHashingWidget(model.currentTree!, model.currentTransition,
           model.commandInExecution);*/
+          _logger.trace(() => "Building Extendible Hashing Widget");
+          model.currentTransition!.getTransitionFile()?.status();
+          // ignore: prefer_interpolation_to_compose_strings
+          _logger.trace(() => "BucketList " + model.currentTransition!.getBucketListTransition()!.getBucketList().toString());
       return DirectFileExtendibleHashingWidget(model.currentTransition!);
     } else {
       return null;

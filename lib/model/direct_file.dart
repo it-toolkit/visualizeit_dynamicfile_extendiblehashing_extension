@@ -37,7 +37,7 @@ class DirectFile extends Observable{
     _table.registerObserver(getObserver());
   }*/
 
-  DirectFile.copy(this._bucketSize, this._file, this._table, this._freed);
+  DirectFile._copy(this._bucketSize, this._file, this._table, this._freed);
 
   List<Bucket> getFileContent() => _file;
   Directory getDirectory() => _table;
@@ -135,7 +135,7 @@ class DirectFile extends Observable{
         if (bucketNum != -1){
           
           bucket = _file[bucketNum.toInt()];
-          //notifyObservers(DirectFileTransition.bucketFound(clone(),index));
+          notifyObservers(DirectFileTransition.bucketFoundWithModel(clone(),bucketNum,index));
           try{
             bucket.setValue(newValue);
             notifyObservers(DirectFileTransition.recordSavedWithModel(clone(),bucket.id, index,newValue));
@@ -363,7 +363,7 @@ reorder(BaseRegister newValue, Bucket overflowedBucket, int bucketInitialIndex){
     _file.forEach((element) {
       fileCopy.add(element.clone());
     });
-    return DirectFile.copy(_bucketSize,fileCopy,_table.clone(),_freed.toList());
+    return DirectFile._copy(_bucketSize,fileCopy,_table.clone(),_freed.toList());
   }
 
 }

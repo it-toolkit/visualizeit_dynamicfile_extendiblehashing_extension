@@ -17,6 +17,8 @@ abstract class DirectFileExtendibleHashingCommand extends ModelCommand {
   Result call(Model model, CommandContext context) {
     DirectFileExtendibleHashingModel fileModel = (model.clone()) as DirectFileExtendibleHashingModel;
 
+    _logger.info(() => "Call in DirectFileExtendibleHashingCommand");
+    fileModel.baseFile.status();
     int pendingFrames;
     Model? resultModel;
 
