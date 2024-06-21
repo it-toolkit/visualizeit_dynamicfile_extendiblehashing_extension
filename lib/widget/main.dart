@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing_extension/extension/direct_file_command.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/extension/direct_file_transition.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/model/direct_file.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/model/register.dart';
@@ -86,7 +87,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(title: const Text('Extendible Hashing Sample', style: TextStyle(fontWeight: FontWeight.bold))),
-        body: DirectFileExtendibleHashingWidget(fileTransition)
+        body: DirectFileExtendibleHashingWidget(fileTransition, DirectFileExtendibleHashingInsertCommand(0, "SomeModelName"))
       ),
     );
   }

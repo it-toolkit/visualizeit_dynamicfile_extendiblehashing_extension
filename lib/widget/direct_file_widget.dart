@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing_extension/extension/direct_file_command.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/extension/direct_file_transition.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/widget/bucket_list_widget.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/widget/directory_widget.dart';
@@ -6,13 +7,9 @@ import 'package:visualizeit_dynamicfile_extendiblehashing_extension/widget/freed
 
 class DirectFileExtendibleHashingWidget extends StatefulWidget {
   final DirectFileTransition _currentTransition;
-  //final BSharpTreeCommand? commandInExecution;
-  /*
-  const DirectFileExtendibleHashingWidget(this.file, this.currentTransition, this.commandInExecution,
-      {super.key});
-  */
+  final DirectFileExtendibleHashingCommand? commandInExecution;
 
-  const DirectFileExtendibleHashingWidget(this._currentTransition,
+  const DirectFileExtendibleHashingWidget(this._currentTransition,this.commandInExecution,
       {super.key});
 
   @override
@@ -32,20 +29,97 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
     //_components = createWidgetsFromFile();
   }
 
+  Widget getInternalBanner(){
+    if (widget._currentTransition.getMessage() != null){
+      return Column(
+                    children: [
+                                Row(
+                                  children: [
+                                    Column( 
+                                      children:[ 
+                                        Row(
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              Container(
+                                                width: 165,
+                                                height: 65,
+                                                margin: const EdgeInsets.only(right: 2, bottom: 2),
+                                                decoration: BoxDecoration(
+                                                    border: Border.all(color: Colors.black),
+                                                    color: Colors.white,
+                                                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                                    boxShadow: const [
+                                                      BoxShadow(blurRadius: 5),
+                                                    ]),
+                                                child: Column(
+                                                          children: [ 
+                                                            Text("${widget._currentTransition.getMessage()}",style: TextStyle(fontWeight: FontWeight.bold)),
+                                                          ],
+                                                        ),
+                                              ),
+                                            ]
+                                          )
+                                        ],
+                                      ) 
+                                    ]
+                                  )
+                                ]
+                );
+    } else {
+      return const Spacer();
+    }
+  }
 
   Widget createWidgetsFromFile() {
-    return Column(
-            children: [
-              Row(
-                children: [
+    return Column( children: [ 
+            Row( children: [ 
+              Column(children:[ 
+                               Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              width: 165,
+                                              height: 65,
+                                              margin: const EdgeInsets.only(right: 2, bottom: 2),
+                                              decoration: BoxDecoration(
+                                                  border: Border.all(color: Colors.black),
+                                                  color: Colors.white,
+                                                  borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                                  boxShadow: const [
+                                                    BoxShadow(blurRadius: 5),
+                                                  ]),
+                                              child: Column(
+                                                children: [ 
+                                                  Text(widget.commandInExecution != null
+                                                  ? widget.commandInExecution.toString()
+                                                  : "", style: TextStyle(fontWeight: FontWeight.bold)),
+                                                  Text("Bucket capacity: ${widget._currentTransition.getTransitionFile()?.bucketRecordCapacity()}",style: TextStyle(fontWeight: FontWeight.bold)),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ), 
+                              ],
+                  ),
+                  const Spacer(),
                   Column( 
-                    children:[ Container(
+                    children:[ 
+                       Container(
+                          child: getInternalBanner()) 
+                      ],
+                  ),
+            const Spacer(),] ),
+            Row( children: [
+              Column(children:[ 
+                                Container(
                                   child: const Center(child: Text("Hashing Table", style: TextStyle(fontWeight: FontWeight.bold))),
                                 ),
                                 //ConstrainedBox(constraints: const BoxConstraints(maxWidth: 150), child: HashingTableWidget(initialValues: widget.file.getDirectory().hash, currentTransition: widget._currentTransition))
                                 ConstrainedBox(constraints: const BoxConstraints(maxWidth: 150), child: HashingTableWidget(initialValues: widget._currentTransition!.getDirectoryTransition() != null && widget._currentTransition!.getDirectoryTransition()?.getTransition() != null ? widget._currentTransition!.getDirectoryTransition()!.getTransition()?.hash : [] , currentTransition: widget._currentTransition?.getDirectoryTransition()))
-                    ],
-                    ),
+                              ],
+                  ),
                   const Spacer(),
                   Column( 
                     children:[ Container(
