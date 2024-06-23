@@ -10,15 +10,15 @@ import 'package:visualizeit_extensions/logging.dart';
 final _logger = Logger("extension.extendiblehashing.model");
 
 class DirectFileExtendibleHashingModel extends Model {
-  DirectFile baseFile;//Hacerla privada
-  //DirectFile? _lastTransitionFile;
+  DirectFile _baseFile;
+  DirectFile? _lastTransitionFile;
   List<DirectFileTransition> _transitions = [];
 
   int _currentFrame = 0;
   DirectFileExtendibleHashingCommand? commandInExecution;
 
   DirectFileExtendibleHashingModel(String name, int bucketSize, List<int> initialValues, [bool? variableRecordSize])
-      : baseFile = DirectFile(bucketSize),
+      : _baseFile = DirectFile(bucketSize),
         super(DirectFileExtendibleHashingExtension.extensionId, name) {
     
     if (variableRecordSize!){
@@ -26,27 +26,27 @@ class DirectFileExtendibleHashingModel extends Model {
     }
     else{
       for (int value in initialValues){
-        baseFile.insert(FixedLengthRegister(value));
+        _baseFile.insert(FixedLengthRegister(value));
       }
     }
-    //_lastTransitionFile = _baseFile;
+    _lastTransitionFile = _baseFile;
     _logger.trace(() => "Creating DirectFileExtendibleHashingModel"); 
   }
   
   DirectFileExtendibleHashingModel.copyWith(
-      this.baseFile,
-      //this._lastTransitionFile,
+      this._baseFile,
+      this._lastTransitionFile,
       this._transitions,
       this._currentFrame,
       this.commandInExecution,
       super.extensionId,
       super.name);
 
-  /*
+  
   DirectFile? get currentFile => _transitions.isEmpty
       ? _lastTransitionFile
       : _transitions[_currentFrame].getTransitionFile() ?? _lastTransitionFile;// TODO: CHECK if getTransitionFile is returning what is expected here.
-  */
+  
   
   DirectFileTransition? get currentTransition =>
       _transitions.isNotEmpty ? _transitions[_currentFrame] : null;
@@ -59,21 +59,24 @@ class DirectFileExtendibleHashingModel extends Model {
         _currentFrame++;
         _logger.trace(() => "Command: $command");
         _logger.trace(() => "Current Frame : $_currentFrame"); 
+        _logger.trace(() => "Current Transition: ${currentTransition?.type.name}"); 
+        //_logger.trace(() => "Base File: $baseFile"); 
+        //baseFile.status();
       } else {
-        //_lastTransitionFile = _baseFile.clone();
+        _lastTransitionFile = _baseFile.clone();
         commandInExecution = command;
         _currentFrame = 0;
         var transitionObserver = DirectFileObserver();
-        baseFile.registerObserver(transitionObserver);
+        _baseFile.registerObserver(transitionObserver);
 
         var functionToExecute = command.commandToFunction();
         _logger.trace(() => "Function to Execute $functionToExecute.toString()"); 
-        functionToExecute(baseFile);
-        baseFile.status();
+        functionToExecute(_baseFile);
+        //baseFile.status();
         
         _transitions = transitionObserver.transitions;
         _logger.trace(() => "# Transitions generated: $_transitions" );
-        baseFile.removeObserver(transitionObserver);
+        _baseFile.removeObserver(transitionObserver);
       
       }
       return (_pendingFrames, this);
@@ -95,8 +98,9 @@ class DirectFileExtendibleHashingModel extends Model {
   @override
   Model clone() {
     return DirectFileExtendibleHashingModel.copyWith(
-        baseFile.clone(),
-        //_lastTransitionFile?.clone(),
+        _baseFile.clone(),
+        //_baseFile,
+        _lastTransitionFile?.clone(),
         List.of(_transitions),
         _currentFrame,
         commandInExecution,

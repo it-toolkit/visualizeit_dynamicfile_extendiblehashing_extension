@@ -32,10 +32,6 @@ class DirectFile extends Observable{
     observers.add(observer);
     _table.registerObserver(observer);
   }
-  /*
-  initObserver(){
-    _table.registerObserver(getObserver());
-  }*/
 
   DirectFile._copy(this._bucketSize, this._file, this._table, this._freed);
 
@@ -109,7 +105,7 @@ class DirectFile extends Observable{
 
     //Calculation Mod
     int index = newValue.value % _table.len;
-    
+    notifyObservers(DirectFileTransition.findingBucketWithModel(clone(), newValue.value, _table.len, index));
     _logger.trace(() => "insert() - Modular value - Directory index is $index");
     int bucketNum = _table.getBucketNumber(index);
     _logger.debug(() => "insert() - Directory is pointing to bucket $bucketNum");

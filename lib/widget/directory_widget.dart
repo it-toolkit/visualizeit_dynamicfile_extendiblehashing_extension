@@ -3,10 +3,10 @@ import 'package:visualizeit_dynamicfile_extendiblehashing_extension/extension/di
 
 class HashingTableWidget extends StatefulWidget {
   final List<int?>? initialValues;
-  //final DirectFileTransition? currentTransition;
   final DirectoryTransition? currentTransition;
 
   const HashingTableWidget({super.key, this.initialValues = const [], this.currentTransition});
+  
 
   @override
   State<StatefulWidget> createState() {

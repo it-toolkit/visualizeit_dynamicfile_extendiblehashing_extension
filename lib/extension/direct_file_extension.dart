@@ -52,15 +52,22 @@ DirectFileExtendibleHashingExtensionCore()
 
   @override
   Widget? render(Model model, BuildContext context) {
-    if (model is DirectFileExtendibleHashingModel && model.currentTransition != null) {
+    if (model is DirectFileExtendibleHashingModel) {
+     //if (model is DirectFileExtendibleHashingModel && model.currentTransition != null) {
       /*return DirectFileExtendibleHashingWidget(model.currentTree!, model.currentTransition,
           model.commandInExecution);*/
           _logger.trace(() => "Building Extendible Hashing Widget");
-          model.currentTransition!.getTransitionFile()?.status();
-          // ignore: prefer_interpolation_to_compose_strings
-          _logger.trace(() => "BucketList " + model.currentTransition!.getBucketListTransition()!.getBucketList().toString());
-          _logger.trace(() => "BucketList 2" + model.currentTransition!.getTransitionFile()!.getFileContent().toString());
-      return DirectFileExtendibleHashingWidget(model.baseFile,model.currentTransition!,model.commandInExecution);
+          if (model.currentTransition != null){
+            //model.currentTransition!.getTransitionFile()?.status();
+            _logger.trace(() => "transition number: ${model.currentTransition?.type.name}");
+            // ignore: prefer_interpolation_to_compose_strings
+            //_logger.trace(() => "BucketList " + model.currentTransition!.getBucketListTransition()!.getBucketList().toString());
+            //_logger.trace(() => "BucketList 2" + model.currentTransition!.getTransitionFile()!.getFileContent().toString());
+            //return DirectFileExtendibleHashingWidget(model.baseFile,null,model.commandInExecution);
+          }
+          //return DirectFileExtendibleHashingWidget(model.baseFile,null,null);
+          return DirectFileExtendibleHashingWidget(model.currentFile!,model.currentTransition,model.commandInExecution);
+      
     } else {
       return null;
     }

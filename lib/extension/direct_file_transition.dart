@@ -89,7 +89,7 @@ class BucketListTransition extends Transition {
 
 class DirectoryTransition extends Transition {
   final Directory? _transitionDirectory;
-  late TransitionType currentType;
+  late TransitionType currentType = TransitionType.fileIsEmpty;
   
   late int bucketOverflowedId = -1;
   late int bucketCreatedId = -1;
@@ -146,6 +146,13 @@ class DirectFileTransition extends Transition {
   FreedListTransition? getFreedListTransition() => _freedListTransition;
   String? getMessage() => _transitionMessage;
 
+  DirectFileTransition.findingBucketWithModel(this._transitionFile, int value, int hashTableLen, int index ):super(TransitionType.findingBucket){
+    _bucketListTransition = BucketListTransition.bucketFound(_transitionFile.getFileContent(), -1);
+    _directoryTransition = DirectoryTransition.hashTablePointedBucket(_transitionFile.getDirectory(), -1 , TransitionType.findingBucket);
+    _freedListTransition = FreedListTransition(_transitionFile!.getFreedList());
+    _transitionMessage = "Finding bucket number, calculating $value mod (T = $hashTableLen) = $index";
+  }
+
   DirectFileTransition.bucketFound(this._transitionFile, List<Bucket> bucketList, Directory dir, int bucketFoundId, int hashTableIndex ):super(TransitionType.bucketFound){
     _bucketListTransition = BucketListTransition.bucketFound(bucketList, bucketFoundId);
     _directoryTransition = DirectoryTransition.hashTablePointedBucket(dir, hashTableIndex , TransitionType.hashTablePointedBucket);
@@ -164,14 +171,14 @@ class DirectFileTransition extends Transition {
     _bucketListTransition = BucketListTransition.bucketOverflowed(bucketList, bucketId);
     _directoryTransition = DirectoryTransition.hashTablePointedBucket(dir, hashTableIndex , TransitionType.bucketOverflowed);
     _freedListTransition = FreedListTransition(_transitionFile!.getFreedList());
-    _transitionMessage = "The bucket is overflowed";
+    _transitionMessage = "Bucket overflowed";
   }
 
   DirectFileTransition.bucketOverflowedWithModel(this._transitionFile, int bucketId, int hashTableIndex):super(TransitionType.bucketOverflowed){
     _bucketListTransition = BucketListTransition.bucketOverflowed(_transitionFile.getFileContent(), bucketId);
     _directoryTransition = DirectoryTransition.hashTablePointedBucket(_transitionFile.getDirectory(), hashTableIndex , TransitionType.bucketOverflowed);
     _freedListTransition = FreedListTransition(_transitionFile!.getFreedList());
-    _transitionMessage = "The bucket is overflowed";
+    _transitionMessage = "Bucket overflowed";
     
   }
   
@@ -364,6 +371,7 @@ enum TransitionType {
   hashTableOperation,
   hashTablePointedBucket,
   fileIsEmpty,
+  findingBucket,
   freedListOperation;
 
   @override

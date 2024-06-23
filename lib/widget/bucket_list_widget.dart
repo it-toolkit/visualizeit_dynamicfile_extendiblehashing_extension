@@ -8,12 +8,12 @@ final _logger = Logger("extension.extendiblehashing.bucketlistwidget");
 
 class BucketListWidget extends StatefulWidget {
   final BucketListTransition? currentTransition;
-  late List<Bucket> initialBuckets;
-  late int bucketRecordCapacity;
+  final List<Bucket> initialBuckets;
+  final int bucketRecordCapacity;
 
-  BucketListWidget(this.bucketRecordCapacity, this.currentTransition, {super.key})
+  BucketListWidget(this.bucketRecordCapacity, this.initialBuckets, this.currentTransition, {super.key})
   {
-    initialBuckets = currentTransition!.getBucketList();
+    //initialBuckets = currentTransition!.getBucketList();
     _logger.trace(() => "BucketList " + initialBuckets.toString());
 
   }
