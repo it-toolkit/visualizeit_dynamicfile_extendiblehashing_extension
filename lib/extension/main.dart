@@ -70,8 +70,9 @@ void main() {
   //Transition 108. Updating hashing table with the replacemente bucket
   //Transition 109, the bucket is marked as freed and is added to the freed bucket list.
   //Transition 110, reducing the hashing table (because the table is mirrowed)
-  DirectFileTransition transition = observer.transitions[43];
+  DirectFileTransition transition = observer.transitions[0]; //Review transition number 1
   print(transition.type.name);
+  print(observer.transitions);
   runApp(MyApp(myfile, transition));
 }
 

@@ -84,27 +84,18 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
     if (widget._currentTransition != null){
       bucketRecordCapacity = widget._currentTransition?.getTransitionFile()?.bucketRecordCapacity();
       hashTableLen = widget._currentTransition?.getDirectoryTransition()!.getTransition()!.len;
-      hashingTableWidget = HashingTableWidget(initialValues: widget._currentTransition!.getDirectoryTransition() != null && widget._currentTransition!.getDirectoryTransition()?.getTransition() != null ? widget._currentTransition!.getDirectoryTransition()!.getTransition()?.hash : [] , currentTransition: widget._currentTransition?.getDirectoryTransition());
-      bucketListWidget = BucketListWidget(widget._currentTransition!.getTransitionFile()!.bucketRecordCapacity(),widget._currentTransition!.getBucketListTransition()!.getBucketList(), widget._currentTransition!.getBucketListTransition());
-      freedBucketListWidget = FreedBucketListWidget(freedBucketNumbers: widget._currentTransition!.getFreedListTransition()!.getFreedList(), currentTransition: widget._currentTransition!.getFreedListTransition());
+      hashingTableWidget = HashingTableWidget(currentTransition: widget._currentTransition?.getDirectoryTransition());
+      bucketListWidget = BucketListWidget(widget._currentTransition!.getBucketListTransition(), widget._currentTransition!.getTransitionFile()!.bucketRecordCapacity());
+      freedBucketListWidget = FreedBucketListWidget(currentTransition: widget._currentTransition!.getFreedListTransition());
       freedBucketListisNotEmpty = widget._currentTransition!.getFreedListTransition()!.getFreedList().isNotEmpty;
     } else{
       bucketRecordCapacity = widget._initFile.bucketRecordCapacity();
       hashTableLen = widget._initFile.getDirectory().len;
-      hashingTableWidget = HashingTableWidget(initialValues: widget._initFile.getDirectory().hash , currentTransition: DirectoryTransition(widget._initFile.getDirectory()));
-      bucketListWidget = BucketListWidget(widget._initFile.bucketRecordCapacity(),widget._initFile.getFileContent(), BucketListTransition(TransitionType.fileIsEmpty,widget._initFile.getFileContent()));
-      freedBucketListWidget = FreedBucketListWidget(freedBucketNumbers: widget._initFile.getFreedList(), currentTransition: FreedListTransition(widget._initFile.getFreedList()));
+      hashingTableWidget = HashingTableWidget(currentTransition: DirectoryTransition(widget._initFile.getDirectory()));
+      bucketListWidget = BucketListWidget(BucketListTransition(TransitionType.fileIsEmpty,widget._initFile.bucketRecordCapacity(), widget._initFile.getFileContent()), widget._initFile.bucketRecordCapacity());
+      freedBucketListWidget = FreedBucketListWidget(currentTransition: FreedListTransition(widget._initFile.getFreedList()));
       freedBucketListisNotEmpty = widget._initFile.getFreedList().isNotEmpty;
     }
-    
-    /*
-    bucketRecordCapacity = widget._initFile.bucketRecordCapacity();
-    hashTableLen = widget._initFile.getDirectory().len;
-    hashingTableWidget = HashingTableWidget(initialValues: widget._initFile.getDirectory().hash , currentTransition: DirectoryTransition(widget._initFile.getDirectory()));
-    bucketListWidget = BucketListWidget(widget._initFile.bucketRecordCapacity(),widget._initFile.getFileContent(), BucketListTransition(TransitionType.fileIsEmpty,widget._initFile.getFileContent()));
-    freedBucketListWidget = FreedBucketListWidget(freedBucketNumbers: widget._initFile.getFreedList(), currentTransition: FreedListTransition(widget._initFile.getFreedList()));
-    freedBucketListisNotEmpty = widget._initFile.getFreedList().isNotEmpty;
-    */
     return Column( children: [ 
             Row( children: [ 
               Column(children:[ 

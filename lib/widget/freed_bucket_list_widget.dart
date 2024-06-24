@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/extension/direct_file_transition.dart';
 
 class FreedBucketListWidget extends StatefulWidget {
-  final List<int?> freedBucketNumbers;
-  //final DirectFileTransition? currentTransition;
   final FreedListTransition? currentTransition;
 
-  const FreedBucketListWidget({super.key, this.freedBucketNumbers = const [], this.currentTransition});
+  const FreedBucketListWidget({super.key, this.currentTransition});
 
   @override
   State<StatefulWidget> createState() {
@@ -19,7 +17,7 @@ class _FreedBucketListWidgetState extends State<FreedBucketListWidget> {
 
   @override
   void initState() {
-    freedBuckets = List.from(widget.freedBucketNumbers);
+    //freedBuckets = List.from(widget.freedBucketNumbers);
     super.initState();
   }
 
@@ -59,6 +57,7 @@ class _FreedBucketListWidgetState extends State<FreedBucketListWidget> {
   }
 
   List<Widget> getWidgets(){
+    freedBuckets = List.from(widget.currentTransition!.getFreedList());
   return freedBuckets.indexed.map((i) {
               return buildRecord(i.$2);
             }).toList();

@@ -59,7 +59,7 @@ DirectFileExtendibleHashingExtensionCore()
           _logger.trace(() => "Building Extendible Hashing Widget");
           if (model.currentTransition != null){
             //model.currentTransition!.getTransitionFile()?.status();
-            _logger.trace(() => "transition number: ${model.currentTransition?.type.name}");
+            _logger.trace(() => "transition type: ${model.currentTransition?.type.name}");
             // ignore: prefer_interpolation_to_compose_strings
             //_logger.trace(() => "BucketList " + model.currentTransition!.getBucketListTransition()!.getBucketList().toString());
             //_logger.trace(() => "BucketList 2" + model.currentTransition!.getTransitionFile()!.getFileContent().toString());

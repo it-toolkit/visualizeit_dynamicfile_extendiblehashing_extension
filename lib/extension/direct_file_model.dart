@@ -99,7 +99,6 @@ class DirectFileExtendibleHashingModel extends Model {
   Model clone() {
     return DirectFileExtendibleHashingModel.copyWith(
         _baseFile.clone(),
-        //_baseFile,
         _lastTransitionFile?.clone(),
         List.of(_transitions),
         _currentFrame,

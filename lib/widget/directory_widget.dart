@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/extension/direct_file_transition.dart';
 
 class HashingTableWidget extends StatefulWidget {
-  final List<int?>? initialValues;
   final DirectoryTransition? currentTransition;
 
-  const HashingTableWidget({super.key, this.initialValues = const [], this.currentTransition});
+  const HashingTableWidget({super.key, this.currentTransition});
   
 
   @override
@@ -19,7 +18,6 @@ class _HashingTableWidgetState extends State<HashingTableWidget> {
 
   @override
   void initState() {
-    values = List.from(widget.initialValues as Iterable);
     super.initState();
   }
 
@@ -94,6 +92,7 @@ class _HashingTableWidgetState extends State<HashingTableWidget> {
   }
 
   List<Widget> getWidgets(){
+  values = List.from(widget.currentTransition?.getTransition()?.hash as Iterable);
   return values.indexed.map((i) {
               return buildRecord(i.$1, i.$2);
             }).toList();

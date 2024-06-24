@@ -37,10 +37,10 @@ class BucketListTransition extends Transition {
   late int recordDeletedPositionInBucket = -1;
   late TransitionType currentTransitionType;
 
-  BucketListTransition(super._type, this._transitionBucketList);
+  BucketListTransition(super._type, this._bucketSize, this._transitionBucketList);
   
   List<Bucket> getBucketList() => _transitionBucketList;
-  int bucketRecordCapacity()=> _bucketSize;
+  //int bucketRecordCapacity()=> _bucketSize;
 
   BucketListTransition.bucketFound(this._transitionBucketList, this.bucketFoundId):super(TransitionType.bucketFound);
 
@@ -80,7 +80,7 @@ class BucketListTransition extends Transition {
   BucketListTransition.recordFound(this._transitionBucketList, this.bucketFoundId, this.recordFound):super(TransitionType.recordFound);
 
   BucketListTransition.recordDeleted(this._transitionBucketList, this.recordDeletedPositionInBucket, this.recordDeleted, this.bucketFoundId, this._bucketSize):super(TransitionType.recordDeleted){
-    if (recordDeletedPositionInBucket.clamp(0,bucketRecordCapacity()-1) != recordDeletedPositionInBucket){
+    if (recordDeletedPositionInBucket.clamp(0,_bucketSize-1) != recordDeletedPositionInBucket){
       throw RegisterOutOfBoundsException("The position in bucket that you provided is not valid");
     }
   }
@@ -283,35 +283,35 @@ class DirectFileTransition extends Transition {
   }
 
   DirectFileTransition.hashTableDuplicateSize(this._transitionFile,List<Bucket> bucketList, Directory dir):super(TransitionType.hashTableDuplicateSize){
-    _bucketListTransition = BucketListTransition(TransitionType.bucketCreated, _transitionFile!.getFileContent());
+    _bucketListTransition = BucketListTransition(TransitionType.bucketCreated,_transitionFile.bucketRecordCapacity() ,_transitionFile!.getFileContent());
     _directoryTransition = DirectoryTransition.hashTablePointedBucket(dir, -1 , TransitionType.hashTableDuplicateSize);
     _freedListTransition = FreedListTransition(_transitionFile!.getFreedList());
     _transitionMessage = "The hash table must be duplicated";
   }
 
   DirectFileTransition.hashTableDuplicateSizeWithModel(this._transitionFile):super(TransitionType.hashTableDuplicateSize){
-    _bucketListTransition = BucketListTransition(TransitionType.bucketCreated, _transitionFile!.getFileContent());
+    _bucketListTransition = BucketListTransition(TransitionType.bucketCreated,_transitionFile.bucketRecordCapacity() , _transitionFile!.getFileContent());
     _directoryTransition = DirectoryTransition.hashTablePointedBucket(_transitionFile.getDirectory(), -1 , TransitionType.hashTableDuplicateSize);
     _freedListTransition = FreedListTransition(_transitionFile!.getFreedList());
     _transitionMessage = "The hash table must be duplicated";
   }
 
   DirectFileTransition.hashTableReduceSize(this._transitionFile,List<Bucket> bucketList, Directory dir):super(TransitionType.hashTableReduceSize){
-    _bucketListTransition = BucketListTransition(TransitionType.bucketOverflowed, _transitionFile!.getFileContent());
+    _bucketListTransition = BucketListTransition(TransitionType.bucketOverflowed, _transitionFile.bucketRecordCapacity() , _transitionFile!.getFileContent());
     _directoryTransition = DirectoryTransition.hashTablePointedBucket(dir, -1 , TransitionType.hashTableReduceSize);
     _freedListTransition = FreedListTransition(_transitionFile!.getFreedList());
     _transitionMessage = "The hash table must be reduced";
   }
 
   DirectFileTransition.hashTableReduceSizeWithModel(this._transitionFile):super(TransitionType.hashTableReduceSize){
-    _bucketListTransition = BucketListTransition(TransitionType.bucketOverflowed, _transitionFile!.getFileContent());
+    _bucketListTransition = BucketListTransition(TransitionType.bucketOverflowed, _transitionFile.bucketRecordCapacity() ,_transitionFile!.getFileContent());
     _directoryTransition = DirectoryTransition.hashTablePointedBucket(_transitionFile.getDirectory(), -1 , TransitionType.hashTableReduceSize);
     _freedListTransition = FreedListTransition(_transitionFile!.getFreedList());
     _transitionMessage = "The hash table must be reduced";
   }
 
   DirectFileTransition.hashTableUpdated(this._transitionFile, List<Bucket> bucketList, Directory dir, int bucketId, int hashTablePositionToUpdate ,TransitionType currentTransitionType):super(TransitionType.hashTableUpdated){
-    _bucketListTransition = BucketListTransition(TransitionType.bucketFound, bucketList);
+    _bucketListTransition = BucketListTransition(TransitionType.bucketFound,_transitionFile.bucketRecordCapacity() , bucketList);
     _directoryTransition = DirectoryTransition.hashTableUpdated(dir, bucketId, hashTablePositionToUpdate, currentTransitionType);
     _freedListTransition = FreedListTransition(_transitionFile!.getFreedList());
     _transitionMessage = "The hash table must be updated";
@@ -346,7 +346,7 @@ class DirectFileTransition extends Transition {
   }
 
   DirectFileTransition.fileIsEmpty(this._transitionFile):super(TransitionType.fileIsEmpty) {
-    _bucketListTransition = BucketListTransition(TransitionType.fileIsEmpty, []);
+    _bucketListTransition = BucketListTransition(TransitionType.fileIsEmpty,_transitionFile.bucketRecordCapacity() ,[]);
     _directoryTransition = DirectoryTransition(null);
     _freedListTransition = FreedListTransition([]);
   }

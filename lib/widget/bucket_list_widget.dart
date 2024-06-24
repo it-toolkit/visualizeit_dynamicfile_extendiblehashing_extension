@@ -8,15 +8,9 @@ final _logger = Logger("extension.extendiblehashing.bucketlistwidget");
 
 class BucketListWidget extends StatefulWidget {
   final BucketListTransition? currentTransition;
-  final List<Bucket> initialBuckets;
   final int bucketRecordCapacity;
 
-  BucketListWidget(this.bucketRecordCapacity, this.initialBuckets, this.currentTransition, {super.key})
-  {
-    //initialBuckets = currentTransition!.getBucketList();
-    _logger.trace(() => "BucketList " + initialBuckets.toString());
-
-  }
+  const BucketListWidget(this.currentTransition, this.bucketRecordCapacity, {super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -29,7 +23,6 @@ class _BucketListWidgetState extends State<BucketListWidget> {
 
   @override
   void initState() {
-    buckets = List.from(widget.initialBuckets);
     super.initState();
   }
 
@@ -157,6 +150,8 @@ class _BucketListWidgetState extends State<BucketListWidget> {
 
 @override
 Widget build(BuildContext context) {
+    //buckets = List.from(widget.initialBuckets);
+    buckets = List.from(widget.currentTransition!.getBucketList());
     return SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Container(

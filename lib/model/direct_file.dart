@@ -118,7 +118,7 @@ class DirectFile extends Observable{
     
       if (_file.isEmpty){
         _logger.trace(() => "insert() - File is empty");
-        notifyObservers(DirectFileTransition.fileIsEmpty(clone()));  
+        //notifyObservers(DirectFileTransition.fileIsEmpty(clone()));  
         bucket = Bucket(_bucketSize,0);
         //bucket.setValue(newValue);
         _file.add(bucket);
