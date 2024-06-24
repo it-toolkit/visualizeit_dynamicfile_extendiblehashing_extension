@@ -118,7 +118,7 @@ class DirectFile extends Observable{
     
       if (_file.isEmpty){
         _logger.trace(() => "insert() - File is empty");
-        //notifyObservers(DirectFileTransition.fileIsEmpty(clone()));  
+        //notifyObservers(DirectFileTransition.fileIsEmpty(clone()));  TODO: CHECK THIS STATE
         bucket = Bucket(_bucketSize,0);
         //bucket.setValue(newValue);
         _file.add(bucket);
@@ -138,7 +138,7 @@ class DirectFile extends Observable{
           } on BucketOverflowedException {
             _logger.debug(() => "insert() - Bucket $bucketNum overflowed");
             notifyObservers(DirectFileTransition.bucketOverflowedWithModel(clone(),bucket.id, index));  
-            // If log(T) is equal to hashing bits of the bucket then T+=1
+            // If log(T) is equal to hashing bits of the bucket then T+=1 (Duplicate the hashing table)
             if (log2(_table.len) == bucket.bits){
                 _logger.debug(() => "insert() - Hashing bits are equal to log2(T)");
                 _logger.trace(() => "insert() - Calling reorder");
@@ -260,12 +260,10 @@ reorder(BaseRegister newValue, Bucket overflowedBucket, int bucketInitialIndex){
     _logger.trace(() => "reorder2() - Jump: $jump");
     DirectFile myClone = clone();
     _table.update(bucketInitialIndex,newBucket.id,jump, myClone);
-    //myClone.getDirectory().hash[bucketInitialIndex] = newBucket.id;
-    //notifyObservers(DirectFileTransition.hashTableUpdated(myClone,newBucket.id,bucketInitialIndex,TransitionType.bucketCreated));
-     
 
     //Reordering registers again, iterating over the overflowed bucket and calculating mod.
     //The result could be the same bucket and we must work recursively
+    notifyObservers(DirectFileTransition.bucketReorganizedWithModel(clone(),overflowedBucket.id));
     List<BaseRegister> obList = overflowedBucket.getRegList();
     obList.forEach((reg) {
       _logger.trace(() => "reorder2() - *** Overflowed bucket *** Reordering register value: $reg");
@@ -291,15 +289,16 @@ reorder(BaseRegister newValue, Bucket overflowedBucket, int bucketInitialIndex){
     */
 
     int index = delValue.value % _table.len;
-    
+    notifyObservers(DirectFileTransition.findingBucketWithModel(clone(), delValue.value, _table.len, index));
     _logger.trace(() => "delete() - Directory index value: $index");
+    
     int bucketNum = _table.getBucketNumber(index);
     _logger.debug(() => "delete() - Directory is pointing to bucket $bucketNum");
 
     Bucket myBucket = _file[bucketNum];
-    notifyObservers(DirectFileTransition.bucketFoundWithModel(clone(),bucketNum,index));
     _logger.debug(() => "delete() - Bucket with id ${myBucket.id} was found");
-    //DirectFile myClone = clone();
+    notifyObservers(DirectFileTransition.bucketFoundWithModel(clone(),bucketNum,index));
+
     if (myBucket.delValue(delValue)){
        //Check if the bucket is empty
        if (myBucket.isEmpty()){
