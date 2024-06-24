@@ -131,7 +131,10 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
             const Spacer(),
             getInternalBanner(),
             const Spacer(),] ),
-            Row( children: [
+            Row( 
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
               Column(children:[ 
                                 Container(
                                   child: const Center(child: Text("Hashing Table", style: TextStyle(fontWeight: FontWeight.bold))),
@@ -141,11 +144,12 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
                               ],
                   ),
                   const Spacer(),
-                  Column( 
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children:[ Container(
+                                  alignment: Alignment.topCenter,
                                   child: const Center(child: Text("File", style: TextStyle(fontWeight: FontWeight.bold))),
-                                ),
-                                //BucketListWidget(bucketRecordCapacity:  widget.file.bucketRecordCapacity(), initialBuckets: widget.file.getFileContent(), currentTransition: widget._currentTransition)
+                                ), 
                                 bucketListWidget
                     ],
                     ),

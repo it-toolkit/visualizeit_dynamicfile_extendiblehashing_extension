@@ -150,7 +150,6 @@ class _BucketListWidgetState extends State<BucketListWidget> {
 
 @override
 Widget build(BuildContext context) {
-    //buckets = List.from(widget.initialBuckets);
     buckets = List.from(widget.currentTransition!.getBucketList());
     return SingleChildScrollView(
         scrollDirection: Axis.vertical,
@@ -163,7 +162,7 @@ Widget build(BuildContext context) {
             child: Column(
               children: [
                 Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,                        
                         children: [
                           Container(
                               margin: EdgeInsets.all(1),
