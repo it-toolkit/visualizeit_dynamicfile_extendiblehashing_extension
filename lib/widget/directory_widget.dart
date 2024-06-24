@@ -32,7 +32,7 @@ class _HashingTableWidgetState extends State<HashingTableWidget> {
     }else if (widget.currentTransition?.hashTablePosition == position && widget.currentTransition?.currentType.name == "hashTablePointedBucket" ){
         colorBox = Color.fromARGB(255, 241, 162, 44);
         textStyleForValue = TextStyle(fontWeight: FontWeight.bold);
-    }else if (widget.currentTransition?.hashTablePosition == position && widget.currentTransition?.currentType.name == "bucketFound" ){
+    }else if (widget.currentTransition?.hashTablePosition == position && (widget.currentTransition?.currentType.name == "bucketFound" || widget.currentTransition?.currentType.name == "recordFound")){
         colorBox = Color.fromARGB(255, 233, 152, 179);
     }
     

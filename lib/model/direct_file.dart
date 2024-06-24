@@ -83,12 +83,17 @@ class DirectFile extends Observable{
         return exist;
     }
     int index = reg.value % _table.len;
+    notifyObservers(DirectFileTransition.findingBucketWithModel(clone(), reg.value, _table.len, index));
     int? bucketNum = _table.getBucketNumber(index);
     _logger.trace(() => "exist() - Directory Bucket number is $bucketNum"); 
     Bucket mybucket = _file[bucketNum];
+    notifyObservers(DirectFileTransition.bucketFoundWithModel(clone(),bucketNum,index));
     mybucket.getList().forEach((register) {
       if(register.value == reg.value){
           exist = true;
+          notifyObservers(DirectFileTransition.recordFoundWithModel(clone(),bucketNum, index, reg));
+      }else{
+        notifyObservers(DirectFileTransition.recordNotFoundWithModel(clone(),bucketNum, index, reg));
       } 
     });
     _logger.trace(() => "exist() - Result: $exist"); 

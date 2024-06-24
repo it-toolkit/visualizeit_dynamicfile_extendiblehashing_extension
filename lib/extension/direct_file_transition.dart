@@ -340,9 +340,23 @@ class DirectFileTransition extends Transition {
  
   DirectFileTransition.recordFound(this._transitionFile,List<Bucket> bucketList, Directory dir, int bucketId, int hashTableIndex, BaseRegister recordToFound):super(TransitionType.recordFound){
     _bucketListTransition = BucketListTransition.recordFound(bucketList, bucketId, recordToFound);
-    _directoryTransition = DirectoryTransition.hashTablePointedBucket(dir, hashTableIndex , TransitionType.bucketFound);
+    _directoryTransition = DirectoryTransition.hashTablePointedBucket(dir, hashTableIndex , TransitionType.recordFound);
     _freedListTransition = FreedListTransition(_transitionFile!.getFreedList());
     _transitionMessage = "The record was found in the bucket";
+  }
+  
+  DirectFileTransition.recordFoundWithModel(this._transitionFile, int bucketId, int hashTableIndex, BaseRegister recordToFound):super(TransitionType.recordFound){
+    _bucketListTransition = BucketListTransition.recordFound(_transitionFile.getFileContent(), bucketId, recordToFound);
+    _directoryTransition = DirectoryTransition.hashTablePointedBucket(_transitionFile.getDirectory(), hashTableIndex , TransitionType.recordFound);
+    _freedListTransition = FreedListTransition(_transitionFile!.getFreedList());
+    _transitionMessage = "The record was found in the bucket";
+  }
+
+    DirectFileTransition.recordNotFoundWithModel(this._transitionFile, int bucketId, int hashTableIndex, BaseRegister recordToFound):super(TransitionType.recordFound){
+    _bucketListTransition = BucketListTransition.recordFound(_transitionFile.getFileContent(), bucketId, recordToFound);
+    _directoryTransition = DirectoryTransition.hashTablePointedBucket(_transitionFile.getDirectory(), hashTableIndex , TransitionType.bucketFound);
+    _freedListTransition = FreedListTransition(_transitionFile!.getFreedList());
+    _transitionMessage = "The record was not found";
   }
 
   DirectFileTransition.recordDeleted(this._transitionFile,List<Bucket> bucketList, Directory dir, int recordDeletedPositionInBucket, int bucketId, int hashTableIndex, BaseRegister recordToDelete):super(TransitionType.recordDeleted){

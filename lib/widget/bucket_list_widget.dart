@@ -78,7 +78,7 @@ class _BucketListWidgetState extends State<BucketListWidget> {
     
     for (var i = 0; i < records.length; i++){
       if(widget.currentTransition?.type.name == "recordFound" && widget.currentTransition!.recordFound?.value == records[i].value ) {
-        recordColors[i] = Color.fromARGB(255, 233, 152, 179);
+        recordColors[i] = Color.fromARGB(255, 238, 213, 103);
       }
       if(widget.currentTransition?.type.name == "recordSaved" && widget.currentTransition?.recordSaved?.value == records[i].value ) {
         recordColors[i] = Color.fromARGB(255, 153, 1, 153);
