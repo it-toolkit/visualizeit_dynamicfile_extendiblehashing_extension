@@ -44,8 +44,8 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
                                             crossAxisAlignment: CrossAxisAlignment.center,
                                             children: [
                                               Container(
-                                                width: 200,
-                                                height: 80,
+                                                width: 400,
+                                                height: 75,
                                                 margin: const EdgeInsets.only(right: 2, bottom: 2),
                                                 decoration: BoxDecoration(
                                                     border: Border.all(color: Colors.black),
@@ -72,6 +72,58 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
       return const Spacer();
     }
   }
+
+  Widget getInternalNote(){
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Container(
+          width: 170,
+          height: 70,
+          margin: const EdgeInsets.only(right: 2, bottom: 2),
+          decoration: BoxDecoration(
+              border: Border.all(color: Colors.black),
+              color: Colors.white,
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
+              boxShadow: const [
+                BoxShadow(blurRadius: 5),
+              ]),
+          child: Column(
+            children: [
+              buildColorReferenceRow(Color.fromARGB(255, 111, 245, 58), "New bucket"),
+              buildColorReferenceRow(Color.fromARGB(255, 111, 120, 241), "Freed bucket"),
+              buildColorReferenceRow(Color.fromARGB(255, 247, 75, 84), "Overflowed bucket"),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row buildColorReferenceRow(Color color, final String text) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        CustomPaint(
+          size: const Size(10, 10),
+          painter: RoundedRectanglePainter(color),
+        ),
+        SizedBox(
+          width: 138,
+          height: 20,
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              text,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  
 
   Widget createWidgetsFromFile() {
     int? bucketRecordCapacity;
@@ -130,12 +182,15 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
                   ),
             const Spacer(),
             getInternalBanner(),
-            const Spacer(),] ),
+            const Spacer(flex:2),
+            //getInternalNote(),
+            ] ),//First Row
             Row( 
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-              Column(children:[ 
+                  const Spacer(),
+                  Column(children:[ 
                                 Container(
                                   child: const Center(child: Text("Hashing Table", style: TextStyle(fontWeight: FontWeight.bold))),
                                 ),
@@ -143,113 +198,53 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
                                 ConstrainedBox(constraints: const BoxConstraints(maxWidth: 150), child: hashingTableWidget )
                               ],
                   ),
-                  const Spacer(),
+                  const Spacer(flex: 2),
                   Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children:[ Container(
-                                  alignment: Alignment.topCenter,
-                                  child: const Center(child: Text("File", style: TextStyle(fontWeight: FontWeight.bold))),
-                                ), 
-                                bucketListWidget
-                    ],
-                    ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [ freedBucketListisNotEmpty ? 
-                  Column( 
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                                  child: const Center(child: Text("Freed Bucket List", style: TextStyle(fontWeight: FontWeight.bold))),
-                                ),
-                      ConstrainedBox(constraints: const BoxConstraints(maxHeight: 100),child: freedBucketListWidget),
-                  ]) : 
-                  const Column (crossAxisAlignment: CrossAxisAlignment.center,) ]
-                  ),
-                ],
-          );
-  }
-  /*
-  Widget createWidgetsFromFile() {
-    /*if (widget._currentTransition != null){
-
-    }*/
-    
-    return Column( children: [ 
-            Row( children: [ 
-              Column(children:[ 
-                               Row(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              width: 170,
-                                              height: 70,
-                                              margin: const EdgeInsets.only(right: 2, bottom: 2),
-                                              decoration: BoxDecoration(
-                                                  border: Border.all(color: Colors.black),
-                                                  color: Colors.white,
-                                                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                                                  boxShadow: const [
-                                                    BoxShadow(blurRadius: 5),
-                                                  ]),
-                                              child: Column(
-                                                children: [ 
-                                                  Text(widget.commandInExecution != null
-                                                  ? widget.commandInExecution.toString()
-                                                  : "", style: TextStyle(fontWeight: FontWeight.bold)),
-                                                  Text("Bucket capacity: ${widget._currentTransition?.getTransitionFile()?.bucketRecordCapacity()}",style: TextStyle(fontWeight: FontWeight.bold)),
-                                                  Text("T - Hashing Table Size: ${widget._currentTransition?.getDirectoryTransition()!.getTransition()!.len}",style: TextStyle(fontWeight: FontWeight.bold)),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ), 
-                              ],
-                  ),
-            const Spacer(),
-            getInternalBanner(),
-            const Spacer(),] ),
-            Row( children: [
-              Column(children:[ 
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        //Row(
+                        //  children: [
+                            Column(
+                              //verticalDirection: VerticalDirection.up,
+                              children: [
                                 Container(
-                                  child: const Center(child: Text("Hashing Table", style: TextStyle(fontWeight: FontWeight.bold))),
-                                ),
-                                //ConstrainedBox(constraints: const BoxConstraints(maxWidth: 150), child: HashingTableWidget(initialValues: widget.file.getDirectory().hash, currentTransition: widget._currentTransition))
-                                ConstrainedBox(constraints: const BoxConstraints(maxWidth: 150), child: HashingTableWidget(initialValues: widget._currentTransition!.getDirectoryTransition() != null && widget._currentTransition!.getDirectoryTransition()?.getTransition() != null ? widget._currentTransition!.getDirectoryTransition()!.getTransition()?.hash : [] , currentTransition: widget._currentTransition?.getDirectoryTransition()))
-                              ],
-                  ),
+                                          alignment: Alignment.topCenter,
+                                          child: const Center(child: Text("File", style: TextStyle(fontWeight: FontWeight.bold))),
+                                         ),
+                                bucketListWidget,
+                                ],
+                            ),
+                         // ],
+                        //),
+                        //Row (),
+                        //const Spacer(), //
+                        Row(
+                            //mainAxisAlignment: MainAxisAlignment.start,
+                            //verticalDirection: VerticalDirection.down,
+                            children: [ 
+                              freedBucketListisNotEmpty ? 
+                              Column( 
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                            child: const Center(child: Text("Freed Bucket List", style: TextStyle(fontWeight: FontWeight.bold))),
+                                           ),
+                                  ConstrainedBox(constraints: const BoxConstraints(maxHeight: 100),child: freedBucketListWidget),
+                              ]) : 
+                              const Column (crossAxisAlignment: CrossAxisAlignment.center,),
+                               ]
+                              ),
+                        ],
+                      ),  
+                          
                   const Spacer(),
-                  Column( 
-                    children:[ Container(
-                                  child: const Center(child: Text("File", style: TextStyle(fontWeight: FontWeight.bold))),
-                                ),
-                                //BucketListWidget(bucketRecordCapacity:  widget.file.bucketRecordCapacity(), initialBuckets: widget.file.getFileContent(), currentTransition: widget._currentTransition)
-                                BucketListWidget(widget._currentTransition!.getTransitionFile()!.bucketRecordCapacity(), widget._currentTransition!.getBucketListTransition())
-                    ],
-                    ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [ widget._currentTransition!.getFreedListTransition()!.getFreedList().isNotEmpty ? 
-                  //const Spacer(),
-                  Column( 
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                                  child: const Center(child: Text("Freed Bucket List", style: TextStyle(fontWeight: FontWeight.bold))),
-                                ),
-                      ConstrainedBox(constraints: const BoxConstraints(maxHeight: 100),child: FreedBucketListWidget(freedBucketNumbers: widget._currentTransition!.getFreedListTransition()!.getFreedList(), currentTransition: widget._currentTransition!.getFreedListTransition())),
-                  ]) : const Column (crossAxisAlignment: CrossAxisAlignment.center,) ]
-                  ),
-                ],
+                ]),//2 row
+
+            ],
           );
   }
-  */
-    @override
+
+  @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
         builder:
@@ -265,146 +260,25 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
       );
   }
 
-  /*
-  Map<int, List<Widget>> createWidgetsFromTree() {
-    return widget.tree.getAllNodesByLevel().map((level, listOfNodes) =>
-        MapEntry(
-            level,
-            listOfNodes
-                .map((node) => createNodeWithTransition(node))
-                .toList()));
-  }
+}
 
-  TreeNodeWidget createNodeWithTransition(BSharpNode<Comparable> node) {
-    var nodeTransition = widget.currentTransition != null &&
-            widget.currentTransition!.isATarget(node.id)
-        ? widget.currentTransition
-        : null;
+class RoundedRectanglePainter extends CustomPainter {
+  Color color;
+  RoundedRectanglePainter(this.color);
 
-    return TreeNodeWidget(node, nodeTransition);
-  }
-  */
-  /*
   @override
-  Widget build(BuildContext context) {
-    _components = createWidgetsFromFile();
-
-    final List<Widget> rows = [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 180,
-            height: 20,
-            child: FittedBox(
-              fit: BoxFit.fitHeight,
-              alignment: Alignment.centerLeft,
-              child: Text(widget.commandInExecution != null
-                  ? widget.commandInExecution.toString()
-                  : ""),
-            ),
-          ),
-        ],
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(
-            width: 180,
-            height: 20,
-            child: FittedBox(
-              fit: BoxFit.contain,
-              alignment: Alignment.centerLeft,
-              child: Text(widget.currentTransition != null
-                  ? widget.currentTransition.toString()
-                  : ""),
-            ),
-          ),
-        ],
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(
-            width: 120,
-            height: 20,
-            child: FittedBox(
-              fit: BoxFit.contain,
-              alignment: Alignment.centerLeft,
-              child: Text(widget.tree.freeNodesIds.isNotEmpty
-                  ? "Free nodes: ${widget.tree.freeNodesIds}"
-                  : ""),
-            ),
-          ),
-        ],
-      )
-    ];
-
-    for (var mapEntry in _components!.entries) {
-      List<Widget> children = mapEntry.value.fold([
-        const Spacer()
-      ], (previousValue, widget) => previousValue + ([widget, const Spacer()]));
-      rows.addAll([Row(children: children), const Spacer()]);
-    }
-
-    rows.add(Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Container(
-          width: 165,
-          height: 65,
-          margin: const EdgeInsets.only(right: 2, bottom: 2),
-          decoration: BoxDecoration(
-              border: Border.all(color: Colors.black),
-              color: Colors.white,
-              borderRadius: const BorderRadius.all(Radius.circular(10)),
-              boxShadow: const [
-                BoxShadow(blurRadius: 5),
-              ]),
-          child: Column(
-            children: [
-              buildColorReferenceRow(Colors.cyan, "Node with available space"),
-              buildColorReferenceRow(Colors.yellow, "Node at capacity limit"),
-              buildColorReferenceRow(Colors.red, "Overflowed node"),
-            ],
-          ),
-        ),
-      ],
-    ));
-
-    return ArrowContainer(
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: rows),
-    );
+  void paint(Canvas canvas, Size size) {
+    Paint paint = Paint();
+    paint.strokeWidth = 2;
+    paint.color = color;
+    canvas.drawRRect(
+        RRect.fromLTRBR(
+            0, 0, size.height, size.width, const Radius.circular(3)),
+        paint);
   }
 
-  Row buildColorReferenceRow(Color color, final String text) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        CustomPaint(
-          size: const Size(10, 10),
-          painter: RoundedRectanglePainter(color),
-        ),
-        SizedBox(
-          width: 138,
-          height: 20,
-          child: FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Text(
-              text,
-            ),
-          ),
-        ),
-      ],
-    );
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
   }
-  */
-
 }

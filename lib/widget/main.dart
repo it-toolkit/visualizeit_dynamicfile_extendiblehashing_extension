@@ -70,6 +70,20 @@ void main() {
    // Transition Update Hashing bits in buckets. this occurs when the bucket is overflowed, and when the bucket is freed or rewrited empty.
   //DirectFileTransition transition = DirectFileTransition.bucketUpdateHashingBits(myfile, 4, TransitionType.bucketFreed);
 
+
+  //myfile.getDirectory().duplicate(12, myfile);
+  myfile.getFreedList().add(1);
+  myfile.getFreedList().add(2);
+  myfile.getFreedList().add(4);
+  myfile.getFreedList().add(5);
+  myfile.getFreedList().add(6);
+
+  myfile.getFreedList().add(10);
+  myfile.getFreedList().add(11);
+  myfile.getFreedList().add(13);
+  myfile.getFreedList().add(14);
+  myfile.getFreedList().add(15);
+  myfile.getFreedList().add(20);
   DirectFileTransition transition = DirectFileTransition.usingBucketFreed(myfile, myfile.getFileContent(), myfile.getDirectory(), 3);
 
 

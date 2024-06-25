@@ -17,7 +17,6 @@ class _FreedBucketListWidgetState extends State<FreedBucketListWidget> {
 
   @override
   void initState() {
-    //freedBuckets = List.from(widget.freedBucketNumbers);
     super.initState();
   }
 
