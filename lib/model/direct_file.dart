@@ -318,10 +318,9 @@ reorder(BaseRegister newValue, Bucket overflowedBucket, int bucketInitialIndex){
           
           //This part is when a Bucket will be freed
           if (replacemmentBucketNum != -1){
-            //TODO: Agregar transition aca sobre la cubeta de reemplazo
             _file[replacemmentBucketNum].bits-=1;
             myBucket.setValue(delValue);
-            //notifyObservers(DirectFileTransition.bucketUpdateHashingBits(myClone,-1,replacemmentBucketNum,TransitionType.replacemmentBucketFound));
+            notifyObservers(DirectFileTransition.replacementBucketFoundWithModel(clone(), replacemmentBucketNum, index));
             notifyObservers(DirectFileTransition.bucketUpdateHashingBitsWithModel(clone(),replacemmentBucketNum,TransitionType.replacemmentBucketFound));
             _table.update(index,replacemmentBucketNum,jump2, clone());
             //Adding the value again to appy to the model

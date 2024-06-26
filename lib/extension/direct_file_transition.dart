@@ -167,6 +167,13 @@ class DirectFileTransition extends Transition {
     _transitionMessage = "The bucket was found";
   }
 
+  DirectFileTransition.replacementBucketFoundWithModel(this._transitionFile, int bucketFoundId, int hashTableIndex ):super(TransitionType.replacemmentBucketFound){
+    _bucketListTransition = BucketListTransition.bucketFound(_transitionFile.getFileContent(), bucketFoundId);
+    _directoryTransition = DirectoryTransition.hashTablePointedBucket(_transitionFile.getDirectory(), hashTableIndex , TransitionType.replacemmentBucketFound);
+    _freedListTransition = FreedListTransition(_transitionFile!.getFreedList());
+    _transitionMessage = "The replacement bucket was found";
+  }
+
   DirectFileTransition.bucketOverflowed(this._transitionFile,List<Bucket> bucketList, Directory dir, int bucketId, int hashTableIndex):super(TransitionType.bucketOverflowed){
     _bucketListTransition = BucketListTransition.bucketOverflowed(bucketList, bucketId);
     _directoryTransition = DirectoryTransition.hashTablePointedBucket(dir, hashTableIndex , TransitionType.bucketOverflowed);
@@ -359,9 +366,9 @@ class DirectFileTransition extends Transition {
     _transitionMessage = "The record was found in the bucket";
   }
 
-    DirectFileTransition.recordNotFoundWithModel(this._transitionFile, int bucketId, int hashTableIndex, BaseRegister recordToFound):super(TransitionType.recordFound){
+    DirectFileTransition.recordNotFoundWithModel(this._transitionFile, int bucketId, int hashTableIndex, BaseRegister recordToFound):super(TransitionType.recordNotFound){
     _bucketListTransition = BucketListTransition.recordFound(_transitionFile.getFileContent(), bucketId, recordToFound);
-    _directoryTransition = DirectoryTransition.hashTablePointedBucket(_transitionFile.getDirectory(), hashTableIndex , TransitionType.bucketFound);
+    _directoryTransition = DirectoryTransition.hashTablePointedBucket(_transitionFile.getDirectory(), hashTableIndex , TransitionType.recordNotFound);
     _freedListTransition = FreedListTransition(_transitionFile!.getFreedList());
     _transitionMessage = "The record was not found";
   }
@@ -405,6 +412,7 @@ enum TransitionType {
   recordSaved,
   recordDeleted,
   recordFound,
+  recordNotFound,
   hashTableDuplicateSize,
   hashTableReduceSize,
   hashTableUpdated,
