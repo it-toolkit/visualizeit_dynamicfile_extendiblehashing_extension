@@ -84,6 +84,7 @@ void main() {
   myfile.getFreedList().add(14);
   myfile.getFreedList().add(15);
   myfile.getFreedList().add(20);
+  print(myfile.getFileContent()[0].indexOf(FixedLengthRegister(459)));
   DirectFileTransition transition = DirectFileTransition.usingBucketFreed(myfile, myfile.getFileContent(), myfile.getDirectory(), 3);
 
 

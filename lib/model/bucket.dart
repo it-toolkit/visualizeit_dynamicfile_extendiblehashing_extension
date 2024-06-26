@@ -172,6 +172,24 @@ class Bucket{
     return _registerList;
   }
 
+  int indexOf(BaseRegister reg){
+    List<BaseRegister> copyList = List.from(_registerList);
+    int index = 0;
+    bool found = false;
+    for (var myreg in copyList) {
+      if (myreg.value == reg.value){
+        found = true;
+        break; 
+      }
+      if (index == copyList.length -1){
+        break;
+      }
+      index++;
+    }
+
+    return found ? index : -1;
+  }
+
   @override
   String toString(){
     var result = StringBuffer();

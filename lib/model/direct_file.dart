@@ -304,7 +304,9 @@ reorder(BaseRegister newValue, Bucket overflowedBucket, int bucketInitialIndex){
     _logger.debug(() => "delete() - Bucket with id ${myBucket.id} was found");
     notifyObservers(DirectFileTransition.bucketFoundWithModel(clone(),bucketNum,index));
 
+    notifyObservers(DirectFileTransition.recordDeletedWithModel(clone(),myBucket.indexOf(delValue.clone()),bucketNum,index,delValue.clone()));
     if (myBucket.delValue(delValue)){
+       
        //Check if the bucket is empty
        if (myBucket.isEmpty()){
           int x = 2;
@@ -312,8 +314,11 @@ reorder(BaseRegister newValue, Bucket overflowedBucket, int bucketInitialIndex){
           int jump1 = pow(x, b-1).ceil();
           int jump2 = pow(x, b).ceil(); 
           int replacemmentBucketNum = _table.review(index, jump1);
+          //TODO: Agregar transition aca o dentro del review
+          
           //This part is when a Bucket will be freed
           if (replacemmentBucketNum != -1){
+            //TODO: Agregar transition aca sobre la cubeta de reemplazo
             _file[replacemmentBucketNum].bits-=1;
             myBucket.setValue(delValue);
             //notifyObservers(DirectFileTransition.bucketUpdateHashingBits(myClone,-1,replacemmentBucketNum,TransitionType.replacemmentBucketFound));

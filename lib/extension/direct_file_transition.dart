@@ -323,6 +323,13 @@ class DirectFileTransition extends Transition {
     _freedListTransition = FreedListTransition(_transitionFile!.getFreedList());
     _transitionMessage = "The hash table must be updated from position $init in circular steps of size $jump";
   }
+
+    DirectFileTransition.hashTableReviewed(this._transitionFile, List<Bucket> bucketList, Directory dir, int bucketId, int hashTablePositionToUpdate,int init, int jump,TransitionType currentTransitionType):super(TransitionType.hashTableUpdated){
+    _bucketListTransition = BucketListTransition(TransitionType.bucketFound,_transitionFile.bucketRecordCapacity() , bucketList);
+    _directoryTransition = DirectoryTransition.hashTableUpdated(dir, bucketId, hashTablePositionToUpdate, currentTransitionType);
+    _freedListTransition = FreedListTransition(_transitionFile!.getFreedList());
+    _transitionMessage = "The hash table must be updated from position $init in circular steps of size $jump";
+  }
    
   DirectFileTransition.recordSaved(this._transitionFile,List<Bucket> bucketList, Directory dir, int bucketId, int hashTableIndex, BaseRegister recordSaved):super(TransitionType.recordSaved){
     _bucketListTransition = BucketListTransition.recordSaved(bucketList, bucketId, recordSaved);
@@ -361,9 +368,21 @@ class DirectFileTransition extends Transition {
 
   DirectFileTransition.recordDeleted(this._transitionFile,List<Bucket> bucketList, Directory dir, int recordDeletedPositionInBucket, int bucketId, int hashTableIndex, BaseRegister recordToDelete):super(TransitionType.recordDeleted){
     _bucketListTransition = BucketListTransition.recordDeleted(bucketList, recordDeletedPositionInBucket, recordToDelete, bucketId, _transitionFile!.bucketRecordCapacity());
-    _directoryTransition = DirectoryTransition.hashTablePointedBucket(dir,  hashTableIndex, TransitionType.bucketFound);
+    _directoryTransition = DirectoryTransition.hashTablePointedBucket(dir,  hashTableIndex, TransitionType.recordDeleted);
     _freedListTransition = FreedListTransition(_transitionFile!.getFreedList());
     _transitionMessage = "The record is deleted";
+  }
+  
+  DirectFileTransition.recordDeletedWithModel(this._transitionFile, int recordDeletedPositionInBucket, int bucketId, int hashTableIndex, BaseRegister recordToDelete):super(TransitionType.recordDeleted){
+    _bucketListTransition = BucketListTransition.recordDeleted(_transitionFile.getFileContent(), recordDeletedPositionInBucket, recordToDelete, bucketId, _transitionFile.bucketRecordCapacity());
+    _directoryTransition = DirectoryTransition.hashTablePointedBucket(_transitionFile.getDirectory(),  hashTableIndex, TransitionType.recordDeleted);
+    _freedListTransition = FreedListTransition(_transitionFile!.getFreedList());
+    _transitionMessage = "The record is deleted";
+    if (_transitionFile.getFileContent()[bucketId].len == 1 ){
+      StringBuffer buff= StringBuffer(_transitionMessage!);
+      buff.write(". It checks whether the bucket can be freed.");
+      _transitionMessage = buff.toString();
+    }
   }
 
   DirectFileTransition.fileIsEmpty(this._transitionFile):super(TransitionType.fileIsEmpty) {
