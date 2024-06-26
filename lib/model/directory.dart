@@ -77,7 +77,7 @@ class Directory extends Observable{
   }
   
   /* Used in deletion algorithm, return replacemment bucket number if init+jump and init-jump are equal if not return -1 */
-  int review(int init, int jump){
+  int review(int init, int jump, int bucketId, DirectFile file){
     _logger.trace(() => "review() - Begins");
     _logger.trace(() => "review() - Initial position: $init");
     _logger.trace(() => "review() - Jump value: $jump");
@@ -85,12 +85,15 @@ class Directory extends Observable{
     var pAfter = (init + jump) % _hashMap.length;
     var pBefore = (init - jump) % _hashMap.length;
 
+    var myClone = file.clone();
     if (_hashMap[pAfter] == _hashMap[pBefore]){
         //Then it is possible to free the bucket
         _logger.debug(() => "review() - Bucket numbers are equal");
+        notifyObservers(DirectFileTransition.hashTableReviewed(myClone,myClone.getFileContent(), clone(),bucketId,pAfter,pBefore,init,jump, TransitionType.hashTableReviewedSameBucket));
         return _hashMap[pAfter];
     }
-    _logger.trace(() => "review() - Bucket numbers are equal");
+    _logger.trace(() => "review() - Bucket numbers are not equal");
+    notifyObservers(DirectFileTransition.hashTableReviewed(myClone,myClone.getFileContent(), clone(),bucketId,pAfter,pBefore,init,jump, TransitionType.hashTableReviewedNotSameBucket));
     return result;
 
   }

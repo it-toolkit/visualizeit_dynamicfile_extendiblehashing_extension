@@ -94,6 +94,8 @@ class DirectoryTransition extends Transition {
   late int bucketOverflowedId = -1;
   late int bucketCreatedId = -1;
   late int hashTablePosition = -1;
+  late int hashTablePosition1 = -1;
+  late int hashTablePosition2 = -1;
  
   Directory? getTransition() => _transitionDirectory;
 
@@ -104,6 +106,9 @@ class DirectoryTransition extends Transition {
     if (currentType.name == "bucketCreated"){
       bucketCreatedId = bucketId;
     }
+  }
+
+    DirectoryTransition.hashTableReviewed(this._transitionDirectory, int bucketId, this.hashTablePosition1, this.hashTablePosition2, this.currentType ):super(TransitionType.hashTableReviewed){
   }
 
   DirectoryTransition.hashTablePointedBucket(this._transitionDirectory, this.hashTablePosition, this.currentType ):super(TransitionType.hashTableOperation){
@@ -228,7 +233,7 @@ class DirectFileTransition extends Transition {
     _bucketListTransition = BucketListTransition.bucketEmpty(_transitionFile.getFileContent(), bucketId);
     _directoryTransition = DirectoryTransition.hashTablePointedBucket(_transitionFile.getDirectory(), -1 , TransitionType.bucketEmpty);
     _freedListTransition = FreedListTransition(_transitionFile!.getFreedList());
-    _transitionMessage = "The bucket is empty";
+    _transitionMessage = "The bucket must be rewrite it as empty";
   }
 
   DirectFileTransition.usingBucketFreed(this._transitionFile,List<Bucket> bucketList, Directory dir, int bucketId):super(TransitionType.bucketFreed){
@@ -331,11 +336,17 @@ class DirectFileTransition extends Transition {
     _transitionMessage = "The hash table must be updated from position $init in circular steps of size $jump";
   }
 
-    DirectFileTransition.hashTableReviewed(this._transitionFile, List<Bucket> bucketList, Directory dir, int bucketId, int hashTablePositionToUpdate,int init, int jump,TransitionType currentTransitionType):super(TransitionType.hashTableUpdated){
+  DirectFileTransition.hashTableReviewed(this._transitionFile, List<Bucket> bucketList, Directory dir,int bucketId, int hashTablePositionToCheck1,int hashTablePositionToCheck2,int init, int jump,TransitionType currentTransitionType):super(TransitionType.hashTableReviewed){
     _bucketListTransition = BucketListTransition(TransitionType.bucketFound,_transitionFile.bucketRecordCapacity() , bucketList);
-    _directoryTransition = DirectoryTransition.hashTableUpdated(dir, bucketId, hashTablePositionToUpdate, currentTransitionType);
+    _directoryTransition = DirectoryTransition.hashTableReviewed(dir, bucketId, hashTablePositionToCheck1, hashTablePositionToCheck2, currentTransitionType);
     _freedListTransition = FreedListTransition(_transitionFile!.getFreedList());
-    _transitionMessage = "The hash table must be updated from position $init in circular steps of size $jump";
+
+    if (currentTransitionType.name == "hashTableReviewedSameBucket"){
+      _transitionMessage = "The position $hashTablePositionToCheck1 and $hashTablePositionToCheck2 in hash table are pointing to the same bucket. This bucket will be the replacement and the bucket $bucketId can be freed";
+    }else{
+      _transitionMessage = "The position $hashTablePositionToCheck1 and $hashTablePositionToCheck2 in hash table are not pointing to the same bucket. The bucket $bucketId must be write it as Empty";
+    }
+    
   }
    
   DirectFileTransition.recordSaved(this._transitionFile,List<Bucket> bucketList, Directory dir, int bucketId, int hashTableIndex, BaseRegister recordSaved):super(TransitionType.recordSaved){
@@ -396,6 +407,7 @@ class DirectFileTransition extends Transition {
     _bucketListTransition = BucketListTransition(TransitionType.fileIsEmpty,_transitionFile.bucketRecordCapacity() ,[]);
     _directoryTransition = DirectoryTransition(null);
     _freedListTransition = FreedListTransition([]);
+    _transitionMessage = "The file is empty";
   }
 }
 
@@ -418,6 +430,9 @@ enum TransitionType {
   hashTableUpdated,
   hashTableOperation,
   hashTablePointedBucket,
+  hashTableReviewed,
+  hashTableReviewedSameBucket,
+  hashTableReviewedNotSameBucket,
   fileIsEmpty,
   findingBucket,
   freedListOperation;
