@@ -247,7 +247,7 @@ class DirectFileTransition extends Transition {
     _bucketListTransition = BucketListTransition.bucketFreed(_transitionFile.getFileContent(), bucketId);
     _directoryTransition = DirectoryTransition.hashTablePointedBucket(_transitionFile.getDirectory(), -1 , TransitionType.bucketFreed);
     _freedListTransition = FreedListTransition.bucketFreed(_transitionFile.getFreedList(),bucketId);
-    _transitionMessage = "It can be used a bucket from the freed bucket list";
+    _transitionMessage = "It can be used a bucket from the freed bucket list. The bucket $bucketId will be removed from list";
   }
 
   DirectFileTransition.bucketReorganized(this._transitionFile, List<Bucket> bucketList, Directory dir, int bucketReorganizedId):super(TransitionType.bucketReorganized){

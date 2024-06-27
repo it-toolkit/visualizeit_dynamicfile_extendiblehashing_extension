@@ -21,7 +21,7 @@ abstract class DirectFileExtendibleHashingCommand extends ModelCommand {
     int pendingFrames;
     Model? resultModel;
 
-    (pendingFrames, resultModel) = fileModel.executeCommand(this);//REVIEW THIS METHOD
+    (pendingFrames, resultModel) = fileModel.executeCommand(this);
 
     var result = Result(finished: pendingFrames == 0, model: resultModel);
 

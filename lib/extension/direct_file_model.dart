@@ -45,8 +45,7 @@ class DirectFileExtendibleHashingModel extends Model {
   
   DirectFile? get currentFile => _transitions.isEmpty
       ? _lastTransitionFile
-      : _transitions[_currentFrame].getTransitionFile() ?? _lastTransitionFile;// TODO: CHECK if getTransitionFile is returning what is expected here.
-  
+      : _transitions[_currentFrame].getTransitionFile() ?? _lastTransitionFile;
   
   DirectFileTransition? get currentTransition =>
       _transitions.isNotEmpty ? _transitions[_currentFrame] : null;
@@ -60,8 +59,7 @@ class DirectFileExtendibleHashingModel extends Model {
         _logger.trace(() => "Command: $command");
         _logger.trace(() => "Current Frame : $_currentFrame"); 
         _logger.trace(() => "Current Transition: ${currentTransition?.type.name}"); 
-        //_logger.trace(() => "Base File: $baseFile"); 
-        //baseFile.status();
+
       } else {
         _lastTransitionFile = _baseFile.clone();
         commandInExecution = command;
@@ -72,7 +70,7 @@ class DirectFileExtendibleHashingModel extends Model {
         var functionToExecute = command.commandToFunction();
         _logger.trace(() => "Function to Execute $functionToExecute.toString()"); 
         functionToExecute(_baseFile);
-        //baseFile.status();
+
         
         _transitions = transitionObserver.transitions;
         _logger.trace(() => "# Transitions generated: $_transitions" );
