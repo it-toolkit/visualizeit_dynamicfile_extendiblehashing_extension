@@ -92,14 +92,27 @@ class DirectFile extends Observable{
     _logger.trace(() => "exist() - Directory Bucket number is $bucketNum"); 
     Bucket mybucket = _file[bucketNum];
     notifyObservers(DirectFileTransition.bucketFoundWithModel(clone(),bucketNum,index));
+    /*
     mybucket.getList().forEach((register) {
       if(register.value == reg.value){
           exist = true;
-          notifyObservers(DirectFileTransition.recordFoundWithModel(clone(),bucketNum, index, reg));
+          //notifyObservers(DirectFileTransition.recordFoundWithModel(clone(),bucketNum, index, reg));
       }else{
-        notifyObservers(DirectFileTransition.recordNotFoundWithModel(clone(),bucketNum, index, reg));
+        //notifyObservers(DirectFileTransition.recordNotFoundWithModel(clone(),bucketNum, index, reg));
       } 
-    });
+    });*/
+    for (var register in mybucket.getList())
+    {
+      if(register.value == reg.value){
+          exist = true;
+          break;
+      }
+    }
+    if( exist ){
+      notifyObservers(DirectFileTransition.recordFoundWithModel(clone(),bucketNum, index, reg));
+    }else{
+      notifyObservers(DirectFileTransition.recordNotFoundWithModel(clone(),bucketNum, index, reg));
+    }
     _logger.trace(() => "exist() - Result: $exist"); 
     return exist;
   }
@@ -330,8 +343,6 @@ reorder(BaseRegister newValue, Bucket overflowedBucket, int bucketInitialIndex){
             _table.update(index,replacemmentBucketNum,jump2, clone());
             //Adding the value again to appy to the model
             //The freed bucket should contain the value and i cannot know this at the moment of deleting.
-            //TODO: Review this.
-            //myBucket.setValue(delValue);
             //Changing bucket status to "free"
             _logger.trace(() => "delete() - The bucket status is now 'free'");
             myBucket.setStatus(BucketStatus.Freed);

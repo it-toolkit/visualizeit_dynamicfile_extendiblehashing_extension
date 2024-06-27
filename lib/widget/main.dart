@@ -41,7 +41,7 @@ void main() {
   //Transition 2.1
   //DirectFileTransition transition = DirectFileTransition.bucketUpdateHashingBits(myfile,myfile.getFileContent(), myfile.getDirectory(), 6, TransitionType.bucketOverflowed);
   //Transition 3 (Duplicate the hashing table)
-  //DirectFileTransition transition = DirectFileTransition.hashTableDuplicateSize(myfile, myfile.getFileContent(), myfile.getDirectory());
+  DirectFileTransition transition = DirectFileTransition.hashTableDuplicateSize(myfile, myfile.getFileContent(), myfile.getDirectory());
   //Transition 4 (creating new bucket)
   //DirectFileTransition transition = DirectFileTransition.bucketCreated(myfile, myfile.getFileContent(), myfile.getDirectory(), 2, 1);
   //Transition 4.1
@@ -72,6 +72,7 @@ void main() {
 
 
   //myfile.getDirectory().duplicate(12, myfile);
+  /*
   myfile.getFreedList().add(1);
   myfile.getFreedList().add(2);
   myfile.getFreedList().add(4);
@@ -84,10 +85,12 @@ void main() {
   myfile.getFreedList().add(14);
   myfile.getFreedList().add(15);
   myfile.getFreedList().add(20);
-  print(myfile.getFileContent()[0].indexOf(FixedLengthRegister(459)));
-  DirectFileTransition transition = DirectFileTransition.usingBucketFreed(myfile, myfile.getFileContent(), myfile.getDirectory(), 3);
+  */
+  //print(myfile.getFileContent()[0].indexOf(FixedLengthRegister(459)));
+  //DirectFileTransition transition = DirectFileTransition.usingBucketFreed(myfile, myfile.getFileContent(), myfile.getDirectory(), 3);
 
-
+  //print(myfile.getDirectory());
+  //print(myfile.getPriorDirectory());
 
   runApp(MyApp(myfile, transition));
 }

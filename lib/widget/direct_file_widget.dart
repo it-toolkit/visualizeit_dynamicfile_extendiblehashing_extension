@@ -22,12 +22,16 @@ class DirectFileExtendibleHashingWidget extends StatefulWidget {
 
 class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendibleHashingWidget> {
   //Widget? _components;
+  //bool _transition = false;
 
   _DirectFileExtendibleHashingWidgetState();
 
   @override
   void initState() {
     super.initState();
+    /*Future.delayed(const Duration(seconds: 5)).then((value) => setState(() {
+          _transition = true;
+    }));*/
     //_components = createWidgetsFromFile();
   }
 
@@ -123,38 +127,12 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
     );
   }
 
-  
-
-  Widget createWidgetsFromFile() {
-    int? bucketRecordCapacity;
-    int? hashTableLen;
-    Widget? hashingTableWidget;
-    Widget? bucketListWidget;
-    Widget? freedBucketListWidget;
-    bool freedBucketListisNotEmpty = false;
-    
-    if (widget._currentTransition != null){
-      bucketRecordCapacity = widget._currentTransition?.getTransitionFile()?.bucketRecordCapacity();
-      hashTableLen = widget._currentTransition?.getDirectoryTransition()!.getTransition()!.len;
-      hashingTableWidget = HashingTableWidget(currentTransition: widget._currentTransition?.getDirectoryTransition());
-      bucketListWidget = BucketListWidget(widget._currentTransition!.getBucketListTransition(), widget._currentTransition!.getTransitionFile()!.bucketRecordCapacity());
-      freedBucketListWidget = FreedBucketListWidget(currentTransition: widget._currentTransition!.getFreedListTransition());
-      freedBucketListisNotEmpty = widget._currentTransition!.getFreedListTransition()!.getFreedList().isNotEmpty;
-    } else{
-      bucketRecordCapacity = widget._initFile.bucketRecordCapacity();
-      hashTableLen = widget._initFile.getDirectory().len;
-      hashingTableWidget = HashingTableWidget(currentTransition: DirectoryTransition(widget._initFile.getDirectory()));
-      bucketListWidget = BucketListWidget(BucketListTransition(TransitionType.fileIsEmpty,widget._initFile.bucketRecordCapacity(), widget._initFile.getFileContent()), widget._initFile.bucketRecordCapacity());
-      freedBucketListWidget = FreedBucketListWidget(currentTransition: FreedListTransition(widget._initFile.getFreedList()));
-      freedBucketListisNotEmpty = widget._initFile.getFreedList().isNotEmpty;
-    }
-    return Column( children: [ 
-            Row( children: [ 
-              Column(children:[ 
-                               Row(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: [
+  getLeftBanner(int? bucketRecordCapacity, int? hashTableLen){
+    return Column(children:[ 
+                            Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
                                             Container(
                                               width: 170,
                                               height: 70,
@@ -177,13 +155,45 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
                                               ),
                                             ),
                                           ],
-                                        ), 
-                              ],
-                  ),
-            const Spacer(),
-            getInternalBanner(),
-            const Spacer(flex:2),
-            //getInternalNote(),
+                                ), 
+                            ],
+                  );
+  }
+
+  Widget createWidgetsFromFile() {
+    int? bucketRecordCapacity;
+    int? hashTableLen;
+    Widget? hashingTableWidget;
+    //Widget? currentHashingTableWidget;
+    Widget? bucketListWidget;
+    Widget? freedBucketListWidget;
+    bool freedBucketListisNotEmpty = false;
+    
+    if (widget._currentTransition != null){
+      bucketRecordCapacity = widget._currentTransition?.getTransitionFile()?.bucketRecordCapacity();
+      hashTableLen = widget._currentTransition?.getDirectoryTransition()!.getTransition()!.len;
+      hashingTableWidget = HashingTableWidget(currentTransition: widget._currentTransition?.getDirectoryTransition());
+      //currentHashingTableWidget = HashingTableWidget(currentTransition: widget._currentTransition?.getDirectoryTransition());
+      bucketListWidget = BucketListWidget(widget._currentTransition!.getBucketListTransition(), widget._currentTransition!.getTransitionFile()!.bucketRecordCapacity());
+      freedBucketListWidget = FreedBucketListWidget(currentTransition: widget._currentTransition!.getFreedListTransition());
+      freedBucketListisNotEmpty = widget._currentTransition!.getFreedListTransition()!.getFreedList().isNotEmpty;
+    } else{
+      bucketRecordCapacity = widget._initFile.bucketRecordCapacity();
+      hashTableLen = widget._initFile.getDirectory().len;
+      hashingTableWidget = HashingTableWidget(currentTransition: DirectoryTransition(widget._initFile.getDirectory()));
+      //hashingTableWidget = HashingTableWidget(currentTransition: DirectoryTransition(widget._initFile.getPriorDirectory()));
+      //currentHashingTableWidget = HashingTableWidget(currentTransition: DirectoryTransition(widget._initFile.getDirectory()));
+      bucketListWidget = BucketListWidget(BucketListTransition(TransitionType.fileIsEmpty,widget._initFile.bucketRecordCapacity(), widget._initFile.getFileContent()), widget._initFile.bucketRecordCapacity());
+      freedBucketListWidget = FreedBucketListWidget(currentTransition: FreedListTransition(widget._initFile.getFreedList()));
+      freedBucketListisNotEmpty = widget._initFile.getFreedList().isNotEmpty;
+    }
+    return Column( children: [ 
+            Row( children: [ 
+              getLeftBanner(bucketRecordCapacity, hashTableLen),
+              const Spacer(),
+              getInternalBanner(),
+              const Spacer(flex:2),
+              //getInternalNote(),
             ] ),//First Row
             Row( 
               mainAxisAlignment: MainAxisAlignment.start,
@@ -193,8 +203,7 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
                   Column(children:[ 
                                 Container(
                                   child: const Center(child: Text("Hashing Table", style: TextStyle(fontWeight: FontWeight.bold))),
-                                ),
-                                //ConstrainedBox(constraints: const BoxConstraints(maxWidth: 150), child: HashingTableWidget(initialValues: widget.file.getDirectory().hash, currentTransition: widget._currentTransition))
+                                ),                  
                                 ConstrainedBox(constraints: const BoxConstraints(maxWidth: 150), child: hashingTableWidget )
                               ],
                   ),
