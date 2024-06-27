@@ -22,7 +22,11 @@ class DirectFile extends Observable{
     _file = [];
     _table = Directory();
     _table.create();
-    _bucketSize = bucketSize;
+    if (bucketSize <= 0) {
+      throw Exception("The bucket size must be greater than 0");
+    }else {
+      _bucketSize = bucketSize;
+    }
     _freed = [];
     _logger.trace(() => "Creating Direct File"); 
   }
