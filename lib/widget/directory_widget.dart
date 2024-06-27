@@ -60,39 +60,47 @@ class _HashingTableWidgetState extends State<HashingTableWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(10),
-      padding: EdgeInsets.all(10),
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(5), boxShadow: [
-        BoxShadow(color: Colors.black87, spreadRadius: 5, blurRadius: 7, offset: const Offset(0, 3)),
-      ]),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Container(
-              width: 30,
-              padding: EdgeInsets.all(4),
-              child: const Center(child: Text("#", style: TextStyle(fontWeight: FontWeight.bold))),
-              ),
-              Expanded (
-                child: Container(
-                    padding: EdgeInsets.all(4),
-                    child: const Center(child: Text("Bucket #", style: TextStyle(fontWeight: FontWeight.bold))),
-                ),
-              ),
-            ],
-          ),
-          SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: getWidgets(),
-              )),
-        ],
-      ),
-    );
+
+    return Column(children:[ 
+                            Container(
+                                  child: const Center(child: Text("Hashing Table", style: TextStyle(fontWeight: FontWeight.bold))),
+                                ),                  
+                                ConstrainedBox(constraints: const BoxConstraints(maxWidth: 150), 
+                                                child: Container(
+                                                margin: EdgeInsets.all(10),
+                                                padding: EdgeInsets.all(10),
+                                                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(5), boxShadow: [
+                                                  BoxShadow(color: Colors.black87, spreadRadius: 5, blurRadius: 7, offset: const Offset(0, 3)),
+                                                ]),
+                                                child: Column(
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        Container(
+                                                        width: 30,
+                                                        padding: EdgeInsets.all(4),
+                                                        child: const Center(child: Text("#", style: TextStyle(fontWeight: FontWeight.bold))),
+                                                        ),
+                                                        Expanded (
+                                                          child: Container(
+                                                              padding: EdgeInsets.all(4),
+                                                              child: const Center(child: Text("Bucket #", style: TextStyle(fontWeight: FontWeight.bold))),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SingleChildScrollView(
+                                                        scrollDirection: Axis.vertical,
+                                                        child: Column(
+                                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                                          //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                          children: getWidgets(),
+                                                        )),
+                                                  ],
+                                                ),
+                                              ) )
+                            ],
+                  );
   }
 
   List<Widget> getWidgets(){

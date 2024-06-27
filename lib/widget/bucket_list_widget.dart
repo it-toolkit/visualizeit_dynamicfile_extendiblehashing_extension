@@ -151,6 +151,84 @@ class _BucketListWidgetState extends State<BucketListWidget> {
 @override
 Widget build(BuildContext context) {
     buckets = List.from(widget.currentTransition!.getBucketList());
+    
+    return Column( children: [
+                              Container(
+                                        alignment: Alignment.topCenter,
+                                        child: const Center(child: Text("File", style: TextStyle(fontWeight: FontWeight.bold))),
+                                       ),
+                              SingleChildScrollView(
+                                      scrollDirection: Axis.vertical,
+                                      child: Container(
+                                              margin: EdgeInsets.all(10),
+                                              padding: EdgeInsets.all(10),
+                                              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(5), boxShadow: const [
+                                                BoxShadow(color: Colors.black87, spreadRadius: 5, blurRadius: 7, offset: Offset(0, 3)),
+                                              ]),
+                                              child: Column(
+                                                children: [
+                                                  Row(
+                                                          mainAxisAlignment: MainAxisAlignment.center,                        
+                                                          children: [
+                                                            Container(
+                                                                margin: EdgeInsets.all(1),
+                                                                //decoration: BoxDecoration(color: Colors.blue.shade50, borderRadius: BorderRadius.all(Radius.circular(10))),
+                                                                child: Row(
+                                                                  children: [
+                                                                    Container(
+                                                                      width: 70,
+                                                                      padding: EdgeInsets.all(4),
+                                                                      alignment: Alignment.centerLeft,
+                                                                      //decoration: BoxDecoration(border: Border(right: BorderSide(color: Colors.black))),
+                                                                      child: Center(child: Text("Bucket #", style: const TextStyle(fontWeight: FontWeight.bold))),
+                                                                    ),
+                                                                    Container(
+                                                                      width: 70,
+                                                                      padding: EdgeInsets.all(4),
+                                                                      child: Center(child: Text("Status", style: const TextStyle(fontWeight: FontWeight.bold))),
+                                                                    )
+                                                                  ],
+                                                                )),
+                                                            Container(
+                                                                margin: EdgeInsets.all(1),
+                                                                //decoration: BoxDecoration(color: Colors.blue.shade50, borderRadius: BorderRadius.all(Radius.circular(10))),
+                                                                child: Row(
+                                                                  children: [
+                                                                    Container(
+                                                                      width: 40,
+                                                                      padding: EdgeInsets.all(4),
+                                                                      //decoration: BoxDecoration(border: Border(right: BorderSide(color: Colors.black))),
+                                                                      child: const Center(child: Text("Bits",style: TextStyle(fontWeight: FontWeight.bold))),
+                                                                    ),
+                                                                    Container(
+                                                                      // padding: EdgeInsets.all(4),
+                                                                      child: Row(
+                                                                        children: [
+                                                                          for (var i = 0; i < widget.bucketRecordCapacity; i++)
+                                                                            Container(
+                                                                              width: 80,
+                                                                              padding: EdgeInsets.all(1),
+                                                                              //margin: EdgeInsets.all(2) + EdgeInsets.only(left: 2),
+                                                                              //decoration:
+                                                                              //   BoxDecoration(border: Border.all(color: Colors.grey), borderRadius: BorderRadius.all(Radius.circular(10))),
+                                                                              child: Center(child: Text( "Record $i", style: const TextStyle(fontWeight: FontWeight.bold))),
+                                                                            ),
+                                                                        ],
+                                                                      ),
+                                                                    )
+                                                                  ],
+                                                                ))
+                                                          ],
+                                                      ),
+                                                      for (var b in buckets) 
+                                                        buildBucket(position: b.id, status: b.status, b: b.bits, records: b.getList())
+                                                    ],
+                                              ), 
+                                            ))
+                                ],
+                            );
+  }
+    /*
     return SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Container(
@@ -219,5 +297,5 @@ Widget build(BuildContext context) {
               ],
             ), 
           ));
-  }
+  }*/
 }

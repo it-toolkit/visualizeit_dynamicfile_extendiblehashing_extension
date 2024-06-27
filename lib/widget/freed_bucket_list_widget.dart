@@ -38,8 +38,8 @@ class _FreedBucketListWidgetState extends State<FreedBucketListWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
+  Widget build(BuildContext context) { 
+    Widget myContainer = Container(
       margin: EdgeInsets.all(10),
       padding: EdgeInsets.all(10),
       decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(5), boxShadow: [
@@ -53,6 +53,16 @@ class _FreedBucketListWidgetState extends State<FreedBucketListWidget> {
             children: getWidgets(),
           )),
     );
+
+    return Column( 
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                   children: [
+                              Container(
+                                        child: const Center(child: Text("Freed Bucket List", style: TextStyle(fontWeight: FontWeight.bold))),
+                                       ),
+                              ConstrainedBox(constraints: const BoxConstraints(maxHeight: 100), child: myContainer),
+                   ]
+                  ); 
   }
 
   List<Widget> getWidgets(){

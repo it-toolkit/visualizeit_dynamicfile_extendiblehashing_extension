@@ -200,55 +200,24 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                   const Spacer(),
-                  Column(children:[ 
-                                Container(
-                                  child: const Center(child: Text("Hashing Table", style: TextStyle(fontWeight: FontWeight.bold))),
-                                ),                  
-                                ConstrainedBox(constraints: const BoxConstraints(maxWidth: 150), child: hashingTableWidget )
-                              ],
-                  ),
+                  hashingTableWidget,
                   const Spacer(flex: 2),
                   Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        //Row(
-                        //  children: [
-                            Column(
-                              //verticalDirection: VerticalDirection.up,
-                              children: [
-                                Container(
-                                          alignment: Alignment.topCenter,
-                                          child: const Center(child: Text("File", style: TextStyle(fontWeight: FontWeight.bold))),
-                                         ),
-                                bucketListWidget,
-                                ],
-                            ),
-                         // ],
-                        //),
-                        //Row (),
+                        bucketListWidget,
                         //const Spacer(), //
                         Row(
-                            //mainAxisAlignment: MainAxisAlignment.start,
-                            //verticalDirection: VerticalDirection.down,
                             children: [ 
                               freedBucketListisNotEmpty ? 
-                              Column( 
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Container(
-                                            child: const Center(child: Text("Freed Bucket List", style: TextStyle(fontWeight: FontWeight.bold))),
-                                           ),
-                                  ConstrainedBox(constraints: const BoxConstraints(maxHeight: 100),child: freedBucketListWidget),
-                              ]) : 
+                              freedBucketListWidget : 
                               const Column (crossAxisAlignment: CrossAxisAlignment.center,),
-                               ]
-                              ),
+                            ]
+                            ),
                         ],
-                      ),  
-                          
+                      ),                            
                   const Spacer(),
                 ]),//2 row
-
             ],
           );
   }
