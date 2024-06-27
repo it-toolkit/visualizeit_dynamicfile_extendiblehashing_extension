@@ -319,7 +319,7 @@ class DirectFileTransition extends Transition {
     _bucketListTransition = BucketListTransition(TransitionType.bucketOverflowed, _transitionFile.bucketRecordCapacity() ,_transitionFile!.getFileContent());
     _directoryTransition = DirectoryTransition.hashTablePointedBucket(_transitionFile.getDirectory(), -1 , TransitionType.hashTableReduceSize);
     _freedListTransition = FreedListTransition(_transitionFile!.getFreedList());
-    _transitionMessage = "The hash table must be reduced";
+    _transitionMessage = "The hash table must be reduced, the first half part is equal that the second half part";
   }
 
   DirectFileTransition.hashTableUpdated(this._transitionFile, List<Bucket> bucketList, Directory dir, int bucketId, int hashTablePositionToUpdate ,TransitionType currentTransitionType):super(TransitionType.hashTableUpdated){
