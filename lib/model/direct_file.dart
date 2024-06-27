@@ -107,7 +107,9 @@ class DirectFile extends Observable{
       _logger.trace(() => "insert() - The register already exist in the file");
       return false;
     }
-
+    if (_file.isEmpty){
+       notifyObservers(DirectFileTransition.fileIsEmpty(clone()));
+    }
     //Calculation Mod
     int index = newValue.value % _table.len;
     notifyObservers(DirectFileTransition.findingBucketWithModel(clone(), newValue.value, _table.len, index));
