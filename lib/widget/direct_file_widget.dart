@@ -215,12 +215,17 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
                             ]
                             ),
                         ],
-                      ),                            
+                      ), 
                   const Spacer(),
                 ]),//2 row
             ],
           );
   }
+  /*
+  @override
+  Widget build(BuildContext context) {
+    return createWidgetsFromFile();
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -237,7 +242,7 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
         },
       );
   }
-
+  
 }
 
 class RoundedRectanglePainter extends CustomPainter {
