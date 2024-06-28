@@ -15,7 +15,7 @@ late DirectFile testInsertFile;
 
 void main() {
 
-  group("Testing Direct Clone Method", () {
+  group("Testing File Clone Method", () {
    setUp(() {
     testFile = DirectFile(2);
     testFile.insert(FixedLengthRegister(270));
