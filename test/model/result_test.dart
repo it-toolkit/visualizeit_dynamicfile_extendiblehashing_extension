@@ -3,18 +3,6 @@ import 'package:visualizeit_dynamicfile_extendiblehashing_extension/model/regist
 
 
 void main() {
-  //FixedLengthRegister flreg1 = FixedLengthRegister("385");
-  //print(flreg1.value);
-  //Bucket myBucket1 = Bucket(3, flreg1, "1");
-  //print(myBucket1.toString());
-  //myBucket1.setValue(FixedLengthRegister("276"));
-  //myBucket1.setValue(FixedLengthRegister("345"));
-  //print(myBucket1.toString());
-  //myBucket1.setValue(FixedLengthRegister("444"));
-  //print(myBucket1.toString());
-  //print("Test:${myBucket1.getValue(FixedLengthRegister("276"))}");
-  //myBucket1.getValue(FixedLengthRegister("323"));
-
   DirectFile myfile = DirectFile(3);
   print("My file status:");
   myfile.status();
