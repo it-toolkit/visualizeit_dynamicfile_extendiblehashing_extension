@@ -22,11 +22,14 @@ class DirectFile extends Observable{
     _file = [];
     _table = Directory();
     _table.create();
+    /* TODO: Review this.
     if (bucketSize <= 0) {
       throw Exception("The bucket size must be greater than 0");
     }else {
       _bucketSize = bucketSize;
     }
+    */
+    _bucketSize = bucketSize;
     _freed = [];
     _logger.trace(() => "Creating Direct File"); 
   }
@@ -92,15 +95,6 @@ class DirectFile extends Observable{
     _logger.trace(() => "exist() - Directory Bucket number is $bucketNum"); 
     Bucket mybucket = _file[bucketNum];
     notifyObservers(DirectFileTransition.bucketFoundWithModel(clone(),bucketNum,index));
-    /*
-    mybucket.getList().forEach((register) {
-      if(register.value == reg.value){
-          exist = true;
-          //notifyObservers(DirectFileTransition.recordFoundWithModel(clone(),bucketNum, index, reg));
-      }else{
-        //notifyObservers(DirectFileTransition.recordNotFoundWithModel(clone(),bucketNum, index, reg));
-      } 
-    });*/
     for (var register in mybucket.getList())
     {
       if(register.value == reg.value){
@@ -207,11 +201,10 @@ reorder(BaseRegister newValue, Bucket overflowedBucket, int bucketInitialIndex){
     //Modifying hashing bits and adding a new bucket to the file.
     overflowedBucket.bits+=1;
     notifyObservers(DirectFileTransition.bucketUpdateHashingBitsWithModel(clone(),overflowedBucket.id,TransitionType.bucketOverflowed));
-    //Changing the status of the overflowed bucket to empty.
-    overflowedBucket.setStatus(BucketStatus.Empty);
     newBucket.bits = overflowedBucket.bits;
-    //notifyObservers(DirectFileTransition.bucketUpdateHashingBits(clone(),-1,newBucket.id,TransitionType.bucketCreated));
     notifyObservers(DirectFileTransition.bucketUpdateHashingBitsWithModel(clone(),newBucket.id,TransitionType.bucketCreated));
+    //Changing the status of the overflowed bucket to empty.
+    //overflowedBucket.setStatus(BucketStatus.Empty);
     
     //Duplicating the table
     _table.duplicate(lastBucketId, clone());
@@ -221,6 +214,8 @@ reorder(BaseRegister newValue, Bucket overflowedBucket, int bucketInitialIndex){
     int T = _table.len;
     _logger.trace(() => "reorder() - New hash table: $_table");
     //notifyObservers(DirectFileTransition.bucketReorganized(clone(),overflowedBucket.id));
+    //Changing the status of the overflowed bucket to empty.
+    overflowedBucket.setStatus(BucketStatus.Empty);
     notifyObservers(DirectFileTransition.bucketReorganizedWithModel(clone(),overflowedBucket.id));
     // Reordering registers acordingly to the new T value, 
     // iterate over the overflowed bucket and calculate the mod again.
