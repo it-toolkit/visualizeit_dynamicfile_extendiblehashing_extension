@@ -26,6 +26,7 @@ void main() {
   myfile.insert(FixedLengthRegister(462));
   myfile.insert(FixedLengthRegister(809));
   myfile.insert(FixedLengthRegister(459));
+  /*Testing 1ª delete algorithm*/
   myfile.delete(FixedLengthRegister(305));
   myfile.delete(FixedLengthRegister(809));
   /*Testing 2ª delete algorithm*/
@@ -70,27 +71,7 @@ void main() {
    // Transition Update Hashing bits in buckets. this occurs when the bucket is overflowed, and when the bucket is freed or rewrited empty.
   //DirectFileTransition transition = DirectFileTransition.bucketUpdateHashingBits(myfile, 4, TransitionType.bucketFreed);
 
-
-  //myfile.getDirectory().duplicate(12, myfile);
-  /*
-  myfile.getFreedList().add(1);
-  myfile.getFreedList().add(2);
-  myfile.getFreedList().add(4);
-  myfile.getFreedList().add(5);
-  myfile.getFreedList().add(6);
-
-  myfile.getFreedList().add(10);
-  myfile.getFreedList().add(11);
-  myfile.getFreedList().add(13);
-  myfile.getFreedList().add(14);
-  myfile.getFreedList().add(15);
-  myfile.getFreedList().add(20);
-  */
-  //print(myfile.getFileContent()[0].indexOf(FixedLengthRegister(459)));
   //DirectFileTransition transition = DirectFileTransition.usingBucketFreed(myfile, myfile.getFileContent(), myfile.getDirectory(), 3);
-
-  //print(myfile.getDirectory());
-  //print(myfile.getPriorDirectory());
 
   runApp(MyApp(myfile, transition));
 }

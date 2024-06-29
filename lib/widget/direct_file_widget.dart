@@ -21,18 +21,11 @@ class DirectFileExtendibleHashingWidget extends StatefulWidget {
 }
 
 class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendibleHashingWidget> {
-  //Widget? _components;
-  //bool _transition = false;
-
   _DirectFileExtendibleHashingWidgetState();
 
   @override
   void initState() {
     super.initState();
-    /*Future.delayed(const Duration(seconds: 5)).then((value) => setState(() {
-          _transition = true;
-    }));*/
-    //_components = createWidgetsFromFile();
   }
 
   Widget getInternalBanner(){
@@ -202,7 +195,6 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         bucketListWidget,
-                        //const Spacer(), //
                         Row(
                             children: [ 
                               freedBucketListisNotEmpty ? 
@@ -217,11 +209,6 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
             ],
           );
   }
-  /*
-  @override
-  Widget build(BuildContext context) {
-    return createWidgetsFromFile();
-  }*/
 
   @override
   Widget build(BuildContext context) {

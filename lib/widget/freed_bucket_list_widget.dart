@@ -23,14 +23,14 @@ class _FreedBucketListWidgetState extends State<FreedBucketListWidget> {
   Widget buildRecord(int? value) {
     Color recordColor = Colors.blue.shade50;
     if ( widget.currentTransition?.bucketFreedId == value ){
-      recordColor = Color.fromARGB(255, 111, 120, 241);
+      recordColor = const Color.fromARGB(255, 111, 120, 241);
     }
     return Row(
       children: [
         Container(
-          padding: EdgeInsets.all(4),
-          margin: EdgeInsets.all(1),
-          decoration: BoxDecoration(color: recordColor, borderRadius: BorderRadius.all(Radius.circular(10))),
+          padding: const EdgeInsets.all(4),
+          margin: const EdgeInsets.all(1),
+          decoration: BoxDecoration(color: recordColor, borderRadius: const BorderRadius.all(Radius.circular(10))),
           child: Center(child: Text(value.toString())),
         )
       ],
@@ -42,14 +42,13 @@ class _FreedBucketListWidgetState extends State<FreedBucketListWidget> {
     Widget myContainer = Container(
       margin: EdgeInsets.all(10),
       padding: EdgeInsets.all(10),
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(5), boxShadow: [
-        BoxShadow(color: Colors.black87, spreadRadius: 5, blurRadius: 7, offset: const Offset(0, 3)),
+      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(5), boxShadow: const [
+        BoxShadow(color: Colors.black87, spreadRadius: 5, blurRadius: 7, offset: Offset(0, 3)),
       ]),
       child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
-            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: getWidgets(),
           )),
     );
@@ -57,9 +56,7 @@ class _FreedBucketListWidgetState extends State<FreedBucketListWidget> {
     return Column( 
                   crossAxisAlignment: CrossAxisAlignment.center,
                    children: [
-                              Container(
-                                        child: const Center(child: Text("Freed Bucket List", style: TextStyle(fontWeight: FontWeight.bold))),
-                                       ),
+                              const Center(child: Text("Freed Bucket List", style: TextStyle(fontWeight: FontWeight.bold))),
                               ConstrainedBox(constraints: const BoxConstraints(maxHeight: 100), child: myContainer),
                    ]
                   ); 

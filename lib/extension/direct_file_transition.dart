@@ -297,7 +297,7 @@ class DirectFileTransition extends Transition {
   DirectFileTransition.hashTableDuplicateSize(this._transitionFile,List<Bucket> bucketList, Directory dir):super(TransitionType.hashTableDuplicateSize){
     _bucketListTransition = BucketListTransition(TransitionType.bucketCreated,_transitionFile.bucketRecordCapacity() ,_transitionFile!.getFileContent());
     _directoryTransition = DirectoryTransition.hashTablePointedBucket(dir, -1 , TransitionType.hashTableDuplicateSize);
-    _freedListTransition = FreedListTransition(_transitionFile!.getFreedList());
+    _freedListTransition = FreedListTransition(_transitionFile.getFreedList());
     _transitionMessage = "Hashing bits from bucket are equal to log2(T) then the hash table must be duplicated";
   }
 
