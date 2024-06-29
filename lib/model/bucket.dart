@@ -13,10 +13,10 @@ active: The bucket has space, single insert operation will success.
 freed: The bucket was released and is in the _freed list. The bucket should contain one registry.
 */
 enum BucketStatus {
-  Active,
-  Full,
-  Freed,
-  Empty;
+  active,
+  full,
+  freed,
+  empty;
 
   @override
   String toString() => name;
@@ -34,7 +34,7 @@ class Bucket{
     _id = id;
     _size = bucketSize;
     bits = 0;
-    _status = BucketStatus.Empty;
+    _status = BucketStatus.empty;
     _logger.trace(() => "Creating bucket with id ${id.toString()}");
   }
 
@@ -47,7 +47,7 @@ class Bucket{
 
   bool isEmpty(){
     _logger.debug(() => "isEmpty() - Bucket $_id is ${_status.name}");
-    return (_status==BucketStatus.Empty)? true : false; 
+    return (_status==BucketStatus.empty)? true : false; 
   }
 
   String? getValue(BaseRegister reg)
@@ -75,23 +75,21 @@ class Bucket{
   setValue(BaseRegister reg)
   {
     _logger.trace(() => "setValue() - Setting value ${reg.value.toString()}");
-    //print("<Bucket> Reg list size:" +_registerList.length.toString());
-    //print("<Bucket> Size:" + _size.toString());
     if ( len == _size) {
       _logger.debug(() => "setValue() - Bucket $_id is full");
       throw BucketOverflowedException("The bucket is full");
     } else if ( len < _size){ 
       _logger.trace(() => "setValue() - Bucket $_id is ${_status.name}");
-      if ((_status == BucketStatus.Empty) || (_status == BucketStatus.Full) ){  
-          _status= BucketStatus.Active;
+      if ((_status == BucketStatus.empty) || (_status == BucketStatus.full) ){  
+          _status= BucketStatus.active;
       }
-      if (_status == BucketStatus.Freed){
-        _status= BucketStatus.Active;
+      if (_status == BucketStatus.freed){
+        _status= BucketStatus.active;
         _registerList.removeLast();
       }
       _registerList.add(reg);
-       if (_status == BucketStatus.Active && _registerList.length == _size){
-        _status= BucketStatus.Full;
+       if (_status == BucketStatus.active && _registerList.length == _size){
+        _status= BucketStatus.full;
        }
     }
     _logger.debug(() => "setValue() - Bucket $_id, final status is ${_status.name}");
@@ -108,11 +106,11 @@ class Bucket{
         _logger.debug(() => "delValue() - The value as found, deleting value ${value.toString()}");
         found=true;
  
-        if (_status == BucketStatus.Full){
-          _status= BucketStatus.Active;
+        if (_status == BucketStatus.full){
+          _status= BucketStatus.active;
         }
-        if ((_status == BucketStatus.Active) &&( len == 1)){
-          _status= BucketStatus.Empty;
+        if ((_status == BucketStatus.active) &&( len == 1)){
+          _status= BucketStatus.empty;
         }
         _registerList.remove(value);
         break;
@@ -125,29 +123,7 @@ class Bucket{
     _logger.trace(() => "delValue() - END");
     return found;
   }
-  /*
-  BaseRegister? getReg(String my_value)
-  {
-    var found = false;
-    var reg;
-    for( reg in _registerList){
-      if (reg.toString() == my_value) {
-        found= true;
-        break;
-      }
-      else {
-        continue;
-      }  
-    }
-    if (!found) {
-      throw RegisterNotFoundException("The register was not found in bucket");
-    }
-    else {
-      _registerList.remove(reg);
-      return reg;
-    }
-  }
-  */
+
   /* Only used for testing pourpose */
   BaseRegister? getRegbyIndex(int index)
   {
@@ -156,7 +132,6 @@ class Bucket{
     }
     else {
       var reg =_registerList[index];
-      //_registerList.remove(reg);
       return reg;
     }  
   }
@@ -186,7 +161,6 @@ class Bucket{
       }
       index++;
     }
-
     return found ? index : -1;
   }
 
@@ -194,9 +168,9 @@ class Bucket{
   String toString(){
     var result = StringBuffer();
     result.write("[ Status: ${_status.name}, b:$bits-");
-    _registerList.forEach((value) {
-      result.write("${value.value},");
-    });
+    for (var reg in _registerList) {
+      result.write("${reg.value},");
+    }
     result.write("]");
     return result.toString();
   }
@@ -208,10 +182,9 @@ class Bucket{
 
   Bucket clone(){
     List<BaseRegister> newRegisterList = List.empty(growable: true);
-    _registerList.forEach((element) { 
+    for (var element in _registerList) { 
       newRegisterList.add(element.clone());
-    });
-    
+    }
     return Bucket._copy(_id,_size,bits,newRegisterList,_status);
   }
 

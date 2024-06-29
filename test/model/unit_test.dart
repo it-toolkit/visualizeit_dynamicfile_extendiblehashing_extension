@@ -59,42 +59,42 @@ void main() {
     test("Checking final state of the file - Checking Buckets", () {
       var bucketList = testFile.getFileContent();
       
-      expect(bucketList[0].status,BucketStatus.Active);
+      expect(bucketList[0].status,BucketStatus.active);
       expect(bucketList[0].bits,2);
       expect(bucketList[0].getRegbyIndex(0)?.value,123);
       expect(bucketList[0].getRegbyIndex(1)?.value,459);
 
-      expect(bucketList[1].status,BucketStatus.Full);
+      expect(bucketList[1].status,BucketStatus.full);
       expect(bucketList[1].bits,3);
       expect(bucketList[1].getRegbyIndex(0)?.value,270);
       expect(bucketList[1].getRegbyIndex(1)?.value,446);
       expect(bucketList[1].getRegbyIndex(2)?.value,462);
 
-      expect(bucketList[2].status,BucketStatus.Active);
+      expect(bucketList[2].status,BucketStatus.active);
       expect(bucketList[2].bits,2);
       expect(bucketList[2].getRegbyIndex(0)?.value,376);
       expect(bucketList[2].getRegbyIndex(1)?.value,484);
 
-      expect(bucketList[3].status,BucketStatus.Freed);
+      expect(bucketList[3].status,BucketStatus.freed);
       expect(bucketList[3].bits,5);
       expect(bucketList[3].getRegbyIndex(0)?.value,954);
 
-      expect(bucketList[4].status,BucketStatus.Empty);
+      expect(bucketList[4].status,BucketStatus.empty);
       expect(bucketList[4].bits,4);
       expect(bucketList[4].len,0);
 
-      expect(bucketList[5].status,BucketStatus.Active);
+      expect(bucketList[5].status,BucketStatus.active);
       expect(bucketList[5].bits,4);
       expect(bucketList[5].getRegbyIndex(0)?.value,458);
       expect(bucketList[5].getRegbyIndex(1)?.value,426);
 
-      expect(bucketList[6].status,BucketStatus.Full);
+      expect(bucketList[6].status,BucketStatus.full);
       expect(bucketList[6].bits,2);
       expect(bucketList[6].getRegbyIndex(0)?.value,741);
       expect(bucketList[6].getRegbyIndex(1)?.value,973);
       expect(bucketList[6].getRegbyIndex(2)?.value,789);
 
-      expect(bucketList[7].status,BucketStatus.Freed);
+      expect(bucketList[7].status,BucketStatus.freed);
       expect(bucketList[7].bits,3);
       expect(bucketList[7].getRegbyIndex(0)?.value,809);
 

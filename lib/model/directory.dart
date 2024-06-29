@@ -29,7 +29,7 @@ class Directory extends Observable{
       _pointer = index;
       return _hashMap[index];
     }
-    return -1;//TODO: review this 
+    return -1;
   }
 
   /* Used in the insertion when is necessary to duplicate the hash table */
@@ -40,8 +40,6 @@ class Directory extends Observable{
 
    //Duplicating the table.
    mapCopy.addAll(_hashMap);
-   //Updating the Bucket number.
-   //mapCopy[_pointer]=lastBucketId;
    _logger.debug(() => "duplicate() - New hash table: ${mapCopy.toString()}");
    _hashMap = mapCopy;
    notifyObservers(DirectFileTransition.hashTableDuplicateSize(file,file.getFileContent(),clone()));
@@ -70,8 +68,6 @@ class Directory extends Observable{
       _hashMap[pointer]= newBucketNum;
       myClone = file.clone();
       notifyObservers(DirectFileTransition.hashTableCircularUpdated(myClone, myClone.getFileContent(), clone(), newBucketNum, pointer, init, jump,TransitionType.hashTablePointedBucket));
-      //notifyObservers(DirectFileTransition.hashTableUpdated(myClone, myClone.getFileContent(), clone(), newBucketNum, pointer, TransitionType.hashTablePointedBucket));
-      //notifyObservers(DirectFileTransition.hashTableUpdated(file, clone(), pointer, newBucketNum, TransitionType.bucketCreated));
     }     
     _logger.trace(() => "update() - END");
   }
@@ -104,8 +100,6 @@ class Directory extends Observable{
     //check if the first half of the directory is the same as the last one.
     var halfList = _hashMap.sublist(0,(_hashMap.length/2).ceil());
     var backList = _hashMap.sublist((_hashMap.length/2).ceil(),_hashMap.length);
-    //print("HalfList:" + halfList.toString());
-    //print("BackList:" + backList.toString());
     
     if (_listEquals(halfList,backList)){
       _hashMap = halfList;

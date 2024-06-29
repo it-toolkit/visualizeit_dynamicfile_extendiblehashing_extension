@@ -1,6 +1,5 @@
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/extension/direct_file_transition.dart';
 
-//class DirectFileObserver<T extends Comparable<T>> {
 class DirectFileObserver {
   final List<DirectFileTransition> _transitions = [];
 

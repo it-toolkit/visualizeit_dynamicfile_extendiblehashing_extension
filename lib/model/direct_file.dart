@@ -22,14 +22,11 @@ class DirectFile extends Observable{
     _file = [];
     _table = Directory();
     _table.create();
-    /* TODO: Review this.
     if (bucketSize <= 0) {
       throw Exception("The bucket size must be greater than 0");
     }else {
       _bucketSize = bucketSize;
     }
-    */
-    _bucketSize = bucketSize;
     _freed = [];
     _logger.trace(() => "Creating Direct File"); 
   }
@@ -54,20 +51,6 @@ class DirectFile extends Observable{
   //utils:
   double logBase(num x, num base) => log(x) / log(base);
   int log2(num x) => (logBase(x, 2)).round();
-
-  /*
-  status(){
-    //print("File content:" + this._file.toString());
-    print("********************* FILE **********************");
-    print("Bucket Size:" +this._bucketSize.toString());
-     print("<<<<< Directory:" + _table.toString() + ">>>>>>>>>>>>>>>>>>");
-    print("File content:\n");
-    for (int i=0 ; i<_file.length; i++){
-      print("Bucket num: " + i.toString() + " - Bucket:" +_file[i].toString());
-    }
-    print("Free Bucket list:"+ _freed.toString());
-    print("********************* FILE END **********************");    
-  }*/
 
   status(){
     _logger.trace(() => "********************* FILE **********************"); 
@@ -127,7 +110,6 @@ class DirectFile extends Observable{
     _logger.trace(() => "insert() - Modular value - Directory index is $index");
     int bucketNum = _table.getBucketNumber(index);
     _logger.debug(() => "insert() - Directory is pointing to bucket $bucketNum");
-    //notifyObservers(DirectFileTransition.bucketFoundWithModel(clone(),bucketNum,index));
 
     // If the file is empty, then the register should be added to the bucket.
     // if not, the register should be added to the bucket pointed by the hash table
@@ -136,9 +118,7 @@ class DirectFile extends Observable{
     
       if (_file.isEmpty){
         _logger.trace(() => "insert() - File is empty");
-        //notifyObservers(DirectFileTransition.fileIsEmpty(clone()));  TODO: CHECK THIS STATE
         bucket = Bucket(_bucketSize,0);
-        //bucket.setValue(newValue);
         _file.add(bucket);
         notifyObservers(DirectFileTransition.bucketCreatedWithModel(clone(), 0,index));
         bucket.setValue(newValue);
@@ -190,11 +170,6 @@ reorder(BaseRegister newValue, Bucket overflowedBucket, int bucketInitialIndex){
     else{
       lastBucketId=_file.length;
       newBucket = Bucket(_bucketSize,lastBucketId);
-      //Modifying hashing bits and adding a new bucket to the file.
-      //overflowedBucket.bits+=1;
-      //Changing the status of the overflowed bucket to empty.
-      //overflowedBucket.setStatus(BucketStatus.empty);
-      //newBucket.bits = overflowedBucket.bits;
       _file.add(newBucket);
       notifyObservers(DirectFileTransition.bucketCreatedWithModel(clone(),lastBucketId, -1));
     }
@@ -203,31 +178,27 @@ reorder(BaseRegister newValue, Bucket overflowedBucket, int bucketInitialIndex){
     notifyObservers(DirectFileTransition.bucketUpdateHashingBitsWithModel(clone(),overflowedBucket.id,TransitionType.bucketOverflowed));
     newBucket.bits = overflowedBucket.bits;
     notifyObservers(DirectFileTransition.bucketUpdateHashingBitsWithModel(clone(),newBucket.id,TransitionType.bucketCreated));
-    //Changing the status of the overflowed bucket to empty.
-    //overflowedBucket.setStatus(BucketStatus.Empty);
-    
+
     //Duplicating the table
     _table.duplicate(lastBucketId, clone());
-    //notifyObservers(DirectFileTransition.hashTableDuplicateSize(clone(), bucketInitialIndex, newBucket.id));
-    //notifyObservers(DirectFileTransition.hashTableDuplicateSizeWithModel(myClone));
-    //notifyObservers(DirectFileTransition.hashTableUpdated(myClone,myClone.getFileContent(),myClone.getDirectory(),lastBucketId,myClone.getDirectory().getPointer(),TransitionType.bucketCreated));
+    
     int T = _table.len;
     _logger.trace(() => "reorder() - New hash table: $_table");
-    //notifyObservers(DirectFileTransition.bucketReorganized(clone(),overflowedBucket.id));
+    
     //Changing the status of the overflowed bucket to empty.
-    overflowedBucket.setStatus(BucketStatus.Empty);
+    overflowedBucket.setStatus(BucketStatus.empty);
     notifyObservers(DirectFileTransition.bucketReorganizedWithModel(clone(),overflowedBucket.id));
     // Reordering registers acordingly to the new T value, 
     // iterate over the overflowed bucket and calculate the mod again.
     List<BaseRegister> obList = overflowedBucket.getRegList();
-    obList.forEach((reg) {
+    for (var reg in obList) {
       _logger.trace(() => "reorder() - *** Overflowed bucket *** Reordering register value: $reg");
       var newBucketNum = reg.value % T;
       _logger.trace(() => "reorder() - New Bucket number is $newBucketNum");
       _logger.debug(() => "reorder() - Inserting value $reg in $newBucketNum");
       insert(reg);
       _logger.trace(() => "reorder() - Reordering Registers End");
-    });
+    }
     _logger.debug(() => "reorder() - Inserting new value $newValue");
     insert(newValue);
     _logger.trace(() => "reorder() - Reordering Registers Starting");
@@ -244,29 +215,19 @@ reorder(BaseRegister newValue, Bucket overflowedBucket, int bucketInitialIndex){
       DirectFile myClone = clone();
       lastBucketId = getFreedBucket();
       newBucket = _file[lastBucketId];
-      //notifyObservers(DirectFileTransition.usingBucketFreed(myClone,lastBucketId));
       notifyObservers(DirectFileTransition.usingBucketFreedWithModel(myClone,lastBucketId));
     }
     else{
       lastBucketId=_file.length;
       newBucket = Bucket(_bucketSize,lastBucketId);
-      //Modifying hashing bits and adding a new bucket to the file.
-      //overflowedBucket.bits+=1;
-      //Changing the status of the overflowed bucket to empty.
-      //overflowedBucket.setStatus(BucketStatus.empty);
-      //newBucket.bits = overflowedBucket.bits;
       _file.add(newBucket);
-      //notifyObservers(DirectFileTransition.bucketCreated(clone(),-1,lastBucketId));
       notifyObservers(DirectFileTransition.bucketCreatedWithModel(clone(),lastBucketId, -1));
     }
     //Modifying hashing bits and adding a new bucket to the file.
     overflowedBucket.bits+=1;
-    //notifyObservers(DirectFileTransition.bucketUpdateHashingBits(clone(),-1,overflowedBucket.id,TransitionType.bucketOverflowed));
     notifyObservers(DirectFileTransition.bucketUpdateHashingBitsWithModel(clone(),overflowedBucket.id,TransitionType.bucketOverflowed));
-    //Changing the status of the overflowed bucket to empty.
-    overflowedBucket.setStatus(BucketStatus.Empty);
+
     newBucket.bits = overflowedBucket.bits;
-    //notifyObservers(DirectFileTransition.bucketUpdateHashingBits(clone(),-1,newBucket.id,TransitionType.bucketCreated));
     notifyObservers(DirectFileTransition.bucketUpdateHashingBitsWithModel(clone(),newBucket.id,TransitionType.bucketCreated));
 
     int T = _table.len;
@@ -280,18 +241,20 @@ reorder(BaseRegister newValue, Bucket overflowedBucket, int bucketInitialIndex){
     DirectFile myClone = clone();
     _table.update(bucketInitialIndex,newBucket.id,jump, myClone);
 
+    //Changing the status of the overflowed bucket to empty.
+    overflowedBucket.setStatus(BucketStatus.empty);
     //Reordering registers again, iterating over the overflowed bucket and calculating mod.
     //The result could be the same bucket and we must work recursively
     notifyObservers(DirectFileTransition.bucketReorganizedWithModel(clone(),overflowedBucket.id));
     List<BaseRegister> obList = overflowedBucket.getRegList();
-    obList.forEach((reg) {
+    for (var reg in obList) {
       _logger.trace(() => "reorder2() - *** Overflowed bucket *** Reordering register value: $reg");
       var newBucketNum = reg.value % T;
       _logger.trace(() => "reorder2() - New Bucket number is $newBucketNum");
       _logger.debug(() => "reorder2() - Inserting value $reg in $newBucketNum");
       insert(reg);
       _logger.trace(() => "reorder() - Reordering Registers End");
-    });
+    }
     //Finally adding the new value
     _logger.debug(() => "reorder2() - Inserting last value $newValue");
     insert(newValue);
@@ -340,10 +303,9 @@ reorder(BaseRegister newValue, Bucket overflowedBucket, int bucketInitialIndex){
             //The freed bucket should contain the value and i cannot know this at the moment of deleting.
             //Changing bucket status to "free"
             _logger.trace(() => "delete() - The bucket status is now 'free'");
-            myBucket.setStatus(BucketStatus.Freed);
+            myBucket.setStatus(BucketStatus.freed);
             _logger.trace(() => "delete() - The bucket was added to the freed list");
             _freed.add(bucketNum);
-            //notifyObservers(DirectFileTransition.bucketFreed(clone(),bucketNum));
             notifyObservers(DirectFileTransition.bucketFreedWithModel(clone(),bucketNum));
 
             if (myBucket.bits == log2(_table.len)){
@@ -375,9 +337,9 @@ reorder(BaseRegister newValue, Bucket overflowedBucket, int bucketInitialIndex){
 
   DirectFile clone() {
     List<Bucket> fileCopy = List.empty(growable: true);
-    _file.forEach((element) {
+    for (var element in _file) {
       fileCopy.add(element.clone());
-    });
+    }
     return DirectFile._copy(_bucketSize,fileCopy,_table.clone(),_freed.toList());
   }
 
