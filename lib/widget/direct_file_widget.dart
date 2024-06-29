@@ -164,7 +164,6 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
     int? bucketRecordCapacity;
     int? hashTableLen;
     Widget? hashingTableWidget;
-    //Widget? currentHashingTableWidget;
     Widget? bucketListWidget;
     Widget? freedBucketListWidget;
     bool freedBucketListisNotEmpty = false;
@@ -173,7 +172,6 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
       bucketRecordCapacity = widget._currentTransition?.getTransitionFile()?.bucketRecordCapacity();
       hashTableLen = widget._currentTransition?.getDirectoryTransition()!.getTransition()!.len;
       hashingTableWidget = HashingTableWidget(currentTransition: widget._currentTransition?.getDirectoryTransition());
-      //currentHashingTableWidget = HashingTableWidget(currentTransition: widget._currentTransition?.getDirectoryTransition());
       bucketListWidget = BucketListWidget(widget._currentTransition!.getBucketListTransition(), widget._currentTransition!.getTransitionFile()!.bucketRecordCapacity());
       freedBucketListWidget = FreedBucketListWidget(currentTransition: widget._currentTransition!.getFreedListTransition());
       freedBucketListisNotEmpty = widget._currentTransition!.getFreedListTransition()!.getFreedList().isNotEmpty;
@@ -181,8 +179,6 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
       bucketRecordCapacity = widget._initFile.bucketRecordCapacity();
       hashTableLen = widget._initFile.getDirectory().len;
       hashingTableWidget = HashingTableWidget(currentTransition: DirectoryTransition(widget._initFile.getDirectory()));
-      //hashingTableWidget = HashingTableWidget(currentTransition: DirectoryTransition(widget._initFile.getPriorDirectory()));
-      //currentHashingTableWidget = HashingTableWidget(currentTransition: DirectoryTransition(widget._initFile.getDirectory()));
       bucketListWidget = BucketListWidget(BucketListTransition(TransitionType.fileIsEmpty,widget._initFile.bucketRecordCapacity(), widget._initFile.getFileContent()), widget._initFile.bucketRecordCapacity());
       freedBucketListWidget = FreedBucketListWidget(currentTransition: FreedListTransition(widget._initFile.getFreedList()));
       freedBucketListisNotEmpty = widget._initFile.getFreedList().isNotEmpty;
