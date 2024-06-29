@@ -37,8 +37,7 @@ class VariableLengthRegister<T> extends BaseRegister {
   }
  @override
   BaseRegister clone() {
-    // TODO: implement clone
-    throw UnimplementedError();
+    return VariableLengthRegister(value, length);
   }
 
 }
