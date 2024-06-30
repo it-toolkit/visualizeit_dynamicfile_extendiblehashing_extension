@@ -25,7 +25,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(title: const Text('Hashing Extensible example', style: TextStyle(fontWeight: FontWeight.bold))),
-        //TODO: Aca tengo que meter el hashing Widget.
         body: Column(
           children: [
             Row(
