@@ -1,7 +1,8 @@
 
 import 'dart:math';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/exception/bucket_overflowed_exception.dart';
-import 'package:visualizeit_dynamicfile_extendiblehashing_extension/extension/direct_file_transition.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing_extension/transition/direct_file_transition.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing_extension/transition/file_transition.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/model/direct_file_observer.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/model/observer.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/model/register.dart';

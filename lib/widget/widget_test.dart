@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/extension/direct_file_command.dart';
-import 'package:visualizeit_dynamicfile_extendiblehashing_extension/extension/direct_file_transition.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing_extension/transition/direct_file_transition.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/model/direct_file.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/model/register.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/widget/direct_file_widget.dart';

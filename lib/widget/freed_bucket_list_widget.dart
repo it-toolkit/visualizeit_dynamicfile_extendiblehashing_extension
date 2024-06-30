@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:visualizeit_dynamicfile_extendiblehashing_extension/extension/direct_file_transition.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing_extension/transition/freed_list_transition.dart';
 
 class FreedBucketListWidget extends StatefulWidget {
   final FreedListTransition? currentTransition;

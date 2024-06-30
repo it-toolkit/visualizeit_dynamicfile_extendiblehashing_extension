@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:visualizeit_dynamicfile_extendiblehashing_extension/extension/direct_file_transition.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing_extension/transition/directory_transition.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing_extension/transition/file_transition.dart';
 
 class HashingTableWidget extends StatefulWidget {
   final DirectoryTransition? currentTransition;
