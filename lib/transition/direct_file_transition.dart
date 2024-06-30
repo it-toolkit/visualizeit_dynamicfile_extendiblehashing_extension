@@ -1,4 +1,4 @@
-import 'package:visualizeit_dynamicfile_extendiblehashing_extension/extension/bucket_list_transition.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing_extension/transition/bucket_list_transition.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/transition/directory_transition.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/transition/file_transition.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/transition/freed_list_transition.dart';
@@ -26,7 +26,7 @@ class DirectFileTransition extends Transition {
   DirectFileTransition.findingBucketWithModel(this._transitionFile, int value, int hashTableLen, int index ):super(TransitionType.findingBucket){
     _bucketListTransition = BucketListTransition.bucketFound(_transitionFile.getFileContent(), -1);
     _directoryTransition = DirectoryTransition.hashTablePointedBucket(_transitionFile.getDirectory(), -1 , TransitionType.findingBucket);
-    _freedListTransition = FreedListTransition(_transitionFile!.getFreedList());
+    _freedListTransition = FreedListTransition(_transitionFile.getFreedList());
     _transitionMessage = "Finding bucket number, calculating $value mod (T = $hashTableLen) = $index";
   }
 
@@ -90,7 +90,7 @@ class DirectFileTransition extends Transition {
   DirectFileTransition.bucketFreedWithModel(this._transitionFile, int bucketId):super(TransitionType.bucketFreed){
     _bucketListTransition = BucketListTransition.bucketFreed(_transitionFile.getFileContent(), bucketId);
     _directoryTransition = DirectoryTransition.hashTablePointedBucket(_transitionFile.getDirectory(), -1 , TransitionType.bucketFreed);
-    _freedListTransition = FreedListTransition.bucketFreed(_transitionFile!.getFreedList(), bucketId);
+    _freedListTransition = FreedListTransition.bucketFreed(_transitionFile.getFreedList(), bucketId);
     _transitionMessage = "The bucket is being freed, and is added to the freed bucket list";
   }
 
@@ -257,7 +257,7 @@ class DirectFileTransition extends Transition {
   }
 
   DirectFileTransition.recordDeleted(this._transitionFile,List<Bucket> bucketList, Directory dir, int recordDeletedPositionInBucket, int bucketId, int hashTableIndex, BaseRegister recordToDelete):super(TransitionType.recordDeleted){
-    _bucketListTransition = BucketListTransition.recordDeleted(bucketList, recordDeletedPositionInBucket, recordToDelete, bucketId, _transitionFile!.bucketRecordCapacity());
+    _bucketListTransition = BucketListTransition.recordDeleted(bucketList, recordDeletedPositionInBucket, recordToDelete, bucketId, _transitionFile.bucketRecordCapacity());
     _directoryTransition = DirectoryTransition.hashTablePointedBucket(dir,  hashTableIndex, TransitionType.recordDeleted);
     _freedListTransition = FreedListTransition(_transitionFile.getFreedList());
     _transitionMessage = "The record is deleted";
