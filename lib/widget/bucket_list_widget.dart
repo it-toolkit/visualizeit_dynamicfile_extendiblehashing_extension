@@ -75,7 +75,7 @@ class _BucketListWidgetState extends State<BucketListWidget> {
     }
     
     for (var i = 0; i < records.length; i++){
-      if(widget.currentTransition?.type.name == "recordFound" && widget.currentTransition!.recordFound?.value == records[i].value && widget.currentTransition?.getBucketList()[position].status.name != "Freed" ) {
+      if(widget.currentTransition?.type.name == "recordFound" && widget.currentTransition!.recordFound?.value == records[i].value && widget.currentTransition?.getBucketList()[position].status.name != "freed" ) {
         recordColors[i] = const Color.fromARGB(255, 238, 213, 103);
       }
       if(widget.currentTransition?.type.name == "recordSaved" && widget.currentTransition?.recordSaved?.value == records[i].value ) {
