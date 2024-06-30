@@ -73,9 +73,40 @@ class DirectFile extends Observable{
         return exist;
     }
     int index = reg.value % _table.len;
-    notifyObservers(DirectFileTransition.findingBucketWithModel(clone(), reg.value, _table.len, index));
+    //notifyObservers(DirectFileTransition.findingBucketWithModel(clone(), reg.value, _table.len, index));
     int? bucketNum = _table.getBucketNumber(index);
     _logger.trace(() => "exist() - Directory Bucket number is $bucketNum"); 
+    Bucket mybucket = _file[bucketNum];
+    //notifyObservers(DirectFileTransition.bucketFoundWithModel(clone(),bucketNum,index));
+    for (var register in mybucket.getList())
+    {
+      if(register.value == reg.value){
+          exist = true;
+          break;
+      }
+    }
+    /*
+    if( exist ){
+      notifyObservers(DirectFileTransition.recordFoundWithModel(clone(),bucketNum, index, reg));
+    }else{
+      notifyObservers(DirectFileTransition.recordNotFoundWithModel(clone(),bucketNum, index, reg));
+    }*/
+    _logger.trace(() => "exist() - Result: $exist"); 
+    return exist;
+  }
+
+  bool find(BaseRegister reg){
+    _logger.trace(() => "find() - Checking if $reg is in file"); 
+    bool exist = false;
+    if (_file.isEmpty){
+        _logger.trace(() => "find() - File is empty");
+        _logger.trace(() => "find() - END"); 
+        return exist;
+    }
+    int index = reg.value % _table.len;
+    notifyObservers(DirectFileTransition.findingBucketWithModel(clone(), reg.value, _table.len, index));
+    int? bucketNum = _table.getBucketNumber(index);
+    _logger.trace(() => "find() - Directory Bucket number is $bucketNum"); 
     Bucket mybucket = _file[bucketNum];
     notifyObservers(DirectFileTransition.bucketFoundWithModel(clone(),bucketNum,index));
     for (var register in mybucket.getList())
@@ -90,7 +121,7 @@ class DirectFile extends Observable{
     }else{
       notifyObservers(DirectFileTransition.recordNotFoundWithModel(clone(),bucketNum, index, reg));
     }
-    _logger.trace(() => "exist() - Result: $exist"); 
+    _logger.trace(() => "find() - Result: $exist"); 
     return exist;
   }
 

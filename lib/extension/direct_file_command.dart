@@ -16,7 +16,7 @@ abstract class DirectFileExtendibleHashingCommand extends ModelCommand {
   @override
   Result call(Model model, CommandContext context) {
     DirectFileExtendibleHashingModel fileModel = (model.clone()) as DirectFileExtendibleHashingModel;
-    
+
     _logger.info(() => "Call in DirectFileExtendibleHashingCommand");
     int pendingFrames;
     Model? resultModel;
@@ -126,6 +126,6 @@ class DirectFileExtendibleHashingFindCommand extends DirectFileExtendibleHashing
 
   @override
   Function commandToFunction() {
-    return (DirectFile myfile) => myfile.exist(FixedLengthRegister(value));//TODO: FIX THIS. IM CONSIDERING ALWAYS A FIXED LENGTH RECORD
+    return (DirectFile myfile) => myfile.find(FixedLengthRegister(value));//TODO: FIX THIS. IM CONSIDERING ALWAYS A FIXED LENGTH RECORD
   }
 }
