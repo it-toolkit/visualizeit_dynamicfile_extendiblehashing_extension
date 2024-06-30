@@ -217,6 +217,7 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
 
   @override
   Widget build(BuildContext context) {
+    return createWidgetsFromFile();
     return LayoutBuilder(
         builder:
             (BuildContext context, BoxConstraints viewportConstraints) {
