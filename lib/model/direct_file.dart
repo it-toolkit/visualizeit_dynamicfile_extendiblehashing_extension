@@ -43,6 +43,12 @@ class DirectFile extends Observable{
   Directory getDirectory() => _table;
   List<int> getFreedList() => _freed;
   int bucketRecordCapacity() => _bucketSize;
+  
+  bool bucketWithFixedLengthRecord(){
+    //This is always true, buckets with variable 
+    //record length were not implemented.
+    return true;
+  }
 
   void replaceHashTable(Directory hashTable){
     _table = hashTable;

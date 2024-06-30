@@ -76,7 +76,7 @@ class DirectFileExtendibleHashingInsertCommand extends DirectFileExtendibleHashi
 
   @override
   Function commandToFunction() {
-    return (DirectFile myfile) => myfile.insert(FixedLengthRegister(value));//TODO: FIX THIS. IM CONSIDERING ALWAYS A FIXED LENGTH RECORD
+    return (DirectFile myfile) => myfile.bucketWithFixedLengthRecord() ? myfile.insert(FixedLengthRegister(value)) : myfile.insert(VariableLengthRegister(value,0));
   }
 }
 
@@ -101,7 +101,7 @@ class DirectFileExtendibleHashingRemoveCommand extends DirectFileExtendibleHashi
 
   @override
   Function commandToFunction() {
-    return (DirectFile myfile) => myfile.delete(FixedLengthRegister(value));//TODO: FIX THIS. IM CONSIDERING ALWAYS A FIXED LENGTH RECORD
+    return (DirectFile myfile) => myfile.bucketWithFixedLengthRecord() ? myfile.delete(FixedLengthRegister(value)) : myfile.delete(VariableLengthRegister(value,0));
   }
 }
 
@@ -126,6 +126,6 @@ class DirectFileExtendibleHashingFindCommand extends DirectFileExtendibleHashing
 
   @override
   Function commandToFunction() {
-    return (DirectFile myfile) => myfile.find(FixedLengthRegister(value));//TODO: FIX THIS. IM CONSIDERING ALWAYS A FIXED LENGTH RECORD
+    return (DirectFile myfile) => myfile.bucketWithFixedLengthRecord() ? myfile.find(FixedLengthRegister(value)) : myfile.find(VariableLengthRegister(value,0));
   }
 }
