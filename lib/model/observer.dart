@@ -21,6 +21,4 @@ abstract class Observable {
 
   List<DirectFileObserver> getObservers() => observers;
 
-  DirectFileObserver getObserver() => observers[0];
-
 }
