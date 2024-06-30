@@ -22,7 +22,7 @@ class DirectFileExtendibleHashingModel extends Model {
         super(DirectFileExtendibleHashingExtension.extensionId, name) {
     
     if (variableRecordSize!){
-      //TODO: NOT IMPLEMENTED IN MODEL
+      throw Exception("A variable record size is not implemented in model");
     }
     else{
       for (int value in initialValues){
@@ -71,7 +71,6 @@ class DirectFileExtendibleHashingModel extends Model {
         _logger.trace(() => "Function to Execute $functionToExecute.toString()"); 
         functionToExecute(_baseFile);
 
-        
         _transitions = transitionObserver.transitions;
         _logger.trace(() => "# Transitions generated: $_transitions" );
         _baseFile.removeObserver(transitionObserver);

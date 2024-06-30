@@ -15,8 +15,8 @@ abstract class DirectFileExtendibleHashingCommand extends ModelCommand {
 
   @override
   Result call(Model model, CommandContext context) {
-    DirectFileExtendibleHashingModel fileModel = (model.clone()) as DirectFileExtendibleHashingModel;//POrque hace un clone aca?
-
+    DirectFileExtendibleHashingModel fileModel = (model.clone()) as DirectFileExtendibleHashingModel;
+    
     _logger.info(() => "Call in DirectFileExtendibleHashingCommand");
     int pendingFrames;
     Model? resultModel;
@@ -67,7 +67,7 @@ class DirectFileExtendibleHashingInsertCommand extends DirectFileExtendibleHashi
             commandDefinition.getArg(name: "value", from: rawCommand),
             const Uuid().v4(),
             Logger("extension.extendiblehashing.insert"),
-            ""); //TODO entender para que es necesario el modelName acá
+            ""); 
 
   @override
   String toString() {
@@ -93,7 +93,7 @@ class DirectFileExtendibleHashingRemoveCommand extends DirectFileExtendibleHashi
             commandDefinition.getArg(name: "value", from: rawCommand),
             const Uuid().v4(),
             Logger("extension.extendiblehashing.remove"),
-            ""); //TODO entender para que es necesario el modelName acá
+            ""); 
   @override
   String toString() {
     return "Removing value: $value";
