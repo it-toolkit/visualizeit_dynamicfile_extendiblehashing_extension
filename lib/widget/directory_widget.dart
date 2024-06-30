@@ -89,7 +89,10 @@ class _HashingTableWidgetState extends State<HashingTableWidget> {
                                                         ),
                                                       ],
                                                     ),
-                                                    SingleChildScrollView(
+                                                    (widget.currentTransition!.getTransition()!.hash.length == 1 && 
+                                                     widget.currentTransition?.currentType == TransitionType.fileIsEmpty)  ? 
+                                                        const Column() : 
+                                                        SingleChildScrollView(
                                                         scrollDirection: Axis.vertical,
                                                         child: Column(
                                                           crossAxisAlignment: CrossAxisAlignment.center,
