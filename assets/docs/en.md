@@ -3,7 +3,8 @@
 This is the Extendible Hashing on Direct Files extension usage doc.
 
 With this extension it is possible to create a file organized with the extensible hashing technique. It is possible to select the size of the buckets that will contain fixed length records. 
-In the extensible hashing technique, the hash function will be used to access the table (hash table) of bucket addresses. This extensible version of hashing is also known as postfix bits because it considers the last bits of a record key to determine in the hash table the bucket number that the record contains.
+
+In the extensible hashing technique, the hash function will be used to access the table (hash table) of bucket addresses. This extensible version of hashing is also known as postfix bits because it considers the last bits of a record key to determine in the hash table the bucket number that contains the record.
   
 ## Available commands
 

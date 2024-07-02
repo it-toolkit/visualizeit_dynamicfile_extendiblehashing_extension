@@ -20,7 +20,7 @@ final class DirectFileExtendibleHashingExtension extends Extension{
 class DirectFileExtendibleHashingExtensionBuilder implements ExtensionBuilder {
   
   static const _docsLocationPath =
-      "packages/visualizeit_extendiblehashing_extension/assets/docs";
+      "packages/visualizeit_dynamicfile_extendiblehashing_extension/assets/docs";
   static const _availableDocsLanguages = [LanguageCodes.en];
 
   @override
