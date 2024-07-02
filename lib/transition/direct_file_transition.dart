@@ -25,7 +25,7 @@ class DirectFileTransition extends Transition {
 
   DirectFileTransition.findingBucketWithModel(this._transitionFile, int value, int hashTableLen, int index ):super(TransitionType.findingBucket){
     _bucketListTransition = BucketListTransition.bucketFound(_transitionFile.getFileContent(), -1);
-    _directoryTransition = DirectoryTransition.hashTablePointedBucket(_transitionFile.getDirectory(), -1 , TransitionType.findingBucket);
+    _directoryTransition = DirectoryTransition.hashTablePointedBucket(_transitionFile.getDirectory(), index , TransitionType.findingBucket);
     _freedListTransition = FreedListTransition(_transitionFile.getFreedList());
     _transitionMessage = "Finding bucket number, calculating $value mod (T = $hashTableLen) = $index";
   }

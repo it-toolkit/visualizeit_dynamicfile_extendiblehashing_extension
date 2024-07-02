@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/transition/bucket_list_transition.dart';
-//import 'package:visualizeit_dynamicfile_extendiblehashing_extension/transition/bucket_list_transition.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/transition/direct_file_transition.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/transition/directory_transition.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/transition/file_transition.dart';
@@ -58,7 +57,7 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
                                                     ]),
                                                 child: Column(
                                                           children: [ 
-                                                            Text("${widget._currentTransition?.getMessage()}",style: TextStyle(fontWeight: FontWeight.bold)),
+                                                            Text("${widget._currentTransition?.getMessage()}",style: const TextStyle(fontWeight: FontWeight.bold)),
                                                           ],
                                                         ),
                                               ),
@@ -93,9 +92,9 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
               ]),
           child: Column(
             children: [
-              buildColorReferenceRow(Color.fromARGB(255, 111, 245, 58), "New bucket"),
-              buildColorReferenceRow(Color.fromARGB(255, 111, 120, 241), "Freed bucket"),
-              buildColorReferenceRow(Color.fromARGB(255, 247, 75, 84), "Overflowed bucket"),
+              buildColorReferenceRow(const Color.fromARGB(255, 111, 245, 58), "New bucket"),
+              buildColorReferenceRow(const Color.fromARGB(255, 111, 120, 241), "Freed bucket"),
+              buildColorReferenceRow(const Color.fromARGB(255, 247, 75, 84), "Overflowed bucket"),
             ],
           ),
         ),

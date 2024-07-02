@@ -10,7 +10,7 @@ import 'package:visualizeit_extensions/logging.dart';
 final _logger = Logger("extension.extendiblehashing.model");
 
 class DirectFileExtendibleHashingModel extends Model {
-  DirectFile _baseFile;
+  final DirectFile _baseFile;
   DirectFile? _lastTransitionFile;
   List<DirectFileTransition> _transitions = [];
 

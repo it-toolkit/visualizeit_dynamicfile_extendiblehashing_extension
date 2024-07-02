@@ -25,6 +25,8 @@ class _HashingTableWidgetState extends State<HashingTableWidget> {
   Widget buildRecord(int position, int? value) {
     
     Color colorBox = Colors.blue.shade50;
+    Color colorCircle = Colors.white;
+    Color colorCircleShadow = Colors.white;
     TextStyle textStyleForValue = const TextStyle(fontWeight: FontWeight.normal);
     if ( widget.currentTransition?.hashTablePosition == position && widget.currentTransition!.bucketOverflowedId >= 0){
         colorBox = const Color.fromARGB(255, 247, 75, 84);
@@ -39,6 +41,11 @@ class _HashingTableWidgetState extends State<HashingTableWidget> {
 
     if (widget.currentTransition?.hashTablePosition1 == position || widget.currentTransition?.hashTablePosition2 == position ){
         colorBox = const Color.fromARGB(255, 224, 240, 7);
+    }
+
+    if (widget.currentTransition?.currentType == TransitionType.findingBucket && widget.currentTransition?.hashTablePosition == position){
+      colorCircle = Colors.deepOrange;
+      colorCircleShadow = Colors.black.withOpacity(0.2);
     } 
     
     return Row(
@@ -46,6 +53,19 @@ class _HashingTableWidgetState extends State<HashingTableWidget> {
         Container(
           width: 30,
           padding: const EdgeInsets.all(4),
+          decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: colorCircle,
+                      boxShadow: [
+                        BoxShadow(
+                          //color: Colors.black.withOpacity(0.2),
+                          color: colorCircleShadow,
+                          spreadRadius: 2,
+                          blurRadius: 4,
+                          offset: Offset(0, 2),
+                        ),
+                      ],
+                    ),
           child: Center(child: Text(position.toString())),
         ),
         Expanded(

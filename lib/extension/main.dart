@@ -39,7 +39,7 @@ void main() {
   myfile.delete(FixedLengthRegister(954));
   */
 
-  print("# Transitions: ${observer.transitions.length}");
+  //print("# Transitions: ${observer.transitions.length}");
 
   //Transition 1 is Bucket Created.
   //Transition 5 bucket overflowed
@@ -71,8 +71,8 @@ void main() {
   //Transition 109, the bucket is marked as freed and is added to the freed bucket list.
   //Transition 110, reducing the hashing table (because the table is mirrowed)
   DirectFileTransition transition = observer.transitions[1];
-  print(transition.type.name);
-  print(observer.transitions);
+  //print(transition.type.name);
+  //print(observer.transitions);
   runApp(MyApp(myfile, transition));
 }
 
