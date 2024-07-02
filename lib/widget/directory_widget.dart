@@ -62,7 +62,7 @@ class _HashingTableWidgetState extends State<HashingTableWidget> {
                           color: colorCircleShadow,
                           spreadRadius: 2,
                           blurRadius: 4,
-                          offset: Offset(0, 2),
+                          offset: const Offset(0, 2),
                         ),
                       ],
                     ),

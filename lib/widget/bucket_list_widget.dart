@@ -29,7 +29,9 @@ class _BucketListWidgetState extends State<BucketListWidget> {
   Widget buildBucket({required int position, required BucketStatus status, required int b, List<BaseRegister> records = const []}) {
     
     Color bucketColorByTransition;
-    Color recordColor; 
+    Color recordColor;
+    Color colorCircle = Colors.blue.shade50;
+    Color colorCircleShadow = Colors.blue.shade50; 
     TextStyle textStyleForHashingBits = const TextStyle(fontWeight: FontWeight.normal);
     if ( widget.currentTransition?.bucketOverflowedId == position ){
         bucketColorByTransition = const Color.fromARGB(255, 247, 75, 84);
@@ -47,6 +49,8 @@ class _BucketListWidgetState extends State<BucketListWidget> {
         bucketColorByTransition = Colors.blue.shade50;
     }
     recordColor = bucketColorByTransition;
+    colorCircle = bucketColorByTransition;
+    colorCircleShadow = bucketColorByTransition;
 
     Color bucketColorPosition;
     if ( widget.currentTransition?.bucketOverflowedId == position ){
@@ -65,8 +69,10 @@ class _BucketListWidgetState extends State<BucketListWidget> {
         bucketColorPosition = Colors.blue.shade50;
     }
 
-    if (widget.currentTransition?.type.name == "bucketUpdateHashingBits" && ( widget.currentTransition?.bucketCreatedId == position || widget.currentTransition?.bucketOverflowedId == position || widget.currentTransition?.bucketFoundId == position )){
-        textStyleForHashingBits = const TextStyle(color: Colors.white,backgroundColor: Colors.black, fontWeight: FontWeight.bold);
+    if (widget.currentTransition?.type.name == "bucketUpdateHashingBits" && ( widget.currentTransition?.bucketCreatedId == position || widget.currentTransition?.bucketOverflowedId == position || widget.currentTransition?.bucketFoundId == position )){        
+        textStyleForHashingBits = const TextStyle(color: Colors.white, fontWeight: FontWeight.bold);
+        colorCircle = Colors.black;
+        colorCircleShadow = bucketColorByTransition.withOpacity(0.2);
     }
     
     List<Color> recordColors = [];
@@ -118,7 +124,21 @@ class _BucketListWidgetState extends State<BucketListWidget> {
                   width: 40,
                   padding: const EdgeInsets.all(4),
                   decoration: const BoxDecoration(border: Border(right: BorderSide(color: Colors.black))),
-                  child: Center(child: Text(" $b ", style: textStyleForHashingBits)),
+                  child: Container( 
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: colorCircle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: colorCircleShadow,
+                          spreadRadius: 2,
+                          blurRadius: 4,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Center(child: Text(" $b ", style: textStyleForHashingBits))
+                    ),
                 ),
                 Row(
                   children: [

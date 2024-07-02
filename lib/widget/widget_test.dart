@@ -3,6 +3,7 @@ import 'package:visualizeit_dynamicfile_extendiblehashing_extension/extension/di
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/transition/direct_file_transition.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/model/direct_file.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/model/register.dart';
+import 'package:visualizeit_dynamicfile_extendiblehashing_extension/transition/file_transition.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/widget/direct_file_widget.dart';
 
 void main() {
@@ -42,11 +43,11 @@ void main() {
   //Transition 2.1
   //DirectFileTransition transition = DirectFileTransition.bucketUpdateHashingBits(myfile,myfile.getFileContent(), myfile.getDirectory(), 6, TransitionType.bucketOverflowed);
   //Transition 3 (Duplicate the hashing table)
-  DirectFileTransition transition = DirectFileTransition.hashTableDuplicateSize(myfile, myfile.getFileContent(), myfile.getDirectory());
+  //DirectFileTransition transition = DirectFileTransition.hashTableDuplicateSize(myfile, myfile.getFileContent(), myfile.getDirectory());
   //Transition 4 (creating new bucket)
   //DirectFileTransition transition = DirectFileTransition.bucketCreated(myfile, myfile.getFileContent(), myfile.getDirectory(), 2, 1);
   //Transition 4.1
-  //DirectFileTransition transition = DirectFileTransition.bucketUpdateHashingBits(myfile, -1, 4, TransitionType.bucketCreated);
+  DirectFileTransition transition = DirectFileTransition.bucketUpdateHashingBits(myfile,myfile.getFileContent(), myfile.getDirectory(), 4, TransitionType.bucketCreated);
   //Transition 5 (reordering records - empty overflowed bucket)
   //DirectFileTransition transition = DirectFileTransition.bucketReorganized(myfile, myfile.getFileContent(), myfile.getDirectory(), 6);
   //Transition 6 to N (reordering records - reinserting the record)
