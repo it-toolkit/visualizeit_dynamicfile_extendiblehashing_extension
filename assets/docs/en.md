@@ -62,8 +62,8 @@ scenes:
     description: Extendible Hashing Sample
     initial-state:
       - extendiblehashing-create: 
-        - bucketSize: 3, 
-        - initialValues: [270,946,741]
+          bucketSize: 3, 
+          initialValues: [270, 946, 741]
     transitions:
       - extendiblehashing-insert: 446
       - extendiblehashing-insert: 123
