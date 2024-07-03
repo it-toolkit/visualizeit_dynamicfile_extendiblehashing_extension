@@ -58,7 +58,7 @@ group: "..."
 description: ""
 scenes:
   - name: First scene
-    extensions: ['extendible-hashing-extension']
+    extensions: ['extendible_hashing']
     description: Extendible Hashing Sample
     initial-state:
       - extendiblehashing-create: 

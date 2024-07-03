@@ -10,7 +10,7 @@ import 'package:visualizeit_extensions/logging.dart';
 final _logger = Logger("extension.extendiblehashing");
 
 final class DirectFileExtendibleHashingExtension extends Extension{
-  static const extensionId = "extendible-hashing-extension";
+  static const extensionId = "extendible_hashing";
 
   DirectFileExtendibleHashingExtension._create({required super.markdownDocs, required super.extensionCore}) : super.create(id: extensionId);
 
