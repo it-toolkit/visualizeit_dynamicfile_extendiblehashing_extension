@@ -10,23 +10,49 @@ In the extensible hashing technique, the hash function will be used to access th
 
 ### extendiblehashing-create
 
-Creates an empty file with the given maximum bucket capacity. As an optional feature you can pass the initial values of the file. The bucket size must be always greated than zero.
+Creates an empty file with the given maximum bucket capacity. As an optional feature you can pass the initial values of the file. The bucket size must be always greater than zero.
+
+#### Arguments
+
+| Name               | Type     | Position | Required | Default value | Description |
+|--------------------|----------|----------|----------|---------------|-------------|
+| bucketSize         | int      | 0        | true     | -             | Must be > 0 |
+| initialValues      | intArray | 1        | true     | -             | -           |
+| variableRecordSize | boolean  | 2        | false    | false         | -           |
 
 ### extendiblehashing-insert
 
 Inserts the provided value into the file. This method considers when the bucket suffers an overflow and procedes according to the correspondent algorithm. The hash table will be modified according to the algorithm, updated or duplicated depending on the case.
 
+#### Arguments
+
+| Name  | Type | Position | Required | Default value | Description |
+|-------|------|----------|----------|---------------|-------------|
+| value | int  | 0        | true     | -             | -           |
+
 ### extendiblehashing-remove
 
 Removes the provided value from the file, if it exists. This method considers when the bucket should be released and added to the list of freed buckets or when the bucket should be saved in an empty state. The hash table will be modified according to the algorithm, updated or reduced depending on the case.
+
+#### Arguments
+
+| Name  | Type | Position | Required | Default value | Description |
+|-------|------|----------|----------|---------------|-------------|
+| value | int  | 0        | true     | -             | -           |
 
 ### extendiblehashing-find
 
 Return the true if the value exists in the file. if not return false.
 
+#### Arguments
+
+| Name  | Type | Position | Required | Default value | Description |
+|-------|------|----------|----------|---------------|-------------|
+| value | int  | 0        | true     | -             | -           |
+
 #### Usage example
 
-```
+```yaml
 name: "..."
 group: "..."
 description: ""
@@ -35,10 +61,12 @@ scenes:
     extensions: ['extendible-hashing-extension']
     description: Extendible Hashing Sample
     initial-state:
-      - extendiblehashing-create: [3, ["270","946","741"]]
+      - extendiblehashing-create: 
+        - bucketSize: 3, 
+        - initialValues: [270,946,741]
     transitions:
-      - extendiblehashing-insert: [446]
-      - extendiblehashing-insert: [123]
-      - extendiblehashing-find: [270]
-      - extendiblehashing-remove: [946]
+      - extendiblehashing-insert: 446
+      - extendiblehashing-insert: 123
+      - extendiblehashing-find: 270
+      - extendiblehashing-remove: 946
 ```
