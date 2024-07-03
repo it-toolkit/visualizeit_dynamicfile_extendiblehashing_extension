@@ -7,7 +7,7 @@ import 'package:visualizeit_dynamicfile_extendiblehashing_extension/model/regist
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/widget/direct_file_widget.dart';
 
 void main() {
-  DirectFile myfile = DirectFile(3); 
+  DirectFile myfile = DirectFile(30); 
   var observer = DirectFileObserver();
   myfile.registerObserver(observer);
   myfile.insert(FixedLengthRegister(270));
@@ -70,7 +70,7 @@ void main() {
   //Transition 108. Updating hashing table with the replacemente bucket
   //Transition 109, the bucket is marked as freed and is added to the freed bucket list.
   //Transition 110, reducing the hashing table (because the table is mirrowed)
-  DirectFileTransition transition = observer.transitions[1];
+  DirectFileTransition transition = observer.transitions[3];
   //print(transition.type.name);
   //print(observer.transitions);
   runApp(MyApp(myfile, transition));
