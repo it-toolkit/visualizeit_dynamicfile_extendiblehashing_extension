@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/transition/freed_list_transition.dart';
+import 'package:visualizeit_extensions/logging.dart';
+
+final _logger = Logger("extension.extendiblehashing.freedbucketlistwidget");
 
 class FreedBucketListWidget extends StatefulWidget {
   final FreedListTransition? currentTransition;
@@ -21,6 +24,7 @@ class _FreedBucketListWidgetState extends State<FreedBucketListWidget> {
   }
 
   Widget buildRecord(int? value) {
+    _logger.trace(() => "Creating Record for Freed List"); 
     Color recordColor = Colors.blue.shade50;
     if ( widget.currentTransition?.bucketFreedId == value ){
       recordColor = const Color.fromARGB(255, 111, 120, 241);
@@ -39,9 +43,10 @@ class _FreedBucketListWidgetState extends State<FreedBucketListWidget> {
 
   @override
   Widget build(BuildContext context) { 
+    _logger.trace(() => "Creating Widgets for the Freed Bucket List"); 
     Widget myContainer = Container(
-      margin: EdgeInsets.all(10),
-      padding: EdgeInsets.all(10),
+      margin: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(5), boxShadow: const [
         BoxShadow(color: Colors.black87, spreadRadius: 5, blurRadius: 7, offset: Offset(0, 3)),
       ]),

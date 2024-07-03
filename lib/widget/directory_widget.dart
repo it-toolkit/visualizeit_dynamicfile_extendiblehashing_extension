@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/transition/directory_transition.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/transition/file_transition.dart';
+import 'package:visualizeit_extensions/logging.dart';
+
+final _logger = Logger("extension.extendiblehashing.directorywidget");
 
 class HashingTableWidget extends StatefulWidget {
   final DirectoryTransition? currentTransition;
@@ -23,7 +26,7 @@ class _HashingTableWidgetState extends State<HashingTableWidget> {
   }
 
   Widget buildRecord(int position, int? value) {
-    
+    _logger.trace(() => "Building Widget for Record"); 
     Color colorBox = Colors.blue.shade50;
     Color colorCircle = Colors.white;
     Color colorCircleShadow = Colors.white;
@@ -58,7 +61,6 @@ class _HashingTableWidgetState extends State<HashingTableWidget> {
                       color: colorCircle,
                       boxShadow: [
                         BoxShadow(
-                          //color: Colors.black.withOpacity(0.2),
                           color: colorCircleShadow,
                           spreadRadius: 2,
                           blurRadius: 4,
@@ -81,12 +83,10 @@ class _HashingTableWidgetState extends State<HashingTableWidget> {
 
   @override
   Widget build(BuildContext context) {
-
+    _logger.trace(() => "Creating widgets for the hashing table"); 
     return Column(children:[ 
-                            Container(
-                                  child: const Center(child: Text("Hashing Table", style: TextStyle(fontWeight: FontWeight.bold))),
-                                ),                  
-                                ConstrainedBox(constraints: const BoxConstraints(maxWidth: 150), 
+                            const Center(child: Text("Hashing Table", style: TextStyle(fontWeight: FontWeight.bold))),                  
+                            ConstrainedBox(constraints: const BoxConstraints(maxWidth: 150), 
                                                 child: Container(
                                                 margin: const EdgeInsets.all(10),
                                                 padding: const EdgeInsets.all(10),

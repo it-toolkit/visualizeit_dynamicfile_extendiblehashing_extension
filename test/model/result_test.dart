@@ -4,7 +4,6 @@ import 'package:visualizeit_dynamicfile_extendiblehashing_extension/model/regist
 
 void main() {
   DirectFile myfile = DirectFile(3);
-  print("My file status:");
   myfile.status();
   /* First insert algorithm test */
   myfile.insert(FixedLengthRegister(270));
@@ -62,7 +61,6 @@ void main() {
   
   /*Testing 1ª delete algorithm*/
   
-  print("//////////// Testing Delete ///////////");
   myfile.delete(FixedLengthRegister(305));
   myfile.delete(FixedLengthRegister(809));
   

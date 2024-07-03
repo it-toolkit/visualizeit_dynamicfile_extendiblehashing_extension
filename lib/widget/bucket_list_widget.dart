@@ -27,7 +27,7 @@ class _BucketListWidgetState extends State<BucketListWidget> {
   }
 
   Widget buildBucket({required int position, required BucketStatus status, required int b, List<BaseRegister> records = const []}) {
-    
+    _logger.trace(() => "Building Widgets for Bucket"); 
     Color bucketColorByTransition;
     Color recordColor;
     Color colorCircle = Colors.blue.shade50;
@@ -161,6 +161,7 @@ class _BucketListWidgetState extends State<BucketListWidget> {
 
 @override
 Widget build(BuildContext context) {
+    _logger.trace(() => "Building Widgets for transition ${widget.currentTransition!.toString()}"); 
     buckets = List.from(widget.currentTransition!.getBucketList());
     return Column( children: [
                               Container(

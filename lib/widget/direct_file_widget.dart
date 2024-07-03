@@ -9,6 +9,9 @@ import 'package:visualizeit_dynamicfile_extendiblehashing_extension/model/direct
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/widget/bucket_list_widget.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/widget/directory_widget.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/widget/freed_bucket_list_widget.dart';
+import 'package:visualizeit_extensions/logging.dart';
+
+final _logger = Logger("extension.extendiblehashing.directfilewidget");
 
 class DirectFileExtendibleHashingWidget extends StatefulWidget {
   final DirectFile _initFile;
@@ -158,6 +161,7 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
   }
 
   Widget createWidgetsFromFile() {
+    _logger.trace(() => "Creating all widgets for the file"); 
     int? bucketRecordCapacity;
     int? hashTableLen;
     Widget? hashingTableWidget;
@@ -166,6 +170,7 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
     bool freedBucketListisNotEmpty = false;
     
     if (widget._currentTransition != null){
+      _logger.trace(() => "Widgets for transition  ${widget._currentTransition!.toString()}"); 
       bucketRecordCapacity = widget._currentTransition?.getTransitionFile()?.bucketRecordCapacity();
       hashTableLen = widget._currentTransition?.getDirectoryTransition()!.getTransition()!.len;
       hashingTableWidget = HashingTableWidget(currentTransition: widget._currentTransition?.getDirectoryTransition());
@@ -173,6 +178,7 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
       freedBucketListWidget = FreedBucketListWidget(currentTransition: widget._currentTransition!.getFreedListTransition());
       freedBucketListisNotEmpty = widget._currentTransition!.getFreedListTransition()!.getFreedList().isNotEmpty;
     } else{
+      _logger.trace(() => "Widgets for the initial state"); 
       bucketRecordCapacity = widget._initFile.bucketRecordCapacity();
       hashTableLen = widget._initFile.getDirectory().len;
       hashingTableWidget = HashingTableWidget(currentTransition: DirectoryTransition(widget._initFile.getDirectory()));
@@ -216,6 +222,7 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
 
   @override
   Widget build(BuildContext context) {
+    _logger.trace(() => "Building widgets"); 
     //return createWidgetsFromFile();
     return LayoutBuilder(
         builder:
