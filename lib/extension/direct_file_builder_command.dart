@@ -8,7 +8,7 @@ class DirectFileExtendibleHashingBuilderCommand extends ModelBuilderCommand {
   static final commandDefinition =
       CommandDefinition(DirectFileExtendibleHashingExtension.extensionId, "extendiblehashing-create", [
     CommandArgDef("bucketSize", ArgType.int),
-    CommandArgDef("initialValues", ArgType.stringArray),
+    CommandArgDef("initialValues", ArgType.intArray),
     CommandArgDef("variableRecordSize", ArgType.boolean, required: false, defaultValue: "false")
   ]);
   final int bucketSize;
@@ -19,14 +19,9 @@ class DirectFileExtendibleHashingBuilderCommand extends ModelBuilderCommand {
       [this.variableRecordSize]);
 
   DirectFileExtendibleHashingBuilderCommand.build(RawCommand rawCommand)
-      : bucketSize =
-            getValidArg(rawCommand),
-        initialValues = (commandDefinition.getArg(
-                name: "initialValues", from: rawCommand) as List<String>)
-            .map(int.parse)
-            .toList(),
-        variableRecordSize =
-            commandDefinition.getArg(name: "variableRecordSize", from: rawCommand);
+      : bucketSize = getValidArg(rawCommand),
+        initialValues = (commandDefinition.getArg(name: "initialValues", from: rawCommand) as List<int>),
+        variableRecordSize = commandDefinition.getArg(name: "variableRecordSize", from: rawCommand);
 
   @override
   DirectFileExtendibleHashingModel call(CommandContext context) {
