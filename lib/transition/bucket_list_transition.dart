@@ -55,8 +55,8 @@ class BucketListTransition extends Transition {
       bucketOverflowedId = bucketId;
     }else if (currentTransitionType.name == "bucketCreated") {
       bucketCreatedId = bucketId;
-    }else if ( currentTransitionType.name == "replacemmentBucketFound"){  
-      bucketFoundId = bucketId;
+    }else if ( currentTransitionType.name == "replacemmentBucketFound" || currentTransitionType.name == "usingBucketFreed"){  
+        bucketFoundId = bucketId;
     }
   }
 

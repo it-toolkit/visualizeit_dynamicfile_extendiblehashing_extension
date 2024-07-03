@@ -162,6 +162,8 @@ class DirectFileTransition extends Transition {
       message = "The created bucket must have the same hashing bits as the overflowed bucket";
     }else if ( currentTransition.name == "replacemmentBucketFound"){  
       message = "The bucket must update the hashing bits";
+    }else if ( currentTransition.name == "usingBucketFreed"){  
+      message = "The bucket is reused and it must update the hashing bits";
     }
     _transitionMessage = message;
   }

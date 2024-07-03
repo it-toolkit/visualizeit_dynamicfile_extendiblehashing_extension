@@ -47,7 +47,7 @@ class _HashingTableWidgetState extends State<HashingTableWidget> {
     }
 
     if (widget.currentTransition?.currentType == TransitionType.findingBucket && widget.currentTransition?.hashTablePosition == position){
-      colorCircle = Colors.deepOrange;
+      colorCircle = const Color.fromARGB(255, 233, 152, 179);
       colorCircleShadow = Colors.black.withOpacity(0.2);
     } 
     

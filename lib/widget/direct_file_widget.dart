@@ -48,14 +48,13 @@ Widget getInternalBanner(){
                                                     borderRadius: const BorderRadius.all(Radius.circular(10)),
                                                     boxShadow: const [ BoxShadow(blurRadius: 5),]
                                           ),
-                                          child: Column(
-                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                                    children: [ 
-                                                          Text("${widget._currentTransition?.getMessage()}",style: const TextStyle(fontWeight: FontWeight.bold)),
-                                                    ],
-                                                    ),
-                                    ),
+                              child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [ 
+                                                    Text("${widget._currentTransition?.getMessage()}",style: const TextStyle(fontWeight: FontWeight.bold)),
+                                            ],),
+                              ),
                           ]
                       );
                                   
