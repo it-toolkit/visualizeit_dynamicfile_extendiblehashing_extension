@@ -251,11 +251,18 @@ class DirectFileTransition extends Transition {
     _transitionMessage = "The record was found in the bucket";
   }
 
-    DirectFileTransition.recordNotFoundWithModel(this._transitionFile, int bucketId, int hashTableIndex, BaseRegister recordToFound):super(TransitionType.recordNotFound){
+  DirectFileTransition.recordNotFoundWithModel(this._transitionFile, int bucketId, int hashTableIndex, BaseRegister recordToFound):super(TransitionType.recordNotFound){
     _bucketListTransition = BucketListTransition.recordFound(_transitionFile.getFileContent(), bucketId, recordToFound);
     _directoryTransition = DirectoryTransition.hashTablePointedBucket(_transitionFile.getDirectory(), hashTableIndex , TransitionType.recordNotFound);
     _freedListTransition = FreedListTransition(_transitionFile.getFreedList());
     _transitionMessage = "The record was not found";
+  }
+
+  DirectFileTransition.recordExistWithModel(this._transitionFile, BaseRegister recordToFound):super(TransitionType.recordFound){
+    _bucketListTransition = BucketListTransition.recordFound(_transitionFile.getFileContent(), -1, recordToFound);
+    _directoryTransition = DirectoryTransition.hashTablePointedBucket(_transitionFile.getDirectory(), -1 , TransitionType.recordFound);
+    _freedListTransition = FreedListTransition(_transitionFile.getFreedList());
+    _transitionMessage = "The record already exist in file";
   }
 
   DirectFileTransition.recordDeleted(this._transitionFile,List<Bucket> bucketList, Directory dir, int recordDeletedPositionInBucket, int bucketId, int hashTableIndex, BaseRegister recordToDelete):super(TransitionType.recordDeleted){

@@ -131,6 +131,7 @@ class DirectFile extends Observable{
     _logger.trace(() => "insert() - Inserting value: $newValue");
     if (exist(newValue)) {
       _logger.trace(() => "insert() - The register already exist in the file");
+      notifyObservers(DirectFileTransition.recordExistWithModel(clone(),newValue));
       return false;
     }
     if (_file.isEmpty){
@@ -300,12 +301,12 @@ reorder(BaseRegister newValue, Bucket overflowedBucket, int bucketInitialIndex){
   bool delete(BaseRegister delValue){
     _logger.trace(() => "delete() - Deleting value: $delValue");
     
-    /*
     if (!exist(delValue)){
+      _logger.trace(() => "delete() - The value $delValue does not exist in the file");
+      notifyObservers(DirectFileTransition.recordNotFoundWithModel(clone(),-1, -1, delValue));
       return false;
     }
-    */
-
+  
     int index = delValue.value % _table.len;
     notifyObservers(DirectFileTransition.findingBucketWithModel(clone(), delValue.value, _table.len, index));
     _logger.trace(() => "delete() - Directory index value: $index");

@@ -129,6 +129,13 @@ void main() {
       expect(file.exist(FixedLengthRegister(270)),false); 
     });
 
+    test("Checking deletion of a value that is not in the file", () {
+      DirectFile file = DirectFile(3);
+      file.insert(FixedLengthRegister(270));
+      file.insert(FixedLengthRegister(480));
+      expect(file.delete(FixedLengthRegister(222)),false); 
+    });
+
   });
 
 }
