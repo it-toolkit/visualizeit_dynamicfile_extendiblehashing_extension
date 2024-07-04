@@ -2,6 +2,8 @@
 
 This is the Extendible Hashing on Direct Files extension usage doc.
 
+Extension id: `extendible_hashing`
+
 With this extension it is possible to create a file organized with the extensible hashing technique. It is possible to select the size of the buckets that will contain fixed length records. 
 
 In the extensible hashing technique, the hash function will be used to access the table (hash table) of bucket addresses. This extensible version of hashing is also known as postfix bits because it considers the last bits of a record key to determine in the hash table the bucket number that contains the record.
@@ -14,11 +16,10 @@ Creates an empty file with the given maximum bucket capacity. As an optional fea
 
 #### Arguments
 
-| Name               | Type     | Position | Required | Default value | Description |
-|--------------------|----------|----------|----------|---------------|-------------|
-| bucketSize         | int      | 0        | true     | -             | Must be > 0 |
-| initialValues      | intArray | 1        | true     | -             | -           |
-| variableRecordSize | boolean  | 2        | false    | false         | -           |
+| Name               | Type     | Position | Required | Default value | Description                 |
+|--------------------|----------|----------|----------|---------------|-----------------------------|
+| bucketSize         | int      | 0        | true     | -             | Must be in range ( 0 , 100] |
+| initialValues      | intArray | 1        | true     | -             | -                           |
 
 ### extendiblehashing-insert
 
