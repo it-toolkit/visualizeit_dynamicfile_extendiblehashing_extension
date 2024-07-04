@@ -3,6 +3,7 @@ import 'package:visualizeit_dynamicfile_extendiblehashing_extension/extension/di
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/model/bucket.dart';
 import 'package:visualizeit_extensions/common.dart';
 import 'package:visualizeit_extensions/scripting.dart';
+import 'package:visualizeit_extensions/scripting_extensions.dart';
 
 class DirectFileExtendibleHashingBuilderCommand extends ModelBuilderCommand {
   static final commandDefinition =
@@ -16,21 +17,11 @@ class DirectFileExtendibleHashingBuilderCommand extends ModelBuilderCommand {
   DirectFileExtendibleHashingBuilderCommand(this.bucketSize, this.initialValues);
 
   DirectFileExtendibleHashingBuilderCommand.build(RawCommand rawCommand)
-      : bucketSize = getValidArg(rawCommand),
+      : bucketSize = commandDefinition.getIntArgInRange(name: "bucketSize", from: rawCommand, min: 1, max: MAX_BUCKET_SIZE),
         initialValues = (commandDefinition.getArg(name: "initialValues", from: rawCommand) as List<int>);
 
   @override
   DirectFileExtendibleHashingModel call(CommandContext context) {
     return DirectFileExtendibleHashingModel("", bucketSize, initialValues, false);
   }
-    
-  static int getValidArg( RawCommand rawCommand){    
-    final arg = commandDefinition.getArg(name: "bucketSize", from: rawCommand);
-    if (arg <= 0) throw Exception("The bucket size must be greater than 0");
-    if (arg > MAX_BUCKET_SIZE) throw Exception("The bucket size cannot be greater than $MAX_BUCKET_SIZE");
-
-    return arg;
-  }
-
-  
 }

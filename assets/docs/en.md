@@ -16,10 +16,10 @@ Creates an empty file with the given maximum bucket capacity. As an optional fea
 
 #### Arguments
 
-| Name               | Type     | Position | Required | Default value | Description                 |
-|--------------------|----------|----------|----------|---------------|-----------------------------|
-| bucketSize         | int      | 0        | true     | -             | Must be in range ( 0 , 100] |
-| initialValues      | intArray | 1        | true     | -             | -                           |
+| Name               | Type     | Position | Required | Default value | Description                   |
+|--------------------|----------|----------|----------|---------------|-------------------------------|
+| bucketSize         | int      | 0        | true     | -             | Must be in range ( 0 , 1000 ] |
+| initialValues      | intArray | 1        | true     | -             | -                             |
 
 ### extendiblehashing-insert
 
