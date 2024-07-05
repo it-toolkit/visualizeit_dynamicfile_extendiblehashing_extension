@@ -331,9 +331,10 @@ reorder(BaseRegister newValue, Bucket overflowedBucket, int bucketInitialIndex){
           
           //This part is when a Bucket will be freed
           if (replacemmentBucketNum != -1){
-            _file[replacemmentBucketNum].bits-=1;
+            //We need to keep the value in the bucket, so we put it again.
             myBucket.setValue(delValue);
             notifyObservers(DirectFileTransition.replacementBucketFoundWithModel(clone(), replacemmentBucketNum, index));
+            _file[replacemmentBucketNum].bits-=1;
             notifyObservers(DirectFileTransition.bucketUpdateHashingBitsWithModel(clone(),replacemmentBucketNum,TransitionType.replacemmentBucketFound));
             _table.update(index,replacemmentBucketNum,jump2, clone());
             //Adding the value again to appy to the model
