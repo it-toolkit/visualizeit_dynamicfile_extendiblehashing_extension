@@ -3,7 +3,7 @@ import 'package:visualizeit_dynamicfile_extendiblehashing_extension/model/direct
 
 class DirectoryTransition extends Transition {
   final Directory? _transitionDirectory;
-  late TransitionType currentType = TransitionType.fileIsEmpty;
+  late TransitionType currentType;
   
   late int bucketOverflowedId = -1;
   late int bucketCreatedId = -1;
@@ -13,7 +13,7 @@ class DirectoryTransition extends Transition {
  
   Directory? getTransition() => _transitionDirectory;
 
-  DirectoryTransition(this._transitionDirectory) : super(TransitionType.fileIsEmpty);
+  DirectoryTransition(this._transitionDirectory,this.currentType ) : super(currentType);
 
   DirectoryTransition.hashTableUpdated(this._transitionDirectory, int bucketId, this.hashTablePosition, this.currentType ):super(TransitionType.hashTableOperation){
   

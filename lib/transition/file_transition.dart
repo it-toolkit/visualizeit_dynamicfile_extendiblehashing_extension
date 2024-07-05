@@ -34,6 +34,7 @@ enum TransitionType {
   hashTableReviewedSameBucket,
   hashTableReviewedNotSameBucket,
   fileIsEmpty,
+  fileIsNotEmpty,
   findingBucket,
   freedListOperation;
 

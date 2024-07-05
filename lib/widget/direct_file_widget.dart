@@ -63,51 +63,6 @@ Widget getInternalBanner(){
     }
   }
 
-/*
-  Widget getInternalBanner(){
-    if (widget._currentTransition != null && widget._currentTransition?.getMessage() != null){
-      return Column(
-                    children: [
-                                Row(
-                                  children: [
-                                    Column( 
-                                      children:[ 
-                                        Row(
-                                            //mainAxisAlignment: MainAxisAlignment.start,
-                                            //crossAxisAlignment: CrossAxisAlignment.center,
-                                            children: [
-                                              Container(
-                                                width: 400,
-                                                height: 75,
-                                                //margin: const EdgeInsets.only(right: 4, bottom: 4),
-                                                decoration: BoxDecoration(
-                                                    border: Border.all(color: Colors.black),
-                                                    color: Colors.white,
-                                                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                                                    boxShadow: const [
-                                                      BoxShadow(blurRadius: 5),
-                                                    ]),
-                                                child: Column(
-                                                          mainAxisAlignment: MainAxisAlignment.center,
-                                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                                          children: [ 
-                                                            Text("${widget._currentTransition?.getMessage()}",style: const TextStyle(fontWeight: FontWeight.bold)),
-                                                          ],
-                                                        ),
-                                              ),
-                                            ]
-                                          )
-                                        ],
-                                      ) 
-                                    ]
-                                  )
-                                ]
-                );
-    } else {
-      return const Spacer();
-    }
-  }
-*/
   Widget getInternalNote(){
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -212,8 +167,13 @@ Widget getInternalBanner(){
       _logger.trace(() => "Widgets for the initial state"); 
       bucketRecordCapacity = widget._initFile.bucketRecordCapacity();
       hashTableLen = widget._initFile.getDirectory().len;
-      hashingTableWidget = HashingTableWidget(currentTransition: DirectoryTransition(widget._initFile.getDirectory()));
-      bucketListWidget = BucketListWidget(BucketListTransition(TransitionType.fileIsEmpty,widget._initFile.bucketRecordCapacity(), widget._initFile.getFileContent()), widget._initFile.bucketRecordCapacity());
+      TransitionType initialState = TransitionType.fileIsEmpty;
+      if (widget._initFile.getFileContent().isNotEmpty){
+        initialState = TransitionType.fileIsNotEmpty;
+        _logger.trace(() => ">>>>>- File is not Empty"); 
+      }
+      hashingTableWidget = HashingTableWidget(currentTransition: DirectoryTransition(widget._initFile.getDirectory(),initialState));
+      bucketListWidget = BucketListWidget(BucketListTransition(initialState,widget._initFile.bucketRecordCapacity(), widget._initFile.getFileContent()), widget._initFile.bucketRecordCapacity());
       freedBucketListWidget = FreedBucketListWidget(currentTransition: FreedListTransition(widget._initFile.getFreedList()));
       freedBucketListisNotEmpty = widget._initFile.getFreedList().isNotEmpty;
     }

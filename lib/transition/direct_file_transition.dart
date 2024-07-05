@@ -286,7 +286,7 @@ class DirectFileTransition extends Transition {
 
   DirectFileTransition.fileIsEmpty(this._transitionFile):super(TransitionType.fileIsEmpty) {
     _bucketListTransition = BucketListTransition(TransitionType.fileIsEmpty,_transitionFile.bucketRecordCapacity() ,_transitionFile.getFileContent());
-    _directoryTransition = DirectoryTransition(_transitionFile.getDirectory());
+    _directoryTransition = DirectoryTransition(_transitionFile.getDirectory(),TransitionType.fileIsEmpty);
     _freedListTransition = FreedListTransition(_transitionFile.getFreedList());
     _transitionMessage = "The file is empty";
   }

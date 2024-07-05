@@ -186,7 +186,7 @@ Widget build(BuildContext context) {
                                                                     Container(
                                                                       width: 70,
                                                                       padding: const EdgeInsets.all(4),
-                                                                      alignment: Alignment.centerLeft,                                                                    
+                                                                      //alignment: Alignment.centerLeft,                                                                      
                                                                       child: const Center(child: Text("Bucket #", style: TextStyle(fontWeight: FontWeight.bold))),
                                                                     ),
                                                                     Container(
