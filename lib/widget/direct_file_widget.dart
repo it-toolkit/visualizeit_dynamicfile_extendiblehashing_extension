@@ -34,30 +34,22 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
   void initState() {
     super.initState();
   }
-Widget getInternalBanner(){
+Widget getInternalBanner({required double width}){
     if (widget._currentTransition != null && widget._currentTransition?.getMessage() != null){
-      return Row(
-                 children:[
-                          Container(
-                              width: 400,
-                              height: 75,
-                              padding: const EdgeInsets.only(left: 4, right: 4, bottom: 4),
-                              decoration: BoxDecoration(
-                                                    border: Border.all(color: Colors.black),
-                                                    color: Colors.white,
-                                                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                                                    boxShadow: const [ BoxShadow(blurRadius: 5),]
-                                          ),
-                              child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            children: [ 
-                                                    Text("${widget._currentTransition?.getMessage()}",style: const TextStyle(fontWeight: FontWeight.bold)),
-                                            ],),
+      return Container(
+                  width: width,
+                  padding: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                                        border: Border.all(color: Colors.black),
+                                        color: Colors.white,
+                                        borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                        boxShadow: const [ BoxShadow(blurRadius: 5),]
                               ),
-                          ]
-                      );
-                                  
+                  child: Center( child:
+                                        Text("${widget._currentTransition?.getMessage()}",style: const TextStyle(fontWeight: FontWeight.bold)),
+                                ),
+                  );
+
     } else {
       return const Spacer();
     }
@@ -113,16 +105,10 @@ Widget getInternalBanner(){
     );
   }
 
-  getLeftBanner(int? bucketRecordCapacity, int? hashTableLen){
-    return Column(children:[ 
-                            Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                            Container(
-                                              width: 170,
-                                              height: 70,
-                                              margin: const EdgeInsets.only(right: 2, bottom: 2),
+  getLeftBanner(double width, int? bucketRecordCapacity, int? hashTableLen){
+    return Container(
+                                              width: width,
+                                              padding: const EdgeInsets.all(5),
                                               decoration: BoxDecoration(
                                                   border: Border.all(color: Colors.black),
                                                   color: Colors.white,
@@ -139,10 +125,6 @@ Widget getInternalBanner(){
                                                   Text("T - Hashing Table Size: $hashTableLen",style: const TextStyle(fontWeight: FontWeight.bold)),
                                                 ],
                                               ),
-                                            ),
-                                          ],
-                                ), 
-                            ],
                   );
   }
 
@@ -177,56 +159,64 @@ Widget getInternalBanner(){
       freedBucketListWidget = FreedBucketListWidget(currentTransition: FreedListTransition(widget._initFile.getFreedList()));
       freedBucketListisNotEmpty = widget._initFile.getFreedList().isNotEmpty;
     }
-    return Column( children: [ 
-            Row( children: [ 
-              getLeftBanner(bucketRecordCapacity, hashTableLen),
-              const Spacer(),
-              getInternalBanner(),
-              const Spacer(flex:2),
-              //getInternalNote(),
-            ] ),//First Row
-            Row( 
+
+    return LayoutBuilder(builder: (context, constraints) {
+
+      const headerRowHeight = 100.0;
+
+    return Column(
+      children: [
+          LimitedBox(maxHeight: headerRowHeight, child:
+            Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+              Padding(padding: EdgeInsets.all(10), child: getLeftBanner(200, bucketRecordCapacity, hashTableLen)),
+              Padding(padding: EdgeInsets.all(10), child: getInternalBanner(width: constraints.maxWidth - 240)),
+            ] )),//First Row
+            Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                  const Spacer(),
-                  hashingTableWidget,
-                  const Spacer(flex: 2),
+                  LimitedBox(
+                      maxHeight: constraints.maxHeight - headerRowHeight,
+                      maxWidth: 160,
+                      child: hashingTableWidget!),
                   Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        bucketListWidget,
-                        Row(
-                            children: [ 
-                              freedBucketListisNotEmpty ? 
-                              freedBucketListWidget : 
-                              const Column (crossAxisAlignment: CrossAxisAlignment.center,),
-                            ]
-                            ),
+                        if (freedBucketListisNotEmpty) Padding(padding: const EdgeInsets.only(bottom: 10), child: freedBucketListWidget!),
+                        LimitedBox(
+                            maxHeight: constraints.maxHeight - headerRowHeight - (freedBucketListisNotEmpty ? 110: 0),
+                            maxWidth: constraints.maxWidth - 160,
+                            child: bucketListWidget!),
+
                         ],
                       ), 
-                  const Spacer(),
                 ]),//2 row
             ],
           );
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    _logger.trace(() => "Building widgets"); 
-    //return createWidgetsFromFile();
     return LayoutBuilder(
-        builder:
-            (BuildContext context, BoxConstraints viewportConstraints) {
-          return SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints:
-                  BoxConstraints(minHeight: viewportConstraints.maxHeight),
-              child: createWidgetsFromFile(),
-            ),
-          );
-        },
-      );
+        builder: (BuildContext context, BoxConstraints viewportConstraints) {
+          _logger.trace(() => "Building widgets $viewportConstraints");
+          return createWidgetsFromFile();
+        });
+    // return LayoutBuilder(
+    //     builder: (BuildContext context, BoxConstraints viewportConstraints) {
+    //       return SingleChildScrollView(
+    //         child: ConstrainedBox(
+    //           constraints:
+    //               BoxConstraints(minHeight: viewportConstraints.maxHeight),
+    //           child: createWidgetsFromFile(),
+    //         ),
+    //       );
+    //     },
+    //   );
   }
   
 }

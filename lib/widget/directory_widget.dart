@@ -9,7 +9,7 @@ class HashingTableWidget extends StatefulWidget {
   final DirectoryTransition? currentTransition;
 
   const HashingTableWidget({super.key, this.currentTransition});
-  
+
 
   @override
   State<StatefulWidget> createState() {
@@ -26,7 +26,7 @@ class _HashingTableWidgetState extends State<HashingTableWidget> {
   }
 
   Widget buildRecord(int position, int? value) {
-    _logger.trace(() => "Building Widget for Record"); 
+    _logger.trace(() => "Building Widget for Record");
     Color colorBox = Colors.blue.shade50;
     Color colorCircle = Colors.white;
     Color colorCircleShadow = Colors.white;
@@ -49,8 +49,8 @@ class _HashingTableWidgetState extends State<HashingTableWidget> {
     if (widget.currentTransition?.currentType == TransitionType.findingBucket && widget.currentTransition?.hashTablePosition == position){
       colorCircle = const Color.fromARGB(255, 233, 152, 179);
       colorCircleShadow = Colors.black.withOpacity(0.2);
-    } 
-    
+    }
+
     return Row(
       children: [
         Container(
@@ -83,10 +83,12 @@ class _HashingTableWidgetState extends State<HashingTableWidget> {
 
   @override
   Widget build(BuildContext context) {
-    _logger.trace(() => "Creating widgets for the hashing table"); 
-    return Column(children:[ 
-                            const Center(child: Text("Hashing Table", style: TextStyle(fontWeight: FontWeight.bold))),                  
-                            ConstrainedBox(constraints: const BoxConstraints(maxWidth: 150), 
+    return LayoutBuilder(builder: (context, constraints) {
+      _logger.trace(() => "Creating widgets for the hashing table $constraints");
+    return Column(children: [
+                            const Center(child: Text("Hashing Table", style: TextStyle(fontWeight: FontWeight.bold))),
+
+    ConstrainedBox(constraints: const BoxConstraints(maxWidth: 150),
                                                 child: Container(
                                                 margin: const EdgeInsets.all(10),
                                                 padding: const EdgeInsets.all(10),
@@ -110,20 +112,20 @@ class _HashingTableWidgetState extends State<HashingTableWidget> {
                                                         ),
                                                       ],
                                                     ),
-                                                    (widget.currentTransition!.getTransition()!.hash.length == 1 && 
-                                                     widget.currentTransition?.currentType == TransitionType.fileIsEmpty)  ? 
-                                                        const Column() : 
-                                                        SingleChildScrollView(
+                                                    (widget.currentTransition!.getTransition()!.hash.length == 1 &&
+                                                     widget.currentTransition?.currentType == TransitionType.fileIsEmpty)  ?
+                                                        const Column() :
+      SizedBox(width: 200, height: constraints.maxHeight -90, child: SingleChildScrollView(
                                                         scrollDirection: Axis.vertical,
-                                                        child: Column(
+                                                        child:  Column(
                                                           crossAxisAlignment: CrossAxisAlignment.center,
                                                           children: getWidgets(),
-                                                        )),
+                                                        ))),
                                                   ],
                                                 ),
                                               ) )
-                            ],
-                  );
+                            ]);
+    });
   }
 
   List<Widget> getWidgets(){

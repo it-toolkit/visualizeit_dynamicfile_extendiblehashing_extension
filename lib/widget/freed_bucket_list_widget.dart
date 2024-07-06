@@ -62,7 +62,7 @@ class _FreedBucketListWidgetState extends State<FreedBucketListWidget> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                    children: [
                               const Center(child: Text("Freed Bucket List", style: TextStyle(fontWeight: FontWeight.bold))),
-                              ConstrainedBox(constraints: const BoxConstraints(maxHeight: 100), child: myContainer),
+                              LimitedBox(maxHeight: 80, child: myContainer),
                    ]
                   ); 
   }

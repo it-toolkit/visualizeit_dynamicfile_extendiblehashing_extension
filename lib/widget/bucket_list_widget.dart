@@ -163,6 +163,7 @@ class _BucketListWidgetState extends State<BucketListWidget> {
 Widget build(BuildContext context) {
     _logger.trace(() => "Building Widgets for transition ${widget.currentTransition!.toString()}"); 
     buckets = List.from(widget.currentTransition!.getBucketList());
+    return LayoutBuilder(builder: (context, constraints) {
     return Column( children: [
                               Container(
                                         alignment: Alignment.topCenter,
@@ -174,7 +175,9 @@ Widget build(BuildContext context) {
                                               decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(5), boxShadow: const [
                                                 BoxShadow(color: Colors.black87, spreadRadius: 5, blurRadius: 7, offset: Offset(0, 3)),
                                               ]),
-                                              child: Column(
+                                              child:
+                                              SingleChildScrollView(scrollDirection: Axis.horizontal, child:
+                                              Column(
                                                 children: [
                                                   Row(
                                                           mainAxisAlignment: MainAxisAlignment.center,                        
@@ -219,12 +222,15 @@ Widget build(BuildContext context) {
                                                                 ))
                                                           ],
                                                       ),
+                                                          LimitedBox(maxHeight: constraints.maxHeight - 90, child:SingleChildScrollView(scrollDirection: Axis.vertical, child:
+                                                      Column(children: [
                                                       for (var b in buckets) 
                                                         buildBucket(position: b.id, status: b.status, b: b.bits, records: b.getList())
+                                              ])))
                                                     ],
-                                              ), 
-                                            )
+                                              ))),
+
                                 ],
-                            );
+                            );});
   }
 }
