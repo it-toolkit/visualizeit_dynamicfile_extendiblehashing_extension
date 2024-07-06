@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/transition/bucket_list_transition.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/transition/direct_file_transition.dart';
@@ -36,10 +38,9 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
 
   String? getInternalBannerMessage() => widget._currentTransition?.getMessage();
 
-  Widget getInternalBanner({required double width, required String message}) {
+  Widget getInternalBanner({required String message}) {
     return Container(
-      width: width,
-      padding: const EdgeInsets.all(5),
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
           border: Border.all(color: Colors.black),
           color: Colors.white,
@@ -132,14 +133,14 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
         children: [
           buildHeaderRow(headerRowHeight, constraints), //First Row
           Row(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: [
-            LimitedBox(maxHeight: constraints.maxHeight - headerRowHeight, maxWidth: 160, child: hashingTableWidget),
+            LimitedBox(maxHeight: constraints.maxHeight - headerRowHeight, maxWidth: 220, child: hashingTableWidget),
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 if (freedBucketListisNotEmpty) Padding(padding: const EdgeInsets.only(bottom: 10), child: freedBucketListWidget),
                 LimitedBox(
                   maxHeight: constraints.maxHeight - headerRowHeight - (freedBucketListisNotEmpty ? 110 : 0),
-                  maxWidth: constraints.maxWidth - 160,
+                  maxWidth: constraints.maxWidth - 220,
                   child: bucketListWidget,
                 ),
               ],
@@ -169,10 +170,18 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
         child: Row(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: [
           Padding(padding: const EdgeInsets.all(10), child: getLeftBanner(200, bucketRecordCapacity, hashTableLen)),
           if (internalBannerMessage != null)
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: getInternalBanner(message: internalBannerMessage, width: constraints.maxWidth - 240),
-            ),
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: LimitedBox(
+                    maxWidth: constraints.maxWidth - 240,
+                    child: Center(
+                        child: ConstrainedBox(
+                            constraints: BoxConstraints(maxWidth: min(600, constraints.maxWidth - 240)),
+                            child:getInternalBanner(message: internalBannerMessage),
+                        ),
+                    ),
+                ),
+              )
         ]));
   }
 
