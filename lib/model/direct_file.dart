@@ -142,7 +142,7 @@ class DirectFile extends Observable{
     notifyObservers(DirectFileTransition.findingBucketWithModel(clone(), newValue.value, _table.len, index));
     _logger.trace(() => "insert() - Modular value - Directory index is $index");
     int bucketNum = _table.getBucketNumber(index);
-    _logger.debug(() => "insert() - Directory is pointing to bucket $bucketNum");
+    _logger.trace(() => "insert() - Directory is pointing to bucket $bucketNum");
 
     // If the file is empty, then the register should be added to the bucket.
     // if not, the register should be added to the bucket pointed by the hash table
@@ -167,16 +167,16 @@ class DirectFile extends Observable{
             bucket.setValue(newValue);
             notifyObservers(DirectFileTransition.recordSavedWithModel(clone(),bucket.id, index,newValue));
           } on BucketOverflowedException {
-            _logger.debug(() => "insert() - Bucket $bucketNum overflowed");
+            _logger.trace(() => "insert() - Bucket $bucketNum overflowed");
             notifyObservers(DirectFileTransition.bucketOverflowedWithModel(clone(),bucket.id, index));  
             // If log(T) is equal to hashing bits of the bucket then T+=1 (Duplicate the hashing table)
             if (log2(_table.len) == bucket.bits){
-                _logger.debug(() => "insert() - Hashing bits are equal to log2(T)");
+                _logger.trace(() => "insert() - Hashing bits are equal to log2(T)");
                 _logger.trace(() => "insert() - Calling reorder");
                 reorder(newValue, _file[bucketNum],index);  
             }
             else if (bucket.bits < log2(_table.len)){
-              _logger.debug(() => "insert() - Hashing bits are less than log2(T)");
+              _logger.trace(() => "insert() - Hashing bits are less than log2(T)");
               _logger.trace(() => "insert() - Calling reorder2");
               reorder2(newValue,_file[bucketNum],index);
             }
@@ -230,11 +230,11 @@ reorder(BaseRegister newValue, Bucket overflowedBucket, int bucketInitialIndex){
       _logger.trace(() => "reorder() - *** Overflowed bucket *** Reordering register value: $reg");
       var newBucketNum = reg.value % T;
       _logger.trace(() => "reorder() - New Bucket number is $newBucketNum");
-      _logger.debug(() => "reorder() - Inserting value $reg in $newBucketNum");
+      _logger.trace(() => "reorder() - Inserting value $reg in $newBucketNum");
       insert(reg);
       _logger.trace(() => "reorder() - Reordering Registers End");
     }
-    _logger.debug(() => "reorder() - Inserting new value $newValue");
+    _logger.trace(() => "reorder() - Inserting new value $newValue");
     insert(newValue);
     _logger.trace(() => "reorder() - Reordering Registers Starting");
 
@@ -288,12 +288,12 @@ reorder(BaseRegister newValue, Bucket overflowedBucket, int bucketInitialIndex){
       _logger.trace(() => "reorder2() - *** Overflowed bucket *** Reordering register value: $reg");
       var newBucketNum = reg.value % T;
       _logger.trace(() => "reorder2() - New Bucket number is $newBucketNum");
-      _logger.debug(() => "reorder2() - Inserting value $reg in $newBucketNum");
+      _logger.trace(() => "reorder2() - Inserting value $reg in $newBucketNum");
       insert(reg);
       _logger.trace(() => "reorder() - Reordering Registers End");
     }
     //Finally adding the new value
-    _logger.debug(() => "reorder2() - Inserting last value $newValue");
+    _logger.trace(() => "reorder2() - Inserting last value $newValue");
     insert(newValue);
     _logger.trace(() => "reorder2() - Reordering Registers End");
   }
@@ -312,10 +312,10 @@ reorder(BaseRegister newValue, Bucket overflowedBucket, int bucketInitialIndex){
     _logger.trace(() => "delete() - Directory index value: $index");
     
     int bucketNum = _table.getBucketNumber(index);
-    _logger.debug(() => "delete() - Directory is pointing to bucket $bucketNum");
+    _logger.trace(() => "delete() - Directory is pointing to bucket $bucketNum");
 
     Bucket myBucket = _file[bucketNum];
-    _logger.debug(() => "delete() - Bucket with id ${myBucket.id} was found");
+    _logger.trace(() => "delete() - Bucket with id ${myBucket.id} was found");
     notifyObservers(DirectFileTransition.bucketFoundWithModel(clone(),bucketNum,index));
 
     notifyObservers(DirectFileTransition.recordDeletedWithModel(clone(),myBucket.indexOf(delValue.clone()),bucketNum,index,delValue.clone()));

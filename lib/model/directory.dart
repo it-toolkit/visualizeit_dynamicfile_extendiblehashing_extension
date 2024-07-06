@@ -41,7 +41,7 @@ class Directory extends Observable{
 
    //Duplicating the table.
    mapCopy.addAll(_hashMap);
-   _logger.debug(() => "duplicate() - New hash table: ${mapCopy.toString()}");
+   _logger.trace(() => "duplicate() - New hash table: ${mapCopy.toString()}");
    _hashMap = mapCopy;
    notifyObservers(DirectFileTransition.hashTableDuplicateSize(file,file.getFileContent(),clone()));
    //Updating the Bucket number.
@@ -53,7 +53,7 @@ class Directory extends Observable{
   /* Update the hash table, used to update the bucket number in a circular way */
   update(int init, int newBucketNum, int jump, DirectFile file){
     _logger.trace(() => "update() - Begins");
-    _logger.debug(() => "update() - Position <$init> (init variable) is pointing to bucket ${newBucketNum.toString()}");
+    _logger.trace(() => "update() - Position <$init> (init variable) is pointing to bucket ${newBucketNum.toString()}");
     _hashMap[init] = newBucketNum;
     var myClone = file.clone();
     notifyObservers(DirectFileTransition.hashTableUpdated(myClone, myClone.getFileContent(), clone(), newBucketNum, init, TransitionType.hashTablePointedBucket));
@@ -85,7 +85,7 @@ class Directory extends Observable{
     var myClone = file.clone();
     if (_hashMap[pAfter] == _hashMap[pBefore]){
         //Then it is possible to free the bucket
-        _logger.debug(() => "review() - Bucket numbers are equal");
+        _logger.trace(() => "review() - Bucket numbers are equal");
         notifyObservers(DirectFileTransition.hashTableReviewed(myClone,myClone.getFileContent(), clone(),bucketId,pAfter,pBefore,init,jump, TransitionType.hashTableReviewedSameBucket));
         return _hashMap[pAfter];
     }
@@ -104,7 +104,7 @@ class Directory extends Observable{
     
     if (_listEquals(halfList,backList)){
       _hashMap = halfList;
-      _logger.debug(() => "reduceIfMirrowed() - The hash table must be reduce it");
+      _logger.trace(() => "reduceIfMirrowed() - The hash table must be reduce it");
       _logger.trace(() => "reduceIfMirrowed() - New hash table: ${halfList.toString()}");
     }
     _logger.trace(() => "reduceIfMirrowed() - END");

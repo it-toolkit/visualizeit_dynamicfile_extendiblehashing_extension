@@ -47,7 +47,7 @@ class Bucket{
   BucketStatus get status => _status;
 
   bool isEmpty(){
-    _logger.debug(() => "isEmpty() - Bucket $_id is ${_status.name}");
+    _logger.trace(() => "isEmpty() - Bucket $_id is ${_status.name}");
     return (_status==BucketStatus.empty)? true : false; 
   }
 
@@ -57,7 +57,7 @@ class Bucket{
     for( var value in _registerList){
       if (value.toString() == reg.toString()) {
         found= true;
-        _logger.debug(() => "getValue() - Register with value ${reg.value.toString()} was found");
+        _logger.trace(() => "getValue() - Register with value ${reg.value.toString()} was found");
         break;
       }
       else {
@@ -65,7 +65,7 @@ class Bucket{
       }  
     }
     if (!found) {
-      _logger.debug(() => "getValue() - The register was not found in bucket");
+      _logger.trace(() => "getValue() - The register was not found in bucket");
       throw RegisterNotFoundException("The register was not found in bucket");
     }
     else {
@@ -77,7 +77,7 @@ class Bucket{
   {
     _logger.trace(() => "setValue() - Setting value ${reg.value.toString()}");
     if ( len == _size) {
-      _logger.debug(() => "setValue() - Bucket $_id is full");
+      _logger.trace(() => "setValue() - Bucket $_id is full");
       throw BucketOverflowedException("The bucket is full");
     } else if ( len < _size){ 
       _logger.trace(() => "setValue() - Bucket $_id is ${_status.name}");
@@ -93,7 +93,7 @@ class Bucket{
         _status= BucketStatus.full;
        }
     }
-    _logger.debug(() => "setValue() - Bucket $_id, final status is ${_status.name}");
+    _logger.trace(() => "setValue() - Bucket $_id, final status is ${_status.name}");
     _logger.trace(() => "setValue() - END");
   }
 
@@ -104,7 +104,7 @@ class Bucket{
     var found=false;
     for( var value in regListCopy){
       if (value.toString() == reg.toString()) {
-        _logger.debug(() => "delValue() - The value as found, deleting value ${value.toString()}");
+        _logger.trace(() => "delValue() - The value as found, deleting value ${value.toString()}");
         found=true;
  
         if (_status == BucketStatus.full){
@@ -177,7 +177,7 @@ class Bucket{
   }
 
   void setStatus(BucketStatus newStatus) {
-    _logger.debug(() => "setStatus() - Bucket $_id new status is $newStatus");
+    _logger.trace(() => "setStatus() - Bucket $_id new status is $newStatus");
     _status = newStatus;
   }
 
