@@ -52,29 +52,15 @@ class DirectFileExtendibleHashingModel extends Model {
 
   int get _pendingFrames => _transitions.length - _currentFrame - 1;
 
-  (int, Model) executeCommand(DirectFileExtendibleHashingCommand command) {
+  (int, Model) executeCommand(DirectFileExtendibleHashingCommand command,{bool isInstantExecution = false}) {
     if (_canExecuteCommand(command)) {
       if (isInTransition()) {
         _currentFrame++;
         _logger.trace(() => "Command: $command");
         _logger.trace(() => "Current Frame : $_currentFrame"); 
         _logger.trace(() => "Current Transition: ${currentTransition?.type.name}"); 
-
       } else {
-        _lastTransitionFile = _baseFile.clone();
-        commandInExecution = command;
-        _currentFrame = 0;
-        var transitionObserver = DirectFileObserver();
-        _baseFile.registerObserver(transitionObserver);
-
-        var functionToExecute = command.commandToFunction();
-        _logger.trace(() => "Function to Execute $functionToExecute.toString()"); 
-        functionToExecute(_baseFile);
-
-        _transitions = transitionObserver.transitions;
-        _logger.trace(() => "# Transitions generated: $_transitions" );
-        _baseFile.removeObserver(transitionObserver);
-      
+        executeNewCommand(command, isInstantExecution);
       }
       return (_pendingFrames, this);
     } else {
@@ -82,6 +68,35 @@ class DirectFileExtendibleHashingModel extends Model {
           "cant execute a command while another command is on transition");
     }
   }
+
+  void executeNewCommand(DirectFileExtendibleHashingCommand command, bool isInstantExecution) {
+    _lastTransitionFile = _baseFile.clone();
+    var transitionObserver = DirectFileObserver();
+    _baseFile.registerObserver(transitionObserver);
+    var functionToExecute = command.commandToFunction();
+    try {
+      _logger.trace(() => "Function to Execute $functionToExecute.toString()"); 
+      functionToExecute(_baseFile);
+    } catch(exception){
+      _logger.error(() => "Exception thrown: $exception");
+    }
+    _currentFrame = 0;
+    if(!isInstantExecution){
+      commandInExecution = command;
+      _currentFrame = 0;
+      _transitions = transitionObserver.transitions;
+      _logger.trace(() => "# Transitions generated: $_transitions" );
+    } else {
+      _lastTransitionFile = _baseFile.clone();
+    }
+    
+    _baseFile.removeObserver(transitionObserver);
+    
+    if (_transitions.firstOrNull?.getTransitionFile() != null) {
+      _lastTransitionFile = _transitions.first.getTransitionFile();
+    }
+  }
+
 
   bool _canExecuteCommand(DirectFileExtendibleHashingCommand command) {
     return (commandInExecution != command && !isInTransition()) ||
