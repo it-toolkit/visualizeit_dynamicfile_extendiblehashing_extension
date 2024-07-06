@@ -18,7 +18,7 @@ Creates an empty file with the given maximum bucket capacity. As an optional fea
 
 | Name               | Type     | Position | Required | Default value | Description                   |
 |--------------------|----------|----------|----------|---------------|-------------------------------|
-| bucketSize         | int      | 0        | true     | -             | Must be in range ( 0 , 20 ] |
+| bucketSize         | int      | 0        | true     | -             | Must be in range ( 0 , 10 ] |
 | initialValues      | intArray | 1        | true     | -             | -                             |
 
 ### extendiblehashing-insert

@@ -6,7 +6,7 @@ import 'package:visualizeit_extensions/logging.dart';
 
 final _logger = Logger("Extension.DFEH.Model.Bucket");
 // ignore: constant_identifier_names
-const MAX_BUCKET_SIZE = 20;
+const MAX_BUCKET_SIZE = 10;
 /*
 empty: The bucket is empty.
 full: The bucket is full. Will be overflowed on an insert opertation
