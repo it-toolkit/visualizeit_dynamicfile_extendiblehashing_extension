@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/transition/directory_transition.dart';
 import 'package:visualizeit_dynamicfile_extendiblehashing_extension/transition/file_transition.dart';
@@ -19,10 +21,18 @@ class HashingTableWidget extends StatefulWidget {
 
 class _HashingTableWidgetState extends State<HashingTableWidget> {
   late List<int?> values;
+  final scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    print("disposing");
+    scrollController.dispose();
+    super.dispose();
   }
 
   Widget buildRecord(int position, int? value) {
@@ -50,15 +60,23 @@ class _HashingTableWidgetState extends State<HashingTableWidget> {
       colorBox = const Color.fromARGB(255, 224, 240, 7);
     }
 
-    if (widget.currentTransition?.currentType == TransitionType.findingBucket && widget.currentTransition?.hashTablePosition == position) {
+    var isHighlightedBucket = colorBox != Colors.blue.shade50;
+    var isHighlightedBucketPosition = widget.currentTransition?.currentType == TransitionType.findingBucket && widget.currentTransition?.hashTablePosition == position;
+    if (isHighlightedBucketPosition) {
       colorCircle = const Color.fromARGB(255, 233, 152, 179);
       colorCircleShadow = Colors.black.withOpacity(0.2);
+    }
+
+    if ((isHighlightedBucket || isHighlightedBucketPosition) && scrollController.hasClients) {
+      double jumpTarget = max((position - 2) * 30, 0);
+      scrollController.jumpTo(min(scrollController.position.maxScrollExtent, jumpTarget));
     }
 
     return Row(
       children: [
         Container(
           width: 30,
+          height: 30,
           padding: const EdgeInsets.all(4),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
@@ -120,6 +138,7 @@ class _HashingTableWidgetState extends State<HashingTableWidget> {
                       widget.currentTransition?.currentType == TransitionType.fileIsEmpty) ?
                   const Column() :
                   SizedBox(width: 200, height: constraints.maxHeight - 90, child: SingleChildScrollView(
+                      controller: scrollController,
                       scrollDirection: Axis.vertical,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
