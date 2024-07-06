@@ -35,10 +35,10 @@ class _HashingTableWidgetState extends State<HashingTableWidget> {
         colorBox = const Color.fromARGB(255, 247, 75, 84);
     }else if (widget.currentTransition?.hashTablePosition == position && widget.currentTransition!.bucketCreatedId >= 0 ){
         colorBox = const Color.fromARGB(255, 111, 245, 58);
-    }else if (widget.currentTransition?.hashTablePosition == position && widget.currentTransition?.currentType.name == "hashTablePointedBucket" ){
+    }else if (widget.currentTransition?.hashTablePosition == position && widget.currentTransition?.currentType == TransitionType.hashTablePointedBucket ){
         colorBox = const Color.fromARGB(255, 241, 162, 44);
         textStyleForValue = const TextStyle(fontWeight: FontWeight.bold);
-    }else if (widget.currentTransition?.hashTablePosition == position && (widget.currentTransition?.currentType.name == "bucketFound" || widget.currentTransition?.currentType.name == "recordFound")){
+    }else if (widget.currentTransition?.hashTablePosition == position && (widget.currentTransition?.currentType == TransitionType.bucketFound || widget.currentTransition?.currentType == TransitionType.recordFound || widget.currentTransition?.currentType == TransitionType.recordNotFound)){
         colorBox = const Color.fromARGB(255, 233, 152, 179);
     }
 
