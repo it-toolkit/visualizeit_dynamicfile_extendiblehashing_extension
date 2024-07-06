@@ -20,7 +20,7 @@ class DirectFileTransition extends Transition {
   DirectFile? getTransitionFile() => _transitionFile;
   BucketListTransition? getBucketListTransition() => _bucketListTransition;
   DirectoryTransition? getDirectoryTransition() => _directoryTransition;
-  FreedListTransition? getFreedListTransition() => _freedListTransition;
+  FreedListTransition getFreedListTransition() => _freedListTransition;
   String? getMessage() => _transitionMessage;
 
   DirectFileTransition.findingBucketWithModel(this._transitionFile, int value, int hashTableLen, int index ):super(TransitionType.findingBucket){
