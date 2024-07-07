@@ -30,7 +30,6 @@ class _HashingTableWidgetState extends State<HashingTableWidget> {
 
   @override
   void dispose() {
-    print("disposing");
     scrollController.dispose();
     super.dispose();
   }
