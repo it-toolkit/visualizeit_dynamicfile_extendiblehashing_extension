@@ -75,7 +75,7 @@ class _HashingTableWidgetState extends State<HashingTableWidget> {
     return Row(
       children: [
         Container(
-          width: 30,
+          width: 40,
           height: 30,
           padding: const EdgeInsets.all(4),
           decoration: BoxDecoration(
@@ -122,7 +122,7 @@ class _HashingTableWidgetState extends State<HashingTableWidget> {
                   Row(
                     children: [
                       Container(
-                        width: 30,
+                        width: 40,
                         padding: const EdgeInsets.all(4),
                         child: const Center(child: Text("#", style: TextStyle(fontWeight: FontWeight.bold))),
                       ),
