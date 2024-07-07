@@ -98,7 +98,7 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
 
   Widget createWidgetsFromFile() {
     _logger.trace(() => "Creating all widgets for the file");
-    Widget hashingTableWidget;
+    HashingTableWidget hashingTableWidget;
     Widget bucketListWidget;
     Widget freedBucketListWidget;
     bool freedBucketListisNotEmpty = false;
@@ -133,7 +133,10 @@ class _DirectFileExtendibleHashingWidgetState extends State<DirectFileExtendible
         children: [
           buildHeaderRow(headerRowHeight, constraints), //First Row
           Row(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.start, children: [
-            LimitedBox(maxHeight: constraints.maxHeight - headerRowHeight, maxWidth: 220, child: hashingTableWidget),
+            LimitedBox(
+                maxHeight: min(90 + 30.0 * (hashingTableWidget.currentTransition?.getTransition()?.hash.length ?? 1), constraints.maxHeight - headerRowHeight),
+                maxWidth: 220,
+                child: hashingTableWidget),
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
