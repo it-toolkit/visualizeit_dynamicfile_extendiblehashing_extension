@@ -301,6 +301,11 @@ reorder(BaseRegister newValue, Bucket overflowedBucket, int bucketInitialIndex){
   bool delete(BaseRegister delValue){
     _logger.trace(() => "delete() - Deleting value: $delValue");
     
+    if (_file.isEmpty){
+       notifyObservers(DirectFileTransition.fileIsEmpty(clone()));
+       return false;
+    }
+    
     if (!exist(delValue)){
       _logger.trace(() => "delete() - The value $delValue does not exist in the file");
       notifyObservers(DirectFileTransition.recordNotFoundWithModel(clone(),-1, -1, delValue));

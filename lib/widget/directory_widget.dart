@@ -135,7 +135,7 @@ class _HashingTableWidgetState extends State<HashingTableWidget> {
                     ],
                   ),
                   (widget.currentTransition!.getTransition()!.hash.length == 1 &&
-                      widget.currentTransition?.currentType == TransitionType.fileIsEmpty) ?
+                   widget.currentTransition?.currentType == TransitionType.fileIsEmpty) ?
                   const Column() :
                   SizedBox(width: 200, height: constraints.maxHeight - 90, child: SingleChildScrollView(
                       controller: scrollController,
